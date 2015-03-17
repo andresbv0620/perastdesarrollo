@@ -1,8 +1,9 @@
-<?php namespace App\Http\Controllers\Planes;
+<?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Plan;
 use Illuminate\Http\Request;
 
 class PlanesController extends Controller {
@@ -12,9 +13,15 @@ class PlanesController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+    protected $request;
+    public function __construct(Request $request){
+        $this->request=$request;
+    }
 	public function index()
 	{
-		//
+        $plans=Plan::paginate();
+        return view('admin.planes.index', compact('plans'));
 	}
 
 	/**
@@ -24,7 +31,7 @@ class PlanesController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('admin.planes.create');
 	}
 
 	/**
@@ -34,7 +41,9 @@ class PlanesController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		$plans= new Plan($this->request->all());
+        $plans->save();
+        return \Redirect::route('admin.planes.index');
 	}
 
 	/**
@@ -56,7 +65,9 @@ class PlanesController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$plan=Plan::findOrFail($id);
+
+        return view('admin.planes.edit', compact('plan'));
 	}
 
 	/**
@@ -67,7 +78,10 @@ class PlanesController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+		$plan=Plan::findOrFail($id);
+        $plan->fill($this->request->all());
+        $plan->save();
+        return redirect()->back();
 	}
 
 	/**
