@@ -1,29 +1,32 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreatePlanRequest;
 
-use App\Http\Requests\EditPlanRequest;
-use App\Plan;
+use App\Tab;
 use Illuminate\Http\Request;
 
-class PlanesController extends Controller {
+class CatalogsController extends Controller {
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(Request $request){
+
+        $this->request = $request;
+    }
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-    protected $request;
-    public function __construct(Request $request){
-        $this->request=$request;
-    }
 	public function index()
 	{
-        $plans=Plan::paginate();
-        return view('admin.planes.index', compact('plans'));
+        $catalogs=Catalog::paginate();
+        return view('admin.catalogs.index', compact('catalogs'));
 	}
 
 	/**
@@ -33,7 +36,9 @@ class PlanesController extends Controller {
 	 */
 	public function create()
 	{
-		return view('admin.planes.create');
+        $tabs=Tab::all();
+        $catalogs=Catalog::all();
+        return view('admin.catalogs.create',compact('tabs','catalogs'));
 	}
 
 	/**
@@ -41,11 +46,16 @@ class PlanesController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(CreatePlanRequest $request)
+	public function store()
 	{
-		$plans= new Plan($this->request->all());
-        $plans->save();
-        return \Redirect::route('admin.planes.index');
+		$data=$this->request->all();
+
+        $catalog=new Catalog($data);
+        $catalog->save();
+
+        return view('admin.catalogs.edit',compact('catalog'));
+
+
 	}
 
 	/**
@@ -67,9 +77,10 @@ class PlanesController extends Controller {
 	 */
 	public function edit($id)
 	{
-		$plan=Plan::findOrFail($id);
+        $catalog=Catalog::find($id);
+        $tabs=$catalog->tab;
 
-        return view('admin.planes.edit', compact('plan'));
+		return view('admin.catalogs.edit', compact('catalog','tabs'));
 	}
 
 	/**
@@ -78,12 +89,9 @@ class PlanesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(EditPlanRequest $request, $id)
+	public function update($id)
 	{
-		$plan=Plan::findOrFail($id);
-        $plan->fill($this->request->all());
-        $plan->save();
-        return redirect()->back();
+		//
 	}
 
 	/**

@@ -2,11 +2,17 @@
 
 use App\ClienteHasPlan;
 use App\Http\Requests;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Http\Controllers\Controller;
 
 use App\Plan;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class UsersController extends Controller {
 
@@ -46,17 +52,18 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(CreateUserRequest $request)
 	{
-        $user = new User($this->request->all());
+
+        $data=$this->request->all();
+
+        $user = new User($data);
         $user->save();
 
         $insertedId=$user->id;
-
         $clientehasplan=new ClienteHasPlan($this->request->all());
         $clientehasplan->cliente_id=$insertedId;
         $clientehasplan->save();
-
         return \Redirect::route('admin.users.index');
 	}
 
@@ -90,7 +97,7 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(EditUserRequest $request,$id)
 	{
         $user=User::findOrFail($id);
         $user->fill($this->request->all());
@@ -107,7 +114,12 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        User::destroy($id);
+
+        Session::flash('message','El registro fue eliminado');
+
+        return redirect()->route('admin.users.index');
+
 	}
 
 }

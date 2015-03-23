@@ -7,7 +7,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Usuarios</div>
 
-                    <div class="panel-body">
+                    @include('admin.partials.messages')
+
+
+
                         {!! Form::open(array('route' => 'admin.users.store','method'=>'POST')) !!}
 
 @include('admin.users.partials.fields')

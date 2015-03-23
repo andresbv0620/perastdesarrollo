@@ -8,6 +8,7 @@
                     <div class="panel-heading">Planes</div>
 
                     <div class="panel-body">
+                        @include('admin.partials.messages')
                         {!! Form::open(array('route' => 'admin.planes.store','method'=>'POST')) !!}
 
                         @include('admin.planes.partials.fields')

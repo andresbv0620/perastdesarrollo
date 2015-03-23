@@ -21,7 +21,7 @@
             <td>{{$user->logo}}</td>
             <td>
                 <a href="{{ route('admin.users.edit', $user) }}">Editar</a>
-                <a href="">Eliminar</a>
+                <a href="{{ route('admin.users.destroy', $user) }}">Eliminar</a>
             </td>
         </tr>
     @endforeach

@@ -24,6 +24,11 @@ Route::controllers([
 Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
     Route::resource('users','UsersController');
     Route::resource('planes','PlanesController');
+    Route::resource('catalogs','CatalogsController');
+
+    Route::get('tabs/catalogid/{catalogoid}',['uses'=>'TabsController@tabcatalog','as'=>'admin.tabs.tabcatalog']);
+    Route::resource('tabs','TabsController');
+    Route::resource('entradas','EntradasController');
 });
 
 

@@ -36,7 +36,7 @@
 </div>
 <div class="form-group">
     {!!Form::label('periodicidad', 'Periodicidad Cobro')!!}
-    {!!Form::select('periodicidad', array('Anual' => 'Anual', 'Mensual' => 'Mensual'),['class'=>'form-control'])!!}
+    {!!Form::select('periodicidad',array('anual' => 'anual', 'mensual' => 'mensual'),['class'=>'form-control'])!!}
 </div>
 <div class="form-group">
     {!!Form::label('planCol', 'Plan Col')!!}

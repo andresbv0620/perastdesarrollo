@@ -1,29 +1,33 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreatePlanRequest;
 
-use App\Http\Requests\EditPlanRequest;
-use App\Plan;
+use App\Tab;
 use Illuminate\Http\Request;
 
-class PlanesController extends Controller {
+class TabsController extends Controller {
+
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(Request $request){
+
+        $this->request = $request;
+    }
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-    protected $request;
-    public function __construct(Request $request){
-        $this->request=$request;
-    }
 	public function index()
 	{
-        $plans=Plan::paginate();
-        return view('admin.planes.index', compact('plans'));
+		//
 	}
 
 	/**
@@ -33,7 +37,8 @@ class PlanesController extends Controller {
 	 */
 	public function create()
 	{
-		return view('admin.planes.create');
+
+        return view('admin.catalogs.tabs.create',compact('catalog'));
 	}
 
 	/**
@@ -41,11 +46,9 @@ class PlanesController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(CreatePlanRequest $request)
+	public function store($id)
 	{
-		$plans= new Plan($this->request->all());
-        $plans->save();
-        return \Redirect::route('admin.planes.index');
+
 	}
 
 	/**
@@ -67,9 +70,7 @@ class PlanesController extends Controller {
 	 */
 	public function edit($id)
 	{
-		$plan=Plan::findOrFail($id);
-
-        return view('admin.planes.edit', compact('plan'));
+		//
 	}
 
 	/**
@@ -78,12 +79,9 @@ class PlanesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(EditPlanRequest $request, $id)
+	public function update($id)
 	{
-		$plan=Plan::findOrFail($id);
-        $plan->fill($this->request->all());
-        $plan->save();
-        return redirect()->back();
+		//
 	}
 
 	/**
@@ -96,5 +94,13 @@ class PlanesController extends Controller {
 	{
 		//
 	}
+
+    public function tabcatalog($id)
+    {
+        $tab = new Tab($this->request->all());
+        $tab->catalog_id=$id;
+        $tab->save();
+        return redirect()->back();
+    }
 
 }

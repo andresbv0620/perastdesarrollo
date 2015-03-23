@@ -8,6 +8,7 @@
                     <div class="panel-heading">Editar Plan: {{$plan->nombre}}</div>
 
                     <div class="panel-body">
+                        @include('admin.partials.messages')
                         {!! Form::model($plan,array('route' => ['admin.planes.update',$plan],'method'=>'PUT')) !!}
 
                         @include('admin.planes.partials.fields')

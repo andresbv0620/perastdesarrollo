@@ -8,6 +8,7 @@
                     <div class="panel-heading">Editar Cliente: {{$user->name}}</div>
 
                     <div class="panel-body">
+                        @include('admin.partials.messages')
                         {!! Form::model($user,array('route' => ['admin.users.update',$user],'method'=>'PUT')) !!}
 
                         @include('admin.users.partials.fields')
@@ -16,7 +17,9 @@
 
                         {!! Form::close() !!}
                     </div>
-                </div>
+                    @include('admin.users.partials.delete')
+
+ñ                </div>
             </div>
         </div>
     </div>
