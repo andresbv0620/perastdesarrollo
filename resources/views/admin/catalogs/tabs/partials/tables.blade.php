@@ -41,7 +41,7 @@
                                 {!!Form::label('esPrincipal', 'Es Principal')!!}
                                 {!!Form::text('esPrincipal',null,['class'=>'form-control','placeholder'=>'Si o No'])!!}
                             </div>
-   
+
                             <button type="submit" class="btn btn-default">Crear Entrada</button>
                         {!! Form::close() !!}
 

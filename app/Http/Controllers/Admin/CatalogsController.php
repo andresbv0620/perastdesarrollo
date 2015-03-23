@@ -52,8 +52,11 @@ class CatalogsController extends Controller {
 
         $catalog=new Catalog($data);
         $catalog->save();
+        $idinserted=$catalog->id;
+        $catalog=Catalog::find($idinserted);
+        $tabs=$catalog->tab;
 
-        return view('admin.catalogs.edit',compact('catalog'));
+        return view('admin.catalogs.edit',compact('catalog','tabs'));
 
 
 	}

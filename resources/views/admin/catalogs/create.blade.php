@@ -16,7 +16,7 @@
 
                     @include('admin.catalogs.partials.fields')
 
-                    @include('admin.catalogs.tabs.partials.tables')
+
 
 
 
