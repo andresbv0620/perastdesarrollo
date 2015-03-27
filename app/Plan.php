@@ -26,5 +26,8 @@ class Plan extends Model {
         'periodicidad',
         'planCol'
     ];
-
+    public function user(){
+        return $this->hasMany('App\User');
+    }
 }
+

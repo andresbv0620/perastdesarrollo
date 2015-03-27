@@ -1,11 +1,27 @@
 @extends('app')
-
+<body style="background: url('{{ asset('/index/images/b2.jpg') }}'); background-size: cover; height: 700px">
 @section('content')
+
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+        <div class="col-md-2  col-md-offset-1">
+
+                <img src="{{ asset('/index/images/tablet2.png') }}" width="345" height="600" style="position: absolute; top: 1%; left: 1px">
+                <img src="{{ asset('/index/images/perast.gif') }}" width="300" style="position: absolute; top: 61px; left: 24px">
+
+
+        </div>
+		<div class="col-md-5" style="position: absolute; top: 24%; left: 43%;">
+            <div class="row">
+                <div class="col-md-2">
+                <img src="{{ asset('/index/images/logo.png') }}">
+                </div>
+                <div class="col-md-3"><h1 style="text-shadow: 0 1px 1px #000;color: #fff;">INGELAND</h1></div>
+            </div>
+
+
 			<div class="panel panel-default">
-				<div class="panel-heading">Login</div>
+				<div class="panel-heading">Ingreso</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -62,3 +78,4 @@
 	</div>
 </div>
 @endsection
+    </body>

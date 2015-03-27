@@ -44,10 +44,10 @@
             <th>Periodicidad</th>
             <th>planCol</th>
         </tr>
-
+@if($plans <> "")
         @foreach($plans as $plan)
             <tr>
-                <td>{!!Form::checkbox('plan_id', $plan->id, ['class'=>'checkbox'])!!}</td>
+                <td>{!!Form::radio('plan_id', $plan->id, ['class'=>'radio'])!!}</td>
                 <td>{!!Form::label('plan',$plan->id)!!}</td>
                 <td>{!!Form::label('nombre',$plan->nombre)!!}</td>
                 <td>{!!Form::label('usuariosAdmins',$plan->usuariosAdmins)!!}</td>
@@ -60,5 +60,6 @@
                 <td>{!!Form::label('planCol',$plan->planCol)!!}</td>
             </tr>
         @endforeach
+@endif
     </table>
 </div>

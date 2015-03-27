@@ -8,16 +8,14 @@
                     <div class="panel-heading">Usuarios</div>
 
                     @include('admin.partials.messages')
-
-
-
                         {!! Form::open(array('route' => 'admin.users.store','method'=>'POST')) !!}
 
-@include('admin.users.partials.fields')
+                        @include('admin.users.partials.fields')
 
                         <button type="submit" class="btn btn-default">Crear Cliente</button>
 
                         {!! Form::close() !!}
+
                     </div>
                 </div>
             </div>

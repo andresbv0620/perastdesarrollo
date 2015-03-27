@@ -17,9 +17,30 @@
 
                         {!! Form::close() !!}
                     </div>
+
+
+                    <h2>Sistemas asociados a este usuario</h2>
+
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        + Agregar Sistema
+                    </button>
+                    <div class="collapse" id="collapseExample">
+                        <div class="well">
+                            {!! Form::open(array('route'=>['admin.sistemas.show',$user->id],'method'=>'GET')) !!}
+                            @include('admin.sistemas.partials.fields')
+                            <button type="submit" class="btn btn-default" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Crear Sistema</button>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+
+                    @include('admin.sistemas.partials.tables')
+
+
+
+
                     @include('admin.users.partials.delete')
 
-ñ                </div>
+               </div>
             </div>
         </div>
     </div>

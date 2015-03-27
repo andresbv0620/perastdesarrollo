@@ -7,6 +7,7 @@ use App\Http\Requests\EditUserRequest;
 use App\Http\Controllers\Controller;
 
 use App\Plan;
+use App\Sistema;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -75,7 +76,7 @@ class UsersController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+
 	}
 
 	/**
@@ -86,9 +87,13 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $user=User::findOrFail($id);
+        $user=User::find($id)->first();
+
+        $sistemas=$user->sistema;
         $plans=Plan::all();
-		return view('admin.users.edit',compact('user','plans'));
+
+
+        return view('admin.users.edit',compact('user','plans','sistemas'));
 	}
 
 	/**
