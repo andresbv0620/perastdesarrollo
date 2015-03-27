@@ -35,8 +35,10 @@ class HomeController extends Controller {
 	public function index()
 	{
         $user=Auth::user()->id;
+        $useremail=Auth::user()->email;
 
-        return redirect('http://essbio.perast.cl/')->with($user);
+
+        return view('index.vars',compact('user','useremail'));
         //return view('home');
 	}
 

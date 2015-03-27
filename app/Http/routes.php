@@ -18,7 +18,6 @@ Route::get('home', 'HomeController@index');
 
 
 
-
 Route::controllers([
 	'users'=>'UsersController',
     'auth' => 'Auth\AuthController',
