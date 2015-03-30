@@ -12,17 +12,38 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
 
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    {!! Html::Style('/css/app.css') !!}
+
+
     <link href="{{ asset('/index/css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
     <link href="{{ asset('/index/css/slimmenu.css') }}" rel="stylesheet" media="screen">
     <link rel="stylesheet" type="text/css" href="{{ asset('/index/css/magnific-popup.css')}}">
     <script src="{{ asset('/index/js/jquery.min.js')}}"></script>
 </head>
 <body>
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+        <!--<li><a href="{{ url('/') }}">Inicio</a></li>-->
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        @if (Auth::guest())
+            <li><a href="{{ url('/auth/login') }}">Ingresar</a></li>
+            <!-- <li><a href="{{ url('/auth/register') }}">Register</a></li>-->
+        @else
+            <li class="dropdown">
+                <a href="{{ url('/auth/logout') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Salir</a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                </ul>
+            </li>
+        @endif
+    </ul>
+</div>
 <div class="content" id="home">
     <div class="header">
         <div class="wrap">
-            <div class="text-right"><ul><li><a class="btn btn-primary" href="{{ action('HomeController@index') }}">Ingresar</a></li></ul></div>
+
             <header id="topnav">
                 <nav>
                     <ul>
