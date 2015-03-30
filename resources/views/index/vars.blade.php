@@ -5,7 +5,7 @@
 <body onload="enviar()">
 {!! Form::open(array('url' => 'http://essbio.perast.cl','method'=>'POST','name'=>'form')) !!}
 <input type="hidden" name="userid" value="{{ $user  }}">
-<input type="hidden" name="useremail" value="{{ $useremail  }}">
+<input type="hidden" name="username" value="{{ $username  }}">
 {!! Form::close() !!}
 
 <script language="JavaScript">

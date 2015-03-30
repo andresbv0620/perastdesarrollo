@@ -35,10 +35,10 @@ class HomeController extends Controller {
 	public function index()
 	{
         $user=Auth::user()->id;
-        $useremail=Auth::user()->email;
+        $username=Auth::user()->name;
 
 
-        return view('index.vars',compact('user','useremail'));
+        return view('index.vars',compact('user','username'));
         //return view('home');
 	}
 
