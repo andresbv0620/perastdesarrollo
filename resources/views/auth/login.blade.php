@@ -12,12 +12,7 @@
 
         </div>
 		<div class="col-md-5" style="position: absolute; top: 24%; left: 43%;">
-            <div class="row">
-                <div class="col-md-2">
-                <img src="{{ asset('/index/images/logo.png') }}">
-                </div>
-                <div class="col-md-3"><h1 style="text-shadow: 0 1px 1px #000;color: #fff;">INGELAND</h1></div>
-            </div>
+           
 
 
 			<div class="panel panel-default">
