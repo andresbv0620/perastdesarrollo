@@ -12,7 +12,7 @@
 
         </div>
 		<div class="col-md-5" style="position: absolute; top: 24%; left: 43%;">
-           
+
 
 
 			<div class="panel panel-default">

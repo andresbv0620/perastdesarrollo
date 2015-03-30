@@ -212,13 +212,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <p>Seleccione su plan y empiece a recolectar datos inmediatamente.</p>
             <div class="pricing-grids">
                 <div class="pricing-grid black">
-                    <h3><a href="#">Gratis</a></h3>
+                    <h3><a href="#">Básico</a></h3>
                     <div class="price-value">
-                        <a href="#">$0/mes</a>
+                        <a href="#">$300 usd/mes</a>
                     </div>
                     <ul>
                         <li><a href="#">1 Administrador</a></li>
-                        <li><a href="#">1 Usuarios</a></li>
+                        <li><a href="#">2 Usuarios</a></li>
                         <li><a href="#">Registros limitados</a></li>
                     </ul>
                     <div class="cart">
