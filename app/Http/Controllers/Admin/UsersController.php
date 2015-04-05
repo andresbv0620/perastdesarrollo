@@ -45,7 +45,8 @@ class UsersController extends Controller {
 	{
         $plans=Plan::all();
         $users=User::all();
-		return view('admin.users.create', compact('plans','users'));
+        $sistemas=Sistema::all();
+		return view('admin.users.create', compact('plans','users','sistemas'));
 	}
 
 	/**
@@ -55,16 +56,18 @@ class UsersController extends Controller {
 	 */
 	public function store(CreateUserRequest $request)
 	{
-
         $data=$this->request->all();
+
+
 
         $user = new User($data);
         $user->save();
 
-        $insertedId=$user->id;
-        $clientehasplan=new ClienteHasPlan($this->request->all());
-        $clientehasplan->cliente_id=$insertedId;
-        $clientehasplan->save();
+        $planid=$data['plan_id'];
+        $plan=Plan::findOrFail($planid);
+        $user->plan()->attach($plan);
+
+
         return \Redirect::route('admin.users.index');
 	}
 
@@ -87,7 +90,7 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $user=User::find($id)->first();
+        $user=User::findOrFail($id);
 
         $sistemas=$user->sistema;
         $plans=Plan::all();

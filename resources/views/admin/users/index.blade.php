@@ -14,7 +14,7 @@
                     <div class="panel-body">
                         <p>
                             <a class="btn btn-default" href="{{route('admin.users.create')}}" role="button">
-                                Registrar Cliente
+                                Registrar Usuario
                             </a>
                         </p><p>Hay {{$users->total()}} Usuarios</p>
 

@@ -12,7 +12,9 @@
 
                         @include('admin.users.partials.fields')
 
-                        <button type="submit" class="btn btn-default">Crear Cliente</button>
+
+
+                        <button type="submit" class="btn btn-default">Crear Usuario</button>
 
                         {!! Form::close() !!}
 
@@ -21,4 +23,23 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('#plans-id').hide();
+            $('#role_id').on('change',function(){
+                var rolVal= $(this).val();
+
+                if(rolVal==2 || rolVal==1){
+                    $('#plans-id').show();
+                }else{
+                    $('#plans-id').hide();
+                }
+            });
+        });
+    </script>
 @endsection

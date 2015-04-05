@@ -5,21 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\DB\User\Traits\UserACL;
-use App\DB\User\Traits\UserAccessors;
-use App\DB\User\Traits\UserQueryScopes;
-use App\DB\User\Traits\UserRelationShips;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
 
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
 	use Authenticatable, CanResetPassword;
-
-    /**
-     * Application's Traits (Separation of various types of methods)
-     */
-    use UserACL, UserRelationShips;
-
+    use EntrustUserTrait;
 
     /**
 	 * The database table used by the model.
@@ -33,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password','pagina','imagenFondo','logo'];
+	protected $fillable = ['role_id','name', 'email', 'password','pagina','imagenFondo','logo'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -45,8 +38,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function sistema(){
         return $this->hasMany('App\Sistema');
     }
+
     public function plan(){
-        return $this->hasMany('App\Plan');
+        return $this->belongsToMany('App\Plan');
     }
 
     public function setPasswordAttribute($value){

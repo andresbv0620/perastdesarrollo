@@ -15,4 +15,9 @@ class Sistema extends Model {
         return $this->belongsTo('App\User');
     }
 
+    public function tablets(){
+        return $this->belongsToMany('App\Tablet');
+    }
+
+
 }

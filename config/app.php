@@ -137,12 +137,13 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 
 
-        /**
+        /*
          * Vendor Service Providers
          */
 
 
         'Collective\Html\HtmlServiceProvider',
+        'Zizaco\Entrust\EntrustServiceProvider',
 
 
 
@@ -211,6 +212,7 @@ return [
 
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
+        'Entrust' => 'Zizaco\Entrust\EntrustFacade',
 
 	],
 

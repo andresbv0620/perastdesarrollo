@@ -15,7 +15,8 @@ class CreateTabletsTable extends Migration {
 		Schema::create('tablets', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->string('idUnicoTablet');
+            $table->string('idUnicoTablet')->unique();
+            $table->string('description');
 			$table->timestamps();
 		});
 	}

@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Sistema;
+use App\Tablet;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -62,16 +63,17 @@ class SistemasController extends Controller {
 	{
 		$user=User::findOrFail($id);
         $userid=$user->id;
+
         $sistema = new Sistema($this->request->all());
         $sistema->user_id=$userid;
         $sistema->save();
 
-        $user=User::find($userid);
+
         $sistemas=$user->sistema;
+
         $plans=$user->plan;
 
-
-        return view('admin.users.edit', compact('user','sistemas','plans'));
+         return view('admin.users.edit', compact('user','sistemas','plans'));
 	}
 
 	/**
@@ -82,6 +84,20 @@ class SistemasController extends Controller {
 	 */
 	public function edit($id)
 	{
+        $tablet = new Tablet($this->request->all());
+        $tablet->save();
+
+        $sistema=Sistema::findOrFail($id);
+        $tablet->sistemas()->attach($sistema);
+
+        $user=$sistema->user;
+
+        $plans=$user->plan;
+        $sistemas=$user->sistema;
+
+
+        return view('admin.users.edit',compact('user','plans','sistemas'));
+
 
 	}
 

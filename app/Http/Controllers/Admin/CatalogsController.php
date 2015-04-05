@@ -16,7 +16,7 @@ class CatalogsController extends Controller {
     public function __construct(Request $request){
 
         $this->request = $request;
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
 	/**
@@ -50,16 +50,12 @@ class CatalogsController extends Controller {
 	public function store()
 	{
 		$data=$this->request->all();
-
         $catalog=new Catalog($data);
         $catalog->save();
         $idinserted=$catalog->id;
         $catalog=Catalog::find($idinserted);
         $tabs=$catalog->tab;
-
         return view('admin.catalogs.edit',compact('catalog','tabs'));
-
-
 	}
 
 	/**
@@ -108,5 +104,4 @@ class CatalogsController extends Controller {
 	{
 		//
 	}
-
 }

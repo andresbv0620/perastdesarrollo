@@ -1,27 +1,7 @@
 <?php namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\EntrustRole;
 
-class Role extends Model {
-
-    /**
-     * users() one-to-many relationship method
-     *
-     * @return QueryBuilder
-     */
-    public function users()
-    {
-        return $this->hasMany('App\User');
-    }
-
-    /**
-     * permissions() many-to-many relationship method
-     *
-     * @return QueryBuilder
-     */
-    public function permissions()
-    {
-        return $this->belongsToMany('App\Permission');
-    }
-
+class Role extends EntrustRole
+{
 }

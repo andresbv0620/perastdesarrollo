@@ -21,7 +21,7 @@ class UserTableSeeder extends Seeder{
         }
 
         for($i = 0; $i < 30; $i++){
-            $id_cliente = \DB::table('users')->insertGetId(array(
+            $id_user = \DB::table('users')->insertGetId(array(
                 'name' => $faker->name,
                 'email' => $faker->unique()->email,
                 'password' => \Hash::make('123456'),
@@ -31,9 +31,9 @@ class UserTableSeeder extends Seeder{
                 'logo' => $faker->url
             ));
             for($j=0;$j<2;$j++) {
-                \DB::table('cliente_has_plans')->insert(array(
+                \DB::table('plan_user')->insert(array(
                     'activo' => $faker->boolean(100),
-                    'cliente_id' => $id_cliente,
+                    'user_id' => $id_user,
                     'plan_id' => $faker->randomElement(array('1', '2', '3')),
                     'duracion' => $faker->dateTimeBetween('now', '1 years')->format('Y-m-d')
                 ));
