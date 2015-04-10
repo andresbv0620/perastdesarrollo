@@ -11,9 +11,6 @@
                         {!! Form::open(array('route' => 'admin.users.store','method'=>'POST')) !!}
 
                         @include('admin.users.partials.fields')
-
-
-
                         <button type="submit" class="btn btn-default">Crear Usuario</button>
 
                         {!! Form::close() !!}
@@ -28,18 +25,37 @@
 
 @section('scripts')
     <script type="text/javascript">
+
         $(document).ready(function(){
-
             $('#plans-id').hide();
-            $('#role_id').on('change',function(){
-                var rolVal= $(this).val();
-
-                if(rolVal==2 || rolVal==1){
+            $('#superadmin').on('click',function(){
+                if ($('#superadmin').is(':checked')) {
                     $('#plans-id').show();
                 }else{
                     $('#plans-id').hide();
                 }
             });
+            $('#admin').on('click',function(){
+                if ($('#admin').is(':checked')) {
+                    $('#plans-id').show();
+                }else{
+                    $('#plans-id').hide();
+                }
+            });
+            $('#recolector').on('click',function(){
+                if ($('#recolector').is(':checked')) {
+                    $('#plans-id').hide();
+                }
+
+            });
+
+            $('#reportes').on('click',function(){
+                if ($('#reportes').is(':checked')) {
+                    $('#plans-id').hide();
+                }
+            });
+
         });
+
     </script>
 @endsection

@@ -11,8 +11,8 @@ class Sistema extends Model {
      */
     protected $fillable = ['nombreDataBase','description'];
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function users(){
+        return $this->belongsToMany('App\User');
     }
 
     public function tablets(){

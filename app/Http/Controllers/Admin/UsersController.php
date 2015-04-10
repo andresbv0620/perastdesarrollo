@@ -7,9 +7,11 @@ use App\Http\Requests\EditUserRequest;
 use App\Http\Controllers\Controller;
 
 use App\Plan;
+use App\Role;
 use App\Sistema;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,6 +28,7 @@ class UsersController extends Controller {
     protected $request;
 
     public function __construct(Request $request){
+        $this->middleware('auth');
         $this->request=$request;
 
     }
@@ -46,7 +49,10 @@ class UsersController extends Controller {
         $plans=Plan::all();
         $users=User::all();
         $sistemas=Sistema::all();
-		return view('admin.users.create', compact('plans','users','sistemas'));
+        $roles=Role::all();
+        $rolescheckeds=array();
+        $sistemascheckeds=array();
+		return view('admin.users.create', compact('plans','users','sistemas','roles','rolescheckeds','sistemascheckeds'));
 	}
 
 	/**
@@ -57,15 +63,18 @@ class UsersController extends Controller {
 	public function store(CreateUserRequest $request)
 	{
         $data=$this->request->all();
-
-
-
         $user = new User($data);
         $user->save();
+        $user->roles()->sync(Input::get('role_id'));
+        $user->sistemas()->sync(Input::get('sistema_id'));
 
-        $planid=$data['plan_id'];
-        $plan=Plan::findOrFail($planid);
-        $user->plan()->attach($plan);
+
+        if($user->hasRole(['superadmin','admin'])) {
+            $planid = $data['plan_id'];
+            $plan = Plan::findOrFail($planid);
+            $user->plans()->attach($plan);
+        }
+
 
 
         return \Redirect::route('admin.users.index');
@@ -92,11 +101,18 @@ class UsersController extends Controller {
 	{
         $user=User::findOrFail($id);
 
-        $sistemas=$user->sistema;
+        $sistemas=$user->sistemas;
         $plans=Plan::all();
 
+        $rolescheckeds=$user->roles()->lists('role_id');
+        $sistemascheckeds=$user->sistemas()->lists('sistema_id');
 
-        return view('admin.users.edit',compact('user','plans','sistemas'));
+        $roles=Role::all();
+        $sistemas=Sistema::all();
+        $users=array();
+
+
+        return view('admin.users.edit',compact('user','plans','sistemas','roles','users','rolescheckeds','sistemascheckeds'));
 	}
 
 	/**
@@ -110,6 +126,10 @@ class UsersController extends Controller {
         $user=User::findOrFail($id);
         $user->fill($this->request->all());
         $user->save();
+
+        $user->roles()->sync(Input::get('role_id'));
+        $user->sistemas()->sync(Input::get('sistema_id'));
+        $user->plans()->sync(Input::get('plan_id'));
 
         return redirect()->back();
 	}

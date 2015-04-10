@@ -4,14 +4,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel</title>
+	<title>PERAST-Sistema de Recoleccion de Datos</title>
 
     {!! Html::Style('/css/app.css') !!}
-
-
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
-	<!-- Fonts -->
+
+    <!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -22,41 +21,82 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">PERAST</a>
-			</div>
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Inicio</a></li>
-				</ul>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">PERAST</a>
+                </div>
 
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<!-- <li><a href="{{ url('/auth/register') }}">Register</a></li>-->
-					@else
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-							</ul>
-						</li>
-					@endif
-				</ul>
-			</div>
-		</div>
-	</nav>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
 
-	@yield('content')
+                        <li><a href="{{ url('/') }}">Inicio</a></li>
+                        @if(Entrust::hasRole('superadmin')||Entrust::hasRole('admin'))
+                            @if (Entrust::hasRole('superadmin'))
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Planes<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ url('/admin/planes') }}">Ver Planes</a></li>
+                                        <li><a href="{{ url('/admin/planes/create') }}">Crear Planes</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Usuarios<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/admin/users') }}">Ver Usuarios</a></li>
+                                    <li><a href="{{ url('/admin/users/create') }}">Crear Usuarios</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sistemas<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/admin/sistemas') }}">Ver Sistemas</a></li>
+                                    <li><a href="{{ url('/admin/sistemas/create') }}">Crear Sistemas</a></li>
+                                </ul>
+                            </li>
+                        @endif
+                    </ul>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/auth/login') }}">Login</a></li>
+                            <!-- <li><a href="{{ url('/auth/register') }}">Register</a></li>-->
+                        @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+        @if (Entrust::hasRole('superadmin'))
+            <h1>Perfil Super Administrador {{ Auth::user()->name }}</h1>
+            @elseif (Entrust::hasRole('admin'))
+            <h1>Perfil Administrador {{ Auth::user()->name }}</h1>
+            @elseif (Entrust::hasRole('recolector'))
+                <h1>Perfil Recolector {{ Auth::user()->name }}</h1>
+            @elseif (Entrust::hasRole('reportes'))
+                <h1>Perfil Reportes {{ Auth::user()->name }}</h1>
+            @else
+                <div class="alert alert-danger" role="alert">Usuario no autorizado</div>
+        @endif
+
+        @yield('content')
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdminSistemaTable extends Migration {
+class CreateSistemaUserTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,16 +12,16 @@ class CreateAdminSistemaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('admin_sistema', function(Blueprint $table)
+		Schema::create('sistema_user', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->timestamps();
             $table->boolean('activo')->default(true);
-            $table->integer('admin_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->integer('sistema_id')->unsigned();
-            $table->foreign('admin_id')
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('admins')
+                ->on('users')
                 ->onDelete('cascade');
             $table->foreign('sistema_id')
                 ->references('id')
@@ -37,7 +37,7 @@ class CreateAdminSistemaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('admin_sistema');
+		Schema::drop('sistema_user');
 	}
 
 }

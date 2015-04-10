@@ -12,7 +12,7 @@
                             <a class="btn btn-default" href="{{route('admin.sistemas.create')}}" role="button">
                                 Crear Sistema
                             </a>
-                        </p><p>Hay {{$sistemas->total()}} Planes</p>
+                        </p><p>Hay {{$sistemas->total()}} Sistemas</p>
                         @include('admin.sistemas.partials.tables');
                         {!!$sistemas->render()!!}
                     </div>

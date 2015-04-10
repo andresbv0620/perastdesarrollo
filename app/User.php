@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['role_id','name', 'email', 'password','pagina','imagenFondo','logo'];
+	protected $fillable = ['name', 'email', 'password','pagina','imagenFondo','logo'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -35,11 +35,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-    public function sistema(){
-        return $this->hasMany('App\Sistema');
+    public function sistemas(){
+        return $this->belongsToMany('App\Sistema');
     }
 
-    public function plan(){
+    public function plans(){
         return $this->belongsToMany('App\Plan');
     }
 

@@ -19,7 +19,7 @@
                     </div>
 
 
-                    <h2>Sistemas asociados a este usuario</h2>
+                    <h2>Ver detalles de sistemas</h2>
 
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         + Agregar Sistema

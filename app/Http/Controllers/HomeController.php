@@ -3,6 +3,8 @@
 
 
 use Illuminate\Support\Facades\Auth;
+use Zizaco\Entrust\Entrust;
+use Zizaco\Entrust\EntrustFacade;
 
 class HomeController extends Controller {
 
@@ -37,9 +39,13 @@ class HomeController extends Controller {
         $user=Auth::user()->id;
         $username=Auth::user()->name;
 
+        if(EntrustFacade::hasRole(['superadmin','admin','recolector','reportes'])){
+            return view('home');
 
-        return view('index.vars',compact('user','username'));
-        //return view('home');
+        }else{
+            return view('index.vars',compact('user','username'));
+        }
+        //
 	}
 
 }

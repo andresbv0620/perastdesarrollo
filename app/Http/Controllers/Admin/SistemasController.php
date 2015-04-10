@@ -7,6 +7,8 @@ use App\Sistema;
 use App\Tablet;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Route;
 
 class SistemasController extends Controller {
 
@@ -17,7 +19,7 @@ class SistemasController extends Controller {
 
     public function __construct(Request $request){
 
-
+        $this->middleware('auth');
         $this->request = $request;
     }
 
@@ -39,7 +41,10 @@ class SistemasController extends Controller {
 	 */
 	public function create()
 	{
-		return view('admin.sistemas.create');
+        $users=User::all();
+
+        $usercheckeds = array();
+		return view('admin.sistemas.create',compact('users','usercheckeds'));
 	}
 
 	/**
@@ -49,7 +54,15 @@ class SistemasController extends Controller {
 	 */
 	public function store()
 	{
-		$sistema = new Sistema($this->request->all());
+        $data=$this->request->all();
+		$sistema = new Sistema($data);
+        $sistema->save();
+
+        $sistema->users()->sync(Input::get('user_id'));
+
+        $sistemas=Sistema::paginate();
+        return view('admin.sistemas.index',compact('sistemas'));
+
 
 	}
 
@@ -84,21 +97,14 @@ class SistemasController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $tablet = new Tablet($this->request->all());
-        $tablet->save();
-
         $sistema=Sistema::findOrFail($id);
-        $tablet->sistemas()->attach($sistema);
+        $tablets=$sistema->tablets;
+        $users=User::all();
 
-        $user=$sistema->user;
-
-        $plans=$user->plan;
-        $sistemas=$user->sistema;
+        $usercheckeds = $sistema->users()->lists('user_id');
 
 
-        return view('admin.users.edit',compact('user','plans','sistemas'));
-
-
+        return view('admin.sistemas.edit',compact('sistema','tablets','users','usercheckeds'));
 	}
 
 	/**
@@ -109,8 +115,24 @@ class SistemasController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
-	}
+
+        $data =$this-> request->all ();
+        $sistema=Sistema::findOrFail($id);
+        $sistema->fill($data);
+        $sistema->save();
+
+        $tablet = new Tablet($data);
+        $tablet->save ();
+        $tablet->sistemas()->attach($sistema);
+
+        $sistema->users()->sync(Input::get('user_id'));
+
+
+        $sistemas=Sistema::paginate();
+        return view('admin.sistemas.index', compact('sistemas'));
+
+
+    }
 
 	/**
 	 * Remove the specified resource from storage.
