@@ -74,7 +74,7 @@
         @if($plans <> "")
             @foreach($plans as $plan)
                 <tr>
-                    <td>{!!Form::radio('plan_id[]', $plan->id, ['class'=>'radio'])!!}</td>
+                    <td>{!!Form::radio('plan_id', $plan->id, ['class'=>'radio'])!!}</td>
                     <td>{!!Form::label('plan',$plan->id)!!}</td>
                     <td>{!!Form::label('nombre',$plan->nombre)!!}</td>
                     <td>{!!Form::label('usuariosAdmins',$plan->usuariosAdmins)!!}</td>
@@ -102,17 +102,19 @@
             <th>Descripción</th>
         </tr>
 
-        @foreach($sistemas as $sistema)
-            @if($sistemascheckeds!='')
-                {!! $sistemaschecked = in_array($sistema->id, $sistemascheckeds) ? true : false; !!}
-            @endif
-            <tr>
-                <td>{!!Form::checkbox('sistema_id[]', $sistema->id, $sistemaschecked, ['class'=>'checkbox'])!!}</td>
-                <td>{!!Form::label('Sistema Id',$sistema->id)!!}</td>
-                <td>{!!Form::label('nombreDataBase',$sistema->nombreDataBase)!!}</td>
-                <td>{!!Form::label('Descripción',$sistema->description)!!}</td>
-            </tr>
-        @endforeach
+        @if($sistemas!='')
+            @foreach($sistemas as $sistema)
+                @if($sistemascheckeds!='')
+                    {!! $sistemaschecked = in_array($sistema->id, $sistemascheckeds) ? true : false; !!}
+                @endif
+                <tr>
+                    <td>{!!Form::checkbox('sistema_id[]', $sistema->id, $sistemaschecked, ['class'=>'checkbox'])!!}</td>
+                    <td>{!!Form::label('Sistema Id',$sistema->id)!!}</td>
+                    <td>{!!Form::label('nombreDataBase',$sistema->nombreDataBase)!!}</td>
+                    <td>{!!Form::label('Descripción',$sistema->description)!!}</td>
+                </tr>
+            @endforeach
+        @endif
 
     </table>
 </div>

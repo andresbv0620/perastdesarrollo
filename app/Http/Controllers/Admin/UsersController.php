@@ -28,7 +28,7 @@ class UsersController extends Controller {
     protected $request;
 
     public function __construct(Request $request){
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->request=$request;
 
     }
@@ -65,14 +65,20 @@ class UsersController extends Controller {
         $data=$this->request->all();
         $user = new User($data);
         $user->save();
-        $user->roles()->sync(Input::get('role_id'));
-        $user->sistemas()->sync(Input::get('sistema_id'));
 
+
+            $user->roles()->sync(Input::get('role_id'));
+
+        if(isset($sistema_id)) {
+            $user->sistemas()->sync(Input::get('sistema_id'));
+        }
 
         if($user->hasRole(['superadmin','admin'])) {
-            $planid = $data['plan_id'];
-            $plan = Plan::findOrFail($planid);
-            $user->plans()->attach($plan);
+            if(isset($plan_id)) {
+                $planid = $data['plan_id'];
+                $plan = Plan::findOrFail($planid);
+                $user->plans()->attach($plan);
+            }
         }
 
 
@@ -99,20 +105,23 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
+
         $user=User::findOrFail($id);
 
-        $sistemas=$user->sistemas;
+
+
+        $sistemas=Sistema::all();
         $plans=Plan::all();
+        $roles=Role::all();
 
         $rolescheckeds=$user->roles()->lists('role_id');
         $sistemascheckeds=$user->sistemas()->lists('sistema_id');
 
-        $roles=Role::all();
-        $sistemas=Sistema::all();
-        $users=array();
+        $usercheckeds=array();
 
 
-        return view('admin.users.edit',compact('user','plans','sistemas','roles','users','rolescheckeds','sistemascheckeds'));
+
+        return view('admin.users.edit',compact('user','plans','sistemas','roles','users','rolescheckeds','sistemascheckeds','usercheckeds'));
 	}
 
 	/**

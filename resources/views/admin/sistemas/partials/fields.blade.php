@@ -15,8 +15,9 @@
         <th>Email</th>
         <th>Página</th>
     </tr>
-    @if($users <> "")
+    @if(isset($users))
         @foreach($users as $user)
+
             @if($usercheckeds!='')
             {!! $userchecked = in_array($user->id, $usercheckeds) ? true : false;!!}
             @endif
@@ -29,6 +30,20 @@
             </tr>
         @endforeach
     @endif
+    @if(isset($user))
+            @if($usercheckeds!='')
+                {!! $userchecked = in_array($user->id, $usercheckeds) ? true : false;!!}
+            @endif
+
+            <tr>
+                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox','id'=>$user->id])!!}</td>
+                <td>{!!Form::label('Nombre',$user->name)!!}</td>
+                <td>{!!Form::label('Email',$user->email)!!}</td>
+                <td>{!!Form::label('Página',$user->pagina)!!}</td>
+            </tr>
+
+    @endif
+
 </table>
 
 @if(isset($sistema))

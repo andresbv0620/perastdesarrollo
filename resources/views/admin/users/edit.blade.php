@@ -26,7 +26,7 @@
                     </button>
                     <div class="collapse" id="collapseExample">
                         <div class="well">
-                            {!! Form::open(array('route'=>['admin.sistemas.show',$user->id],'method'=>'GET')) !!}
+                            {!! Form::open(array('route'=>['admin.sistemas.store'],'method'=>'POST')) !!}
                             @include('admin.sistemas.partials.fields')
                             <button type="submit" class="btn btn-default" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Crear Sistema</button>
                             {!! Form::close() !!}

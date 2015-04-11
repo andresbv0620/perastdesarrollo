@@ -19,7 +19,7 @@ class SistemasController extends Controller {
 
     public function __construct(Request $request){
 
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->request = $request;
     }
 
@@ -57,11 +57,11 @@ class SistemasController extends Controller {
         $data=$this->request->all();
 		$sistema = new Sistema($data);
         $sistema->save();
-
-        $sistema->users()->sync(Input::get('user_id'));
-
-        $sistemas=Sistema::paginate();
-        return view('admin.sistemas.index',compact('sistemas'));
+        if(isset($user_id)) {
+            $sistema->users()->sync(Input::get('user_id'));
+        }
+            $sistemas = Sistema::paginate();
+            return view('admin.sistemas.index', compact('sistemas'));
 
 
 	}
