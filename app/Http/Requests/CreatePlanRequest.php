@@ -23,14 +23,12 @@ class CreatePlanRequest extends Request {
 	{
 		return [
             'nombre'=>'required|unique:plans,nombre',
-            'usuariosAdmins'=>'required|numeric',
-            'usuariosReportes'=>'required|numeric',
+            'capacidad'=>'required|numeric',
             'cantidadTablets'=>'required|numeric',
             'sistemas'=>'required|numeric',
             'duracion'=>'required',
             'precio'=>'required|numeric',
-            'periodicidad'=>'required|in:anual,mensual',
-            'planCol'=>'required'
+            'periodicidad'=>'required|in:anual,mensual'
 		];
 	}
 

@@ -16,15 +16,14 @@ class CreatePlansTable extends Migration {
 		{
 			$table->increments('id');
             $table->string('nombre');
-            $table->integer('usuariosAdmins');
-            $table->integer('usuariosReportes');
+
+            $table->integer('capacidad');
             $table->integer('cantidadTablets');
             $table->integer('sistemas');
             $table->date('duracion');
             $table->decimal('precio');
             $table->enum('periodicidad',['mensual','anual']);
-            $table->string('planCol');
-			$table->timestamps();
+            $table->timestamps();
 		});
 	}
 

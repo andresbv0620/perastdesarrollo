@@ -12,6 +12,13 @@
                         @endif
 
                     <div class="panel-body">
+
+                        {!! Form::open(['route' => 'admin.users.index', 'method'=>'GET', 'class' => 'navbar-form navbar-left pull-right', 'role' => 'search'])!!}
+                            <div class="form-group">
+                                {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nombre de usuario']) !!}
+                            </div>
+                            <button type="submit" class="btn btn-default">Buscar</button>
+                        {!! Form::close() !!}
                         <p>
                             <a class="btn btn-default" href="{{route('admin.users.create')}}" role="button">
                                 Registrar Usuario
@@ -26,4 +33,36 @@
             </div>
         </div>
     </div>
+    {!! Form::open(['route'=>['admin.users.destroy',':USER_ID'], 'method'=>'DELETE', 'id'=>'form-delete']) !!}
+
+    {!! Form::close() !!}
+@endsection
+
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $(".btn-delete").click(function(e){
+                e.preventDefault();
+
+                var row=$(this).parents('tr');
+                var id=row.data('id');
+                var form=$('#form-delete');
+                var url=form.attr('action').replace(':USER_ID', id);
+                var data=form.serialize();
+
+                row.fadeOut();
+
+                $.post(url, data, function (result) {
+                    alert(result.message);
+                }).fail(function (){
+                    alert("El usuario no fue eliminado");
+                    row.show();
+                });
+            });
+        });
+
+    </script>
+
+
 @endsection

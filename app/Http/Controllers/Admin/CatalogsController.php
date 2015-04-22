@@ -4,8 +4,11 @@ use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Sistema;
 use App\Tab;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CatalogsController extends Controller {
     /**
@@ -26,6 +29,16 @@ class CatalogsController extends Controller {
 	 */
 	public function index()
 	{
+        $userid = Auth::user()->id;
+        $user=User::findOrFail($userid):
+        $sistemas=$user->sistemas;
+
+        foreach($sistemas as $sistema){
+            $dbname = ($sistema->nombreDataBase) . '_' .$userid;
+
+        }
+
+
         $catalogs=Catalog::paginate();
         return view('admin.catalogs.index', compact('catalogs'));
 	}
@@ -66,7 +79,7 @@ class CatalogsController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+
 	}
 
 	/**

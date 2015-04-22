@@ -16,6 +16,7 @@
             <td>
                 <a href="{{ route('admin.sistemas.edit',$sistema) }}">Editar</a>
                 <a href="">Eliminar</a>
+                <a href="{{ route('admin.sistemas.show', $sistema) }}">Ver</a>
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sistema{{$sistema->id}}" aria-expanded="false" aria-controls="collapseExample">
                     Ver Tablets
                 </button>

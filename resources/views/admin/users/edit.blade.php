@@ -19,22 +19,6 @@
                     </div>
 
 
-                    <h2>Ver detalles de sistemas</h2>
-
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        + Agregar Sistema
-                    </button>
-                    <div class="collapse" id="collapseExample">
-                        <div class="well">
-                            {!! Form::open(array('route'=>['admin.sistemas.store'],'method'=>'POST')) !!}
-                            @include('admin.sistemas.partials.fields')
-                            <button type="submit" class="btn btn-default" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Crear Sistema</button>
-                            {!! Form::close() !!}
-                        </div>
-                    </div>
-
-                    @include('admin.sistemas.partials.tables')
-
 
 
 

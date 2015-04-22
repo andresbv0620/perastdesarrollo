@@ -1,14 +1,20 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Sistema;
 use App\Tablet;
 use App\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class SistemasController extends Controller {
 
@@ -57,11 +63,76 @@ class SistemasController extends Controller {
         $data=$this->request->all();
 		$sistema = new Sistema($data);
         $sistema->save();
-        if(isset($user_id)) {
+
+        if(Input::get('user_id')=="") {
+            $user_id = array();
+            $sistema->users()->sync($user_id);
+
+        }else{
             $sistema->users()->sync(Input::get('user_id'));
+            $users_id = Input::get('user_id');
+            foreach($users_id as $userid) {
+                $connection=array();
+                $dbname = ($sistema->nombreDataBase) . '_' .$userid;
+                $result = DB::statement(DB::raw('CREATE DATABASE ' . $dbname));
+
+                $connection=array($dbname=>[
+                    'driver'    => 'mysql',
+                    'host'      => 'localhost',
+                    'database'  => $dbname, 'forge',
+                    'username'  => 'root', 'forge',
+                    'password'  => 'pera99pera', '',
+                    'charset'   => 'utf8',
+                    'collation' => 'utf8_unicode_ci',
+                    'prefix'    => '',
+                    'strict'    => false,
+                ]);
+
+                Config::set('database.connections',$connection);
+
+                Schema::connection($dbname)->create('catalogs', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('name');
+                    $table->string('description');
+                    $table->timestamps();
+                });
+
+                Schema::connection($dbname)->create('tabs', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('name');
+                    $table->string('description');
+                    $table->integer('catalog_id')->unsigned();
+                    $table->timestamps();
+
+                    $table->foreign('catalog_id')
+                        ->references('id')
+                        ->on('catalogs')
+                        ->onDelete('cascade');
+                });
+
+                Schema::connection($dbname)->create('entradas', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('name');
+                    $table->string('description');
+                    $table->string('value');
+                    $table->boolean('esPrincipal')->default(true);
+                    $table->integer('tab_id')->unsigned();
+                    $table->timestamps();
+
+                    $table->foreign('tab_id')
+                        ->references('id')
+                        ->on('tabs')
+                        ->onDelete('cascade');
+                });
+
+            }
         }
             $sistemas = Sistema::paginate();
-            return view('admin.sistemas.index', compact('sistemas'));
+
+        return view('admin.sistemas.index', compact('sistemas'));
 
 
 	}
@@ -74,19 +145,21 @@ class SistemasController extends Controller {
 	 */
 	public function show($id)
 	{
-		$user=User::findOrFail($id);
-        $userid=$user->id;
+        $sistema=Sistema::findOrFail($id);
+        $userid = Auth::user()->id;
+        $dbname = ($sistema->nombreDataBase) . '_' .$userid;
 
-        $sistema = new Sistema($this->request->all());
-        $sistema->user_id=$userid;
-        $sistema->save();
+        $otf = new OnTheFly(['database'=>$dbname]);
+
+        // Get the users table
+        $catalogs = $otf->getTable('catalogs');
 
 
-        $sistemas=$user->sistema;
-
-        $plans=$user->plan;
-
-         return view('admin.users.edit', compact('user','sistemas','plans'));
+        foreach ($catalogs as $catalog)
+        {
+            dd($catalog->name);
+        }
+       return view('admin.catalogs.index', compact('catalogs'));
 	}
 
 	/**

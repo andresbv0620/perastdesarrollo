@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\DB;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 
@@ -46,8 +47,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function setPasswordAttribute($value){
 
         if(!empty($value)){
-        $this->attributes['password']=\Hash::make($value);
+        $this->attributes['password']=\Hash::make($value); //bcrypt($value);
         }
     }
+
+    public function scopeName($query, $name){
+
+        if(trim($name) != '') {
+            $query->where(DB::raw("CONCAT(name,' ',email)"), "LIKE", "%$name%");
+        }
+
+    }
+
+
 
 }

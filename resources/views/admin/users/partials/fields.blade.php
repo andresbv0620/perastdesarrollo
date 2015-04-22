@@ -14,10 +14,13 @@
                     {!! $rolechecked = in_array($role->id, $rolescheckeds) ? true : false;!!}
                 @endif
                 <tr>
-                    <td>{!!Form::checkbox('role_id[]', $role->id, $rolechecked,['class'=>'checkbox','id'=>$role->name])!!}</td>
-                    <td>{!!Form::label('ID',$role->id)!!}</td>
-                    <td>{!!Form::label('Nombre',$role->display_name)!!}</td>
-                    <td>{!!Form::label('Descripcion',$role->description)!!}</td>
+                    @if( (($role->name=="superadmin") xor ($role->name=="admin")) and (Entrust::hasRole(['admin'])) )
+                        @else
+                            <td>{!!Form::checkbox('role_id[]', $role->id, $rolechecked,['class'=>'checkbox','id'=>$role->name])!!}</td>
+                            <td>{!!Form::label('ID',$role->id)!!}</td>
+                            <td>{!!Form::label('Nombre',$role->display_name)!!}</td>
+                            <td>{!!Form::label('Descripcion',$role->description)!!}</td>
+                    @endif
                 </tr>
             @endforeach
         @endif
@@ -71,7 +74,7 @@
             <th>Periodicidad</th>
             <th>planCol</th>
         </tr>
-        @if($plans <> "")
+        @if(isset($plans))
             @foreach($plans as $plan)
                 <tr>
                     <td>{!!Form::radio('plan_id', $plan->id, ['class'=>'radio'])!!}</td>
@@ -102,16 +105,16 @@
             <th>Descripción</th>
         </tr>
 
-        @if($sistemas!='')
-            @foreach($sistemas as $sistema)
+        @if(isset($systems))
+            @foreach($systems as $system)
                 @if($sistemascheckeds!='')
-                    {!! $sistemaschecked = in_array($sistema->id, $sistemascheckeds) ? true : false; !!}
+                    {!! $sistemaschecked = in_array($system->id, $sistemascheckeds) ? true : false; !!}
                 @endif
                 <tr>
-                    <td>{!!Form::checkbox('sistema_id[]', $sistema->id, $sistemaschecked, ['class'=>'checkbox'])!!}</td>
-                    <td>{!!Form::label('Sistema Id',$sistema->id)!!}</td>
-                    <td>{!!Form::label('nombreDataBase',$sistema->nombreDataBase)!!}</td>
-                    <td>{!!Form::label('Descripción',$sistema->description)!!}</td>
+                    <td>{!!Form::checkbox('systems_id[]', $system->id, $sistemaschecked,['class'=>'checkbox','id'=>'sistema'.$system->id])!!}</td>
+                    <td>{!!Form::label('Sistema Id',$system->id)!!}</td>
+                    <td>{!!Form::label('nombreDataBase',$system->nombreDataBase)!!}</td>
+                    <td>{!!Form::label('Descripción',$system->description)!!}</td>
                 </tr>
             @endforeach
         @endif

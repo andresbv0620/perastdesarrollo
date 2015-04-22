@@ -17,14 +17,12 @@ class Plan extends Model {
      */
     protected $fillable = [
         'nombre',
-        'usuariosAdmins',
-        'usuariosReportes',
+        'capacidad',
         'cantidadTablets',
         'sistemas',
         'duracion',
         'precio',
-        'periodicidad',
-        'planCol'
+        'periodicidad'
     ];
 
     public function users(){

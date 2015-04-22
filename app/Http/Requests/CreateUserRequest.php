@@ -26,8 +26,8 @@ class CreateUserRequest extends Request {
             'email'=>'required|unique:users,email',
             'password'=>'required',
             'pagina'=>'required',
-            'imagenFondo'=>'required',
-            'logo'=>'required'
+            //'imagenFondo'=>'required',
+            //'logo'=>'required'
 		];
 	}
 

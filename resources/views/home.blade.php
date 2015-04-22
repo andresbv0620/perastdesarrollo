@@ -17,6 +17,8 @@
 
                         </p>
 
+                        @include('admin.sistemas.partials.tables')
+
                     </div>
 
 				</div>

@@ -37,8 +37,8 @@ class EditUserRequest extends Request {
             'email'=>'required|unique:users,email,'.$this->route->getParameter('users'),
             'password'=>'',
             'pagina'=>'required',
-            'imagenFondo'=>'required',
-            'logo'=>'required'
+            //'imagenFondo'=>'required',
+            //'logo'=>'required'
         ];
 	}
 
