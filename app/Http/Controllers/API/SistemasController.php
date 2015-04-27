@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\API;
 
 use App\Catalog;
 use App\Http\Requests;
@@ -150,12 +150,15 @@ class SistemasController extends Controller {
         $dbname = ($sistema->nombreDataBase) . '_' .$userid;
 
         $otf = new OnTheFly(['database'=>$dbname]);
-        $catalogs = Catalog::on($dbname)->paginate();
 
-        // Get the users table Query Builder
-        //$catalogs = $otf->getTable('catalogs');
+        // Get the users table
+        $catalogs = $otf->getTable('catalogs');
 
 
+        foreach ($catalogs as $catalog)
+        {
+            dd($catalog->name);
+        }
        return view('admin.catalogs.index', compact('catalogs'));
 	}
 

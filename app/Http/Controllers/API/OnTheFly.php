@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\API;
 
 
 use Illuminate\Support\Facades\Config;
@@ -50,6 +50,8 @@ class OnTheFly {
 
         // Create the connection
         $this->connection = DB::connection($database);
+
+
     }
 
     /**

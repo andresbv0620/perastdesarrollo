@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\API;
 
 use App\Catalog;
 use App\Http\Requests;
@@ -8,7 +8,6 @@ use App\Sistema;
 use App\Tab;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class CatalogsController extends Controller {
@@ -34,11 +33,16 @@ class CatalogsController extends Controller {
         $user=User::findOrFail($userid);
         $sistemas=$user->sistemas;
 
+
+
         foreach($sistemas as $sistema){
             $dbname = ($sistema->nombreDataBase) . '_' .$userid;
             $otf = new OnTheFly(['database'=>$dbname]);
-            $catalogs = Catalog::on($dbname)->findOrFail(1)->paginate();
+            // Get the users table
+            $catalogs = $otf->getTable('catalogs')->get();
+
         }
+
 
 
 
@@ -64,21 +68,11 @@ class CatalogsController extends Controller {
 	 */
 	public function store()
 	{
-        $userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
-
-        foreach($sistemas as $sistema) {
-            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
-            $otf = new OnTheFly(['database'=>$dbname]);
-            $otf2 = new Catalog(['database'=>$dbname]);
-        }
-
 		$data=$this->request->all();
-        $catalog = new Catalog($data);
-        $catalog->setConnection($dbname);
+        $catalog=new Catalog($data);
         $catalog->save();
-
+        $idinserted=$catalog->id;
+        $catalog=Catalog::find($idinserted);
         $tabs=$catalog->tab;
         return view('admin.catalogs.edit',compact('catalog','tabs'));
 	}

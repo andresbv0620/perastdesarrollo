@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\API;
 
 use App\Catalog;
 use App\Http\Requests;
@@ -97,23 +97,8 @@ class TabsController extends Controller {
 
     public function tabcatalog($id)
     {
-        $userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
-
-        foreach($sistemas as $sistema) {
-            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
-            $otf = new OnTheFly(['database'=>$dbname]);
-            $otf2 = new Catalog(['database'=>$dbname]);
-        }
-
-
         $tab = new Tab($this->request->all());
-        $catalog=Catalog::on()->findOrFail($id);
-
-
-
-        //$tab->catalog_id=$id;
+        $tab->catalog_id=$id;
         $tab->save();
         return redirect()->back();
     }

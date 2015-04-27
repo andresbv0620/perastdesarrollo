@@ -16,7 +16,7 @@
                             <a class="btn btn-default" href="{{route('admin.catalogs.create')}}" role="button">
                                 Crear Catálogo
                             </a>
-                        </p><p>Hay {{$catalogs->total()}} Planes</p>
+                        </p><p>Hay {{ count($catalogs) }} Planes</p>
 
                         @include('admin.catalogs.partials.tables')
 
