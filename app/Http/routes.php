@@ -109,6 +109,8 @@ Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
 Route::group(array('prefix' => 'api/v1','namespace'=>'\API'), function()
 {
     Route::resource('users','UsersController');
+    Route::resource('catalogs','CatalogsController');
+
 });
 
 Route::post('tenant', [

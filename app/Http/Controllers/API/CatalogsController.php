@@ -9,6 +9,7 @@ use App\Tab;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class CatalogsController extends Controller {
     /**
@@ -85,6 +86,32 @@ class CatalogsController extends Controller {
 	 */
 	public function show($id)
 	{
+        try{
+
+            $response = [
+                'catalog' => []
+            ];
+            $statusCode = 200;
+
+            $catalog=Catalog::findOrFail($id);
+            $tabs=$catalog->tabs;
+
+            foreach($tabs as $tab){
+                $entradas=$tab->entradas;
+            }
+
+            $response =
+                [
+                    $catalog->toArray($tabs),
+                ];
+
+        }
+        catch (Exception $e){
+            $statusCode = 404;
+        }
+        finally {
+            return Response::json($response, $statusCode);
+        }
 
 	}
 
