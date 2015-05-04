@@ -97,11 +97,14 @@ class CatalogsController extends Controller {
 
             foreach($tabs as $tab){
                 $entradas=$tab->entradas;
+                foreach($entradas as $entrada){
+                    $opciones=$entrada->opciones;
+                }
 
             }
 
             $catalog=$catalog->toArray();
-            $tabs=$tabs->toArray();
+                
 
 
 
