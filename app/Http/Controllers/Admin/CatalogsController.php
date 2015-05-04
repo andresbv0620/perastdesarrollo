@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CatalogsController extends Controller {
     /**
@@ -30,7 +31,7 @@ class CatalogsController extends Controller {
 	 */
 	public function index()
 	{
-        $userid = Auth::user()->id;
+       /* $userid = Auth::user()->id;
         $user=User::findOrFail($userid);
         $sistemas=$user->sistemas;
 
@@ -38,7 +39,9 @@ class CatalogsController extends Controller {
             $dbname = ($sistema->nombreDataBase) . '_' .$userid;
             $otf = new OnTheFly(['database'=>$dbname]);
             $catalogs = Catalog::on($dbname)->findOrFail(1)->paginate();
-        }
+        }*/
+
+        $catalogs=Catalog::paginate();
 
 
 
@@ -64,7 +67,7 @@ class CatalogsController extends Controller {
 	 */
 	public function store()
 	{
-        $userid = Auth::user()->id;
+        /*$userid = Auth::user()->id;
         $user=User::findOrFail($userid);
         $sistemas=$user->sistemas;
 
@@ -79,7 +82,16 @@ class CatalogsController extends Controller {
         $catalog->setConnection($dbname);
         $catalog->save();
 
-        $tabs=$catalog->tab;
+        $tabs=$catalog->tabs;*/
+
+        $data=$this->request->all();
+
+        $catalog=new Catalog($data);
+
+        $catalog->save();
+
+        $tabs=$catalog->tabs;
+
         return view('admin.catalogs.edit',compact('catalog','tabs'));
 	}
 
@@ -91,6 +103,13 @@ class CatalogsController extends Controller {
 	 */
 	public function show($id)
 	{
+        $catalog=Catalog::findOrFail($id);
+        $tabs=$catalog->tabs;
+        foreach($tabs as $tab){
+            $entradas[$tab->id]=$tab->entradas;
+        }
+
+        return view('admin.catalogs.show',compact('catalog','tabs','entradas'));
 
 	}
 
@@ -102,8 +121,25 @@ class CatalogsController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $catalog=Catalog::find($id);
-        $tabs=$catalog->tab;
+        /*$userid = Auth::user()->id;
+        $user=User::findOrFail($userid);
+        $sistemas=$user->sistemas;
+
+        foreach($sistemas as $sistema) {
+            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
+            $otf = new OnTheFly(['database'=>$dbname]);
+            $otf2 = new Catalog(['database'=>$dbname]);
+        }
+
+        //Otra forma de hacer la conexion en eloquent sin necesidad de usar on() que solo sirve para consultar, este me permitió consultar y guardar.
+
+        $catalog=new Catalog();
+        $catalog=$catalog->setConnection($dbname)->findOrFail($id);
+
+        $tabs = DB::connection($dbname)->select('select * from tabs where catalog_id = ?', $id);*/
+
+        $catalog=Catalog::findOrFail($id);
+        $tabs=$catalog->tabs;
 
 		return view('admin.catalogs.edit', compact('catalog','tabs'));
 	}

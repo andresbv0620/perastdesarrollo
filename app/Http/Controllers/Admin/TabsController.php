@@ -5,7 +5,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Tab;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TabsController extends Controller {
 
@@ -97,7 +99,7 @@ class TabsController extends Controller {
 
     public function tabcatalog($id)
     {
-        $userid = Auth::user()->id;
+/*        $userid = Auth::user()->id;
         $user=User::findOrFail($userid);
         $sistemas=$user->sistemas;
 
@@ -109,12 +111,23 @@ class TabsController extends Controller {
 
 
         $tab = new Tab($this->request->all());
-        $catalog=Catalog::on()->findOrFail($id);
+        //La ventaja de on() es que me permite consultar en una sola linea una nueva conexion, puedo hacerlo con setConnection pero debo crear primero un Object = new Object
+        $catalog= Catalog::on($dbname)->findOrFail($id);
+
+        $tab->setConnection($dbname);
+
+        $tab=$catalog->tabs()->save($tab);*/
+        $data=$this->request->all();
+
+        $tab= new Tab($data);
+
+        $catalog=Catalog::findOrFail($id);
+        $catalog->tabs()->save($tab);
 
 
 
         //$tab->catalog_id=$id;
-        $tab->save();
+        //$tab->save();
         return redirect()->back();
     }
 

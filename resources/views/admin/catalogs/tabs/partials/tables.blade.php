@@ -24,44 +24,23 @@
             <td colspan="4">
                 <div class="collapse" id="tab{{$tab->id}}">
                     <div class="well">
-                        {!! Form::open(array('route' => ['admin.entradas.show',$tab->id],'method'=>'GET')) !!}
-                            <div class="form-group">
-                                {!!Form::label('name', 'Nombre')!!}
-                                {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Nombre del catálogo'])!!}
-                            </div>
-                            <div class="form-group">
-                                {!!Form::label('description', 'Descripción')!!}
-                                {!!Form::text('description',null,['class'=>'form-control','placeholder'=>'Descripcion'])!!}
-                            </div>
-                            <div class="form-group">
-                                {!!Form::label('value', 'Opciones de Valores Separados por coma')!!}
-                                {!!Form::text('value',null,['class'=>'form-control','placeholder'=>'valor 1, valor 2, valor 3'])!!}
-                            </div>
-                            <div class="form-group">
-                                {!!Form::label('esPrincipal', 'Es Principal')!!}
-                                {!!Form::text('esPrincipal',null,['class'=>'form-control','placeholder'=>'Si o No'])!!}
-                            </div>
-
-                            <button type="submit" class="btn btn-default">Crear Entrada</button>
-                        {!! Form::close() !!}
-
-
                         <table class="table table-striped">
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
-                                <th>Posibles Valores</th>
-                                <th>Es Principal</th>
+                                <th>Tipo</th>
+                                <th>Obligatorio</th>
+                                <th>Acciones</th>
 
                             </tr>
-                            @foreach($entradas=$tab->entrada  as $entrada)
+                            @foreach($entradas=$tab->entradas  as $entrada)
                                 <tr>
                                     <td>{{$entrada->id}}</td>
-                                    <td>{{$entrada->name}}</td>
-                                    <td>{{$entrada->description}}</td>
-                                    <td>{{$entrada->value}}</td>
-                                    <td>{{$entrada->esPrincipal}}</td>
+                                    <td>{{$entrada->field_name}}</td>
+                                    <td>{{$entrada->field_description}}</td>
+                                    <td>{{$entrada->field_type}}</td>
+                                    <td>{{$entrada->field_required}}</td>
 
                                     <td>
                                         <a href="{{ route('admin.entradas.edit', $entrada) }}">Editar</a>
@@ -73,11 +52,39 @@
                                 </tr>
                             @endforeach
                         </table>
+                        {!! Form::open(array('route' => ['admin.entradas.store'],'method'=>'POST')) !!}
+                        {!!Form::hidden('tab_id',$tab->id)!!}
+                            <div class="form-group">
+                                {!!Form::label('field_name', 'Nombre')!!}
+                                {!!Form::text('field_name',null,['class'=>'form-control','placeholder'=>'Nombre del catálogo'])!!}
+                            </div>
+                            <div class="form-group">
+                                {!!Form::label('field_description', 'Descripción')!!}
+                                {!!Form::text('field_description',null,['class'=>'form-control','placeholder'=>'Descripcion'])!!}
+                            </div>
+                            <div class="form-group">
+                                {!!Form::label('Tipo de Campo')!!}
+                                {!!Form::select('field_type', array('texto' => 'Texto', 'parrafo' => 'Parrafo', 'opcion_unica' => 'Opción Única', 'opcion_multiple' => 'Opción Multiple'), 'Texto', array('class' => 'tipo-entrada'))!!}
+                            </div>
+
+
+                            <div class="form-group opciones-group" id="opciones-tab{{$tab->id}}">
+                                {!! Form::radio('', null,false,['class'=>'disabled']) !!}
+                                {!!Form::text('opcion_name[]',null,['placeholder'=>'Opción'])!!}
+                                <a class="agregar">Agregar Otra</a>
+                            </div>
 
 
 
+                            <div class="form-group">
+                                {!!Form::label('field_required', 'Obligatorio')!!}
+                                {!!Form::checkbox('field_required',1,true)!!}
+                            </div>
 
+                            <button type="submit" class="btn btn-default">Crear Entrada</button>
+                        {!! Form::close() !!}
                     </div>
+
                 </div>
 
             </td>

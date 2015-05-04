@@ -15,10 +15,10 @@ class CreateEntradasTable extends Migration {
 		Schema::create('entradas', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->string('name');
-            $table->string('description');
-            $table->string('value');
-            $table->boolean('esPrincipal')->default(true);
+            $table->string('field_name');
+            $table->string('field_description');
+            $table->string('field_type');
+            $table->boolean('field_required')->default(true);
             $table->integer('tab_id')->unsigned();
 			$table->timestamps();
 

@@ -17,7 +17,13 @@
 
                         </p>
 
+                        {!! Form::open(['route' => 'tenants_path','method'=>'POST']) !!}
+
                         @include('admin.sistemas.partials.tables')
+
+                        {!! Form::close() !!}
+
+
 
                     </div>
 

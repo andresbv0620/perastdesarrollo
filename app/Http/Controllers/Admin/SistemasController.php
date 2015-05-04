@@ -115,10 +115,10 @@ class SistemasController extends Controller {
                 Schema::connection($dbname)->create('entradas', function(Blueprint $table)
                 {
                     $table->increments('id');
-                    $table->string('name');
-                    $table->string('description');
-                    $table->string('value');
-                    $table->boolean('esPrincipal')->default(true);
+                    $table->string('field_name');
+                    $table->string('field_description');
+                    $table->string('field_type');
+                    $table->boolean('field_required')->default(true);
                     $table->integer('tab_id')->unsigned();
                     $table->timestamps();
 
@@ -128,11 +128,33 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
+                Schema::connection($dbname)->create('opciones', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('option_name');
+                    $table->integer('option_order');
+                    $table->string('field_type');
+                    $table->integer('entrada_id')->unsigned();
+                    $table->timestamps();
+
+                    $table->foreign('entrada_id')
+                        ->references('id')
+                        ->on('entradas')
+                        ->onDelete('cascade');
+                });
+
+                Schema::connection($dbname)->create('inputs', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->timestamps();
+                });
+
             }
         }
             $sistemas = Sistema::paginate();
+        $user=Auth::user()->id;
 
-        return view('admin.sistemas.index', compact('sistemas'));
+        return view('admin.sistemas.index', compact('sistemas','user'));
 
 
 	}

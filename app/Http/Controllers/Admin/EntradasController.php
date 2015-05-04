@@ -4,7 +4,13 @@ use App\Entrada;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Opcione;
+use App\Tab;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Schema;
 
 class EntradasController extends Controller {
 
@@ -45,7 +51,43 @@ class EntradasController extends Controller {
 	 */
 	public function store()
 	{
-		//
+        $userid = Auth::user()->id;
+        $user=User::findOrFail($userid);
+        $sistemas=$user->sistemas;
+
+        foreach($sistemas as $sistema) {
+            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
+        }
+
+        $data=$this->request->all();
+        //dd($data);
+        $entrada= new Entrada($data);
+        $tab=Tab::findOrFail($data['tab_id']);
+        $entrada=$tab->entradas()->save($entrada);
+
+        $input_name=$entrada->field_name;
+        $input=$tab->id.'_'.$input_name;
+
+
+        Schema::connection($dbname)->table('inputs', function($table) use ($input)
+        {
+            $table->string($input);
+        });
+
+        if(Input::get('opcion_name') == "") {
+            $opcion_name = array();
+            $entrada->opciones()->sync($opcion_name);
+
+        }else {
+
+            foreach(Input::get('opcion_name') as $opcion) {
+
+                $opcion=new Opcione(['option_name'=>$opcion]);
+                $entrada->opciones()->save($opcion);
+            }
+        }
+
+        return redirect()->back();
 	}
 
 	/**
@@ -56,12 +98,7 @@ class EntradasController extends Controller {
 	 */
 	public function show($id)
 	{
-        $data=$this->request->all();
 
-        $entrada= new Entrada($data);
-        $entrada->tab_id=$id;
-        $entrada->save();
-        return redirect()->back();
 
 	}
 

@@ -33,11 +33,15 @@ class UsersController extends Controller {
 
     }
 
-	public function index()
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function index()
 	{
         $data=$this->request;
 
-		$users=User::name($data->get('name'))->orderBy('id','DESC')->paginate();
+        /** @var TYPE_NAME $users */
+        $users=User::name($data->get('name'))->orderBy('id','DESC')->paginate();
         return view('admin.users.index', compact('users'));
 	}
 

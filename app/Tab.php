@@ -1,8 +1,12 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 class Tab extends Model {
+
+    protected $connection = 'sistema_2';
+
 
 
     /**
@@ -19,7 +23,7 @@ class Tab extends Model {
         return $this->belongsTo('App\Catalog');
     }
 
-    public function entrada(){
+    public function entradas(){
         return $this->hasMany('App\Entrada');
     }
 

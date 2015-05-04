@@ -3,9 +3,20 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Input;
 use Illuminate\Http\Request;
 
-class SistemaCatalogController extends Controller {
+class InputsController extends Controller {
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(Request $request){
+
+        $this->request = $request;
+    }
 
 	/**
 	 * Display a listing of the resource.
@@ -24,7 +35,7 @@ class SistemaCatalogController extends Controller {
 	 */
 	public function create()
 	{
-
+		//
 	}
 
 	/**
@@ -34,7 +45,12 @@ class SistemaCatalogController extends Controller {
 	 */
 	public function store()
 	{
-		//
+
+        $data=$this->request->all();
+
+        $input = new Input($data);
+        dd($input);
+        $input->save();
 	}
 
 	/**
@@ -45,7 +61,7 @@ class SistemaCatalogController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+
 	}
 
 	/**
