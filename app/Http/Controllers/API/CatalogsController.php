@@ -87,7 +87,6 @@ class CatalogsController extends Controller {
 	public function show($id)
 	{
         try{
-
             $response = [
                 'catalog' => []
             ];
@@ -98,12 +97,19 @@ class CatalogsController extends Controller {
 
             foreach($tabs as $tab){
                 $entradas=$tab->entradas;
+
             }
 
-            $response =
-                [
-                    $catalog->toArray($tabs),
-                ];
+            $catalog=$catalog->toArray();
+            $tabs=$tabs->toArray();
+
+
+
+
+            $response = [
+                'catalog'=>$catalog,
+                'tabs'=>[$tabs]
+            ];
 
         }
         catch (Exception $e){
