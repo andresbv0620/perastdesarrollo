@@ -107,8 +107,7 @@ class CatalogsController extends Controller {
 
 
             $response = [
-                'catalog'=>$catalog,
-                'tabs'=>[$tabs]
+                'catalog'=>$catalog
             ];
 
         }
