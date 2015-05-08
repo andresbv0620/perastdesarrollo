@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Catalog;
+use App\Entrada;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Opcione;
 use App\Sistema;
 use App\Tab;
 use App\User;
@@ -41,7 +43,10 @@ class CatalogsController extends Controller {
             $catalogs = Catalog::on($dbname)->findOrFail(1)->paginate();
         }*/
 
-        $catalogs=Catalog::paginate();
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+
+        $catalogs=Catalog::on($newconnection)->paginate();
 
 
 
@@ -55,8 +60,10 @@ class CatalogsController extends Controller {
 	 */
 	public function create()
 	{
-        $tabs=Tab::all();
-        $catalogs=Catalog::all();
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        $tabs=Tab::on($newconnection);
+        $catalogs=Catalog::on($newconnection);
         return view('admin.catalogs.create',compact('tabs','catalogs'));
 	}
 
@@ -84,11 +91,15 @@ class CatalogsController extends Controller {
 
         $tabs=$catalog->tabs;*/
 
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+
         $data=$this->request->all();
 
         $catalog=new Catalog($data);
 
-        $catalog->save();
+        $catalog->setConnection($newconnection)->save();
+
 
         $tabs=$catalog->tabs;
 
@@ -103,13 +114,24 @@ class CatalogsController extends Controller {
 	 */
 	public function show($id)
 	{
-        $catalog=Catalog::findOrFail($id);
-        $tabs=$catalog->tabs;
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+
+        $catalog=Catalog::on($newconnection)->findOrFail($id);
+
+        $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
+
         foreach($tabs as $tab){
-            $entradas[$tab->id]=$tab->entradas;
+            $entradas[$tab->id]=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
+            foreach($entradas[$tab->id] as $entrada){
+                $opciones[$entrada->id]=Opcione::on($newconnection)->where('entrada_id','=',$entrada->id)->get();
+
+            }
         }
 
-        return view('admin.catalogs.show',compact('catalog','tabs','entradas'));
+
+
+        return view('admin.catalogs.show',compact('catalog','tabs','entradas','opciones'));
 
 	}
 
@@ -138,10 +160,18 @@ class CatalogsController extends Controller {
 
         $tabs = DB::connection($dbname)->select('select * from tabs where catalog_id = ?', $id);*/
 
-        $catalog=Catalog::findOrFail($id);
-        $tabs=$catalog->tabs;
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
 
-		return view('admin.catalogs.edit', compact('catalog','tabs'));
+        $catalog=Catalog::on($newconnection)->findOrFail($id);
+
+        $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
+
+        foreach($tabs as $tab){
+            $entradas=[$tab->id=>Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get()];
+        }
+
+		return view('admin.catalogs.edit', compact('catalog','tabs','entradas'));
 	}
 
 	/**

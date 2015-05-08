@@ -46,18 +46,6 @@ return [
 
 	'connections' => [
 
-        'sistema_2' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST2', 'localhost'),
-            'database'  => env('DB_DATABASE2', 'forge'),
-            'username'  => env('DB_USERNAME2', 'forge'),
-            'password'  => env('DB_PASSWORD2', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
-
         'sqlite' => [
 			'driver'   => 'sqlite',
 			'database' => storage_path().'/database.sqlite',

@@ -51,25 +51,24 @@ class EntradasController extends Controller {
 	 */
 	public function store()
 	{
-        $userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
-
-        foreach($sistemas as $sistema) {
-            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
-        }
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
 
         $data=$this->request->all();
         //dd($data);
         $entrada= new Entrada($data);
-        $tab=Tab::findOrFail($data['tab_id']);
+        $entrada->setConnection($newconnection);
+
+        $tab=Tab::on($newconnection)->findOrFail($data['tab_id']);
+        $tab->setConnection($newconnection);
+
         $entrada=$tab->entradas()->save($entrada);
 
         $input_name=$entrada->field_name;
         $input=$tab->id.'_'.$input_name;
 
 
-        Schema::connection($dbname)->table('inputs', function($table) use ($input)
+        Schema::connection($newconnection)->table('inputs', function($table) use ($input)
         {
             $table->string($input);
         });
@@ -83,6 +82,8 @@ class EntradasController extends Controller {
             foreach(Input::get('opcion_name') as $opcion) {
 
                 $opcion=new Opcione(['option_name'=>$opcion]);
+
+                $opcion->setConnection($newconnection);
                 $entrada->opciones()->save($opcion);
             }
         }

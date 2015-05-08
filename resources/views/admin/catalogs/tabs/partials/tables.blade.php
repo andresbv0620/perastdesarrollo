@@ -34,7 +34,7 @@
                                 <th>Acciones</th>
 
                             </tr>
-                            @foreach($entradas=$tab->entradas  as $entrada)
+                            @foreach($entradas[$tab->id]  as $entrada)
                                 <tr>
                                     <td>{{$entrada->id}}</td>
                                     <td>{{$entrada->field_name}}</td>

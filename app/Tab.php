@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Session;
 
 class Tab extends Model {
 
-    protected $connection = 'sistema_2';
+    //protected $connection = 'sistema_2';
 
 
 

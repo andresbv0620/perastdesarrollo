@@ -34,7 +34,7 @@
                                 <th>Acciones</th>
 
                             </tr>
-                            @foreach($entradas=$tab->entradas  as $entrada)
+                            @foreach($entradas[$tab->id]  as $entrada)
                                 <tr>
                                     <td>{{$entrada->id}}</td>
                                     <td>{{$entrada->field_name}}</td>
@@ -44,7 +44,7 @@
                                         @if($entrada->field_type=='texto')
                                             {!!Form::text($tab->id.'_'.$entrada->field_name,null,['class'=>'form-control','placeholder'=>$entrada->field_description])!!}
                                         @elseif($entrada->field_type=='opcion_unica')
-                                            @foreach($entrada->opciones as $opcion)
+                                            @foreach($opciones[$entrada->id] as $opcion)
                                                 {!! Form::radio($tab->id.'_'.$entrada->field_name, $opcion->option_name,false) !!}
                                                 {!! Form::label('field_name', $opcion->option_name)!!}
                                             @endforeach

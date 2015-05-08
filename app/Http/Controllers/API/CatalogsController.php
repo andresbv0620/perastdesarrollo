@@ -104,7 +104,7 @@ class CatalogsController extends Controller {
             }
 
             $catalog=$catalog->toArray();
-                
+
 
 
 

@@ -117,12 +117,17 @@ class TabsController extends Controller {
         $tab->setConnection($dbname);
 
         $tab=$catalog->tabs()->save($tab);*/
+
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+
         $data=$this->request->all();
 
         $tab= new Tab($data);
+        $tab->setConnection($newconnection);
 
-        $catalog=Catalog::findOrFail($id);
-        $catalog->tabs()->save($tab);
+        $catalog=Catalog::on($newconnection)->findOrFail($id);
+        $catalog->setConnection($newconnection)->tabs()->save($tab);
 
 
 

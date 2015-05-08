@@ -10,7 +10,7 @@ class Entrada extends Model {
         $this->connection=$database;
     }*/
 
-    protected $connection = 'sistema_2';
+    //protected $connection = 'sistema_2';
 
     /**
      * The attributes that are mass assignable.

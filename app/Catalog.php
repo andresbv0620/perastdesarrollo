@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 class Catalog extends Model {
 
 
-    protected $connection = 'sistema_2';
+    //protected $connection = 'sistema_2';
 
     //use TenantableTrait;
 

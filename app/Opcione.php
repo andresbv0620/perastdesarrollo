@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Opcione extends Model {
 
-    protected $connection = 'sistema_2';
+    //protected $connection = 'sistema_2';
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +18,10 @@ class Opcione extends Model {
 
     public function entrada(){
         return $this->belongsTo('App\Entrada');
+    }
+
+    public function getFillable(array &$filArr){
+        $this->fillable=$filArr;
     }
 
 }
