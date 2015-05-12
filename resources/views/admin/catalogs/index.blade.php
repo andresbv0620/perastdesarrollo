@@ -13,10 +13,12 @@
 
                     <div class="panel-body">
                         <p>
+                            @if(count($catalogs)==0)
                             <a class="btn btn-default" href="{{route('admin.catalogs.create')}}" role="button">
                                 Crear Catálogo
                             </a>
-                        </p><p>Hay {{ count($catalogs) }} Planes</p>
+                                @endif
+                        </p><p>Hay {{ count($catalogs) }} Catalogos</p>
 
                         @include('admin.catalogs.partials.tables')
 

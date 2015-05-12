@@ -64,8 +64,11 @@ class EntradasController extends Controller {
 
         $entrada=$tab->entradas()->save($entrada);
 
-        $input_name=$entrada->field_name;
-        $input=$tab->id.'_'.$input_name;
+        $input_id=$entrada->id;
+        $input=$tab->id.'_'.$input_id;
+
+
+
 
 
         Schema::connection($newconnection)->table('inputs', function($table) use ($input)

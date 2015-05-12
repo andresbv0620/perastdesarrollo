@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
+use Zizaco\Entrust\Entrust;
+use Zizaco\Entrust\EntrustFacade;
 
 
 class UsersController extends Controller {
@@ -41,7 +42,12 @@ class UsersController extends Controller {
         $data=$this->request;
 
         /** @var TYPE_NAME $users */
-        $users=User::name($data->get('name'))->orderBy('id','DESC')->paginate();
+        if(EntrustFacade::hasRole('superadmin')) {
+            $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+        }else{
+            $sistema_id=Session::get('tenant_id');
+            $users=Sistema::find($sistema_id)->users()->name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+        }
         return view('admin.users.index', compact('users'));
 	}
 
@@ -68,17 +74,22 @@ class UsersController extends Controller {
 	 */
 	public function store(CreateUserRequest $request)
 	{
-
         $data=$this->request->all();
         $user = new User($data);
         $user->save();
 
-        if(Input::get('systems_id')=="") {
-            $systems_id=array();
-            $user->sistemas()->sync($systems_id);
-        }else {
+        if(EntrustFacade::hasRole('superadmin')) {
 
-            $user->sistemas()->sync(Input::get('systems_id'));
+            if (Input::get('systems_id') == "") {
+                $systems_id = array();
+                $user->sistemas()->sync($systems_id);
+            } else {
+
+                $user->sistemas()->sync(Input::get('systems_id'));
+            }
+        }elseif(EntrustFacade::hasRole('admin')){
+            $sistema_id=Session::get('tenant_id');
+            $user->sistemas()->attach($sistema_id);
         }
 
 
@@ -91,6 +102,8 @@ class UsersController extends Controller {
                 $user->plans()->attach($plan);
             }
         }
+
+
         return \Redirect::route('admin.users.index');
 	}
 

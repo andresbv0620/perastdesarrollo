@@ -13,7 +13,9 @@
                                 Crear Sistema
                             </a>
                         </p><p>Hay {{$sistemas->total()}} Sistemas</p>
+                        {!! Form::open(['route' => 'tenants_path','method'=>'POST']) !!}
                         @include('admin.sistemas.partials.tables');
+                        {!! Form::close() !!}
                         {!!$sistemas->render()!!}
                     </div>
                 </div>

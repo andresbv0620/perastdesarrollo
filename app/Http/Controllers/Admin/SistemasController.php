@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
+use Zizaco\Entrust\EntrustFacade;
 
 class SistemasController extends Controller {
 
@@ -36,8 +37,15 @@ class SistemasController extends Controller {
 	 */
 	public function index()
 	{
-        $sistemas=Sistema::paginate();
-        return view('admin.sistemas.index', compact('sistemas'));
+        if(EntrustFacade::hasRole('superadmin')) {
+            $user = Auth::user()->id;
+            $sistemas = Sistema::paginate();
+
+        }elseif(EntrustFacade::hasRole('admin')){
+            $user=Auth::user()->id;
+            $sistemas=User::findOrFail($user)->sistemas()->paginate();
+        }
+        return view('admin.sistemas.index', compact('sistemas', 'user'));
 	}
 
 	/**
@@ -73,7 +81,7 @@ class SistemasController extends Controller {
             $users_id = Input::get('user_id');
             foreach($users_id as $userid) {
                 $connection=array();
-                $dbname = ($sistema->nombreDataBase) . '_' .$userid;
+                $dbname = ($sistema->id). '_' .$userid;
                 $result = DB::statement(DB::raw('CREATE DATABASE ' . $dbname));
 
                 $connection=array($dbname=>[

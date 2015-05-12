@@ -33,15 +33,7 @@ class CatalogsController extends Controller {
 	 */
 	public function index()
 	{
-       /* $userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
 
-        foreach($sistemas as $sistema){
-            $dbname = ($sistema->nombreDataBase) . '_' .$userid;
-            $otf = new OnTheFly(['database'=>$dbname]);
-            $catalogs = Catalog::on($dbname)->findOrFail(1)->paginate();
-        }*/
 
         $newconnection= \Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
@@ -143,23 +135,6 @@ class CatalogsController extends Controller {
 	 */
 	public function edit($id)
 	{
-        /*$userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
-
-        foreach($sistemas as $sistema) {
-            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
-            $otf = new OnTheFly(['database'=>$dbname]);
-            $otf2 = new Catalog(['database'=>$dbname]);
-        }
-
-        //Otra forma de hacer la conexion en eloquent sin necesidad de usar on() que solo sirve para consultar, este me permitió consultar y guardar.
-
-        $catalog=new Catalog();
-        $catalog=$catalog->setConnection($dbname)->findOrFail($id);
-
-        $tabs = DB::connection($dbname)->select('select * from tabs where catalog_id = ?', $id);*/
-
         $newconnection= \Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
 
@@ -167,8 +142,9 @@ class CatalogsController extends Controller {
 
         $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
 
+
         foreach($tabs as $tab){
-            $entradas=[$tab->id=>Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get()];
+            $entradas[$tab->id]=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
         }
 
 		return view('admin.catalogs.edit', compact('catalog','tabs','entradas'));

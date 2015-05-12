@@ -20,8 +20,8 @@ class Opcione extends Model {
         return $this->belongsTo('App\Entrada');
     }
 
-    public function getFillable(array &$filArr){
-        $this->fillable=$filArr;
+    public function getFillable($fillArr = null){
+        $this->fillable=$fillArr;
     }
 
 }

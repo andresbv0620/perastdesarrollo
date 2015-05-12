@@ -13,6 +13,12 @@ class TenantsController extends Controller {
         $context= new TenantContextSession();
         $context->setConnectionName(Input::get('tenant_connection'));
 
+        $str=Input::get('tenant_connection');
+        $strArray=explode('_',$str,2);
+        $sistema_id=$strArray[0];
+
+        $context->setTenantId($sistema_id);
+
 
         //Con el bloque de abajo sale un error por llamar a una funcion statica, ver facades.
         /*TenantContextSession::setConnectionName(Input::get('tenant_connection'));

@@ -16,7 +16,7 @@
             <td>
                 <a href="{{ route('admin.sistemas.edit',$sistema) }}">Editar</a>
                 <a href="">Eliminar</a>
-                {!! Form::radio('tenant_connection', $sistema->nombreDataBase.'_'.$user ) !!}
+                {!! Form::radio('tenant_connection', $sistema->id.'_'.$user ) !!}
                 <button class="btn btn-primary" type="submit">
                     Seleccionar
                 </button>

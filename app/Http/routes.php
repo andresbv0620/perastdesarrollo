@@ -16,6 +16,88 @@ use App\Role;
 use Illuminate\Support\Facades\Redirect;
 use Zizaco\Entrust\EntrustFacade;
 
+Route::get('test', function(){
+// A simple web site in Cloud9 that runs through Apache
+// Press the 'Run' button on the top to start the web server,
+// then click the URL that is emitted to the Output tab of the console
+
+
+    $file=$_SERVER['DOCUMENT_ROOT'] . "/productos.txt";
+
+    if(file_exists($file)){
+        $filedata=file_get_contents($file);
+        $obj2= json_decode($filedata, true);
+
+        foreach($obj2 AS $user) {
+
+
+            echo $useremail=$user['email'];
+
+            $session = curl_init();
+            $customer_id = $useremail; // You'll want to set this dynamically to the unique id of the user
+            $customerio_url = 'https://track.customer.io/api/v1/customers/';
+            $site_id = 'f26451698eec768748ed';
+            $api_key = '736d7b6df3da07d68d55';
+
+            $data = array('email' => $customer_id);
+
+            curl_setopt($session, CURLOPT_URL, $customerio_url . $customer_id);
+            curl_setopt($session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($session, CURLOPT_HTTPGET, 1);
+            curl_setopt($session, CURLOPT_HEADER, false);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($session, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($session, CURLOPT_VERBOSE, 1);
+            curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
+
+            curl_setopt($session, CURLOPT_USERPWD, $site_id . ':' . $api_key);
+
+            curl_exec($session);
+            curl_close($session);
+
+
+            $productos=array("productos"=>$user['productos']);
+            $json_encode=json_encode($productos,JSON_UNESCAPED_SLASHES);
+
+             $session = curl_init();
+             $customer_id = $useremail; // You'll want to set this dynamically to the unique id of the user associated with the event
+             $customerio_url = 'https://track.customer.io/api/v1/customers/' . $customer_id . '/events';
+
+             $site_id = 'f26451698eec768748ed';
+             $api_key = '736d7b6df3da07d68d55';
+
+             $data = array('name' => 'productosRedirigidos','data'=>$productos);
+
+             curl_setopt($session, CURLOPT_URL, $customerio_url);
+             curl_setopt($session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+             curl_setopt($session, CURLOPT_HEADER, false);
+             curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+             curl_setopt($session, CURLOPT_VERBOSE, 1);
+             curl_setopt($session, CURLOPT_CUSTOMREQUEST, 'POST');
+             curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($data));
+             curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
+
+             curl_setopt($session, CURLOPT_USERPWD, $site_id . ':' . $api_key);
+
+             curl_exec($session);
+             curl_close($session);
+
+
+            echo "<pre>";
+            echo var_export($json_encode);
+            echo "</pre>";
+
+        }
+
+    }
+
+
+
+
+
+
+});
 
 Route::get('contact',
     ['as' => 'contact', 'uses' => 'WelcomeController@create']);

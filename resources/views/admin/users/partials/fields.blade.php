@@ -111,7 +111,7 @@
                     {!! $sistemaschecked = in_array($system->id, $sistemascheckeds) ? true : false; !!}
                 @endif
                 <tr>
-                    <td>{!!Form::checkbox('systems_id[]', $system->id, $sistemaschecked,['class'=>'checkbox','id'=>'sistema'.$system->id])!!}</td>
+                    <td>{!!Form::checkbox('systems_id[]', $system->id, $sistemaschecked,['class'=>'checkbox, disabled','id'=>'sistema'.$system->id])!!}</td>
                     <td>{!!Form::label('Sistema Id',$system->id)!!}</td>
                     <td>{!!Form::label('nombreDataBase',$system->nombreDataBase)!!}</td>
                     <td>{!!Form::label('Descripción',$system->description)!!}</td>
