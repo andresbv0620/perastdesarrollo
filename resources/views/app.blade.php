@@ -56,6 +56,7 @@
                                 </ul>
                             </li>
 
+                            @if (Entrust::hasRole('superadmin'))
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sistemas<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
@@ -63,14 +64,28 @@
                                     <li><a href="{{ url('/admin/sistemas/create') }}">Crear Sistemas</a></li>
                                 </ul>
                             </li>
+                            @endif
+                                @if(Entrust::hasRole('admin'))
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catalogos<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ url('/admin/catalogs') }}">Ver Catálogos</a></li>
+
                                     <li><a href="{{ url('/admin/catalogs/create') }}">Crear Catálogo</a></li>
+
                                 </ul>
                             </li>
+                                @endif
+                                @if(Entrust::hasRole('admin'))
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tablets<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ url('/admin/tablets') }}">Ver Tablets</a></li>
+                                        <li><a href="{{ url('/admin/tablets/create') }}">Crear Tablets</a></li>
+                                    </ul>
+                                </li>
+                                @endif
                         @endif
                     </ul>
 

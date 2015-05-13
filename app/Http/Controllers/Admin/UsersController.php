@@ -41,12 +41,18 @@ class UsersController extends Controller {
 	{
         $data=$this->request;
 
+
+
         /** @var TYPE_NAME $users */
         if(EntrustFacade::hasRole('superadmin')) {
             $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
         }else{
-            $sistema_id=Session::get('tenant_id');
-            $users=Sistema::find($sistema_id)->users()->name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+            if(Session::get('tenant_id')) {
+                $sistema_id = Session::get('tenant_id');
+                $users = Sistema::find($sistema_id)->users()->name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+            }else{
+                $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+            }
         }
         return view('admin.users.index', compact('users'));
 	}

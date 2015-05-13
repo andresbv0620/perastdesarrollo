@@ -16,7 +16,7 @@
                 <a href="{{ route('admin.tabs.edit', $tab) }}">Editar</a>
                 <a href="{{ route('admin.tabs.destroy', $tab) }}">Eliminar</a>
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#tab{{$tab->id}}" aria-expanded="false" aria-controls="collapseExample">
-                    + Agregar Entradas
+                    Ver Formulario
                 </button>
             </td>
         </tr>
@@ -27,9 +27,9 @@
                         <table class="table table-striped">
                             <tr>
                                 <th>#</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Tipo</th>
+                                <th>Nombre<br>Ayuda</th>
+
+                                <th>Respuesta</th>
                                 <th>Obligatorio</th>
                                 <th>Acciones</th>
 
@@ -37,15 +37,15 @@
                             @foreach($entradas[$tab->id]  as $entrada)
                                 <tr>
                                     <td>{{$entrada->id}}</td>
-                                    <td>{{$entrada->field_name}}</td>
-                                    <td>{{$entrada->field_description}}</td>
+                                    <td>{{$entrada->field_name}}<br>{{$entrada->field_description}}</td>
+
                                     <td>
 
                                         @if($entrada->field_type=='texto')
-                                            {!!Form::text($tab->id.'_'.$entrada->field_name,null,['class'=>'form-control','placeholder'=>$entrada->field_description])!!}
+                                            {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description])!!}
                                         @elseif($entrada->field_type=='opcion_unica')
                                             @foreach($opciones[$entrada->id] as $opcion)
-                                                {!! Form::radio($tab->id.'_'.$entrada->field_name, $opcion->option_name,false) !!}
+                                                {!! Form::radio($tab->id.'_'.$entrada->id, $opcion->option_name,false) !!}
                                                 {!! Form::label('field_name', $opcion->option_name)!!}
                                             @endforeach
 

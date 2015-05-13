@@ -31,7 +31,7 @@
                         <div class="well">
 
 
-
+////////aqui puedo colocar un include de admin.tablets.partials.tables///////////////////////7
                             <table class="table table-striped">
                                 <tr>
                                     <th>#</th>

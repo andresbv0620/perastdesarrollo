@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\Redirect;
 use Zizaco\Entrust\EntrustFacade;
 
 Route::get('test', function(){
-// A simple web site in Cloud9 that runs through Apache
-// Press the 'Run' button on the top to start the web server,
-// then click the URL that is emitted to the Output tab of the console
-
 
     $file=$_SERVER['DOCUMENT_ROOT'] . "/productos.txt";
 
@@ -186,6 +182,7 @@ Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
     Route::resource('tabs','TabsController');
     Route::resource('entradas','EntradasController');
     Route::resource('inputs','InputsController');
+    Route::resource('tablets','TabletsController');
 });
 
 Route::group(array('prefix' => 'api/v1','namespace'=>'\API'), function()

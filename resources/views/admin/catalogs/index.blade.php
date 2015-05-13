@@ -13,7 +13,7 @@
 
                     <div class="panel-body">
                         <p>
-                            @if(count($catalogs)==0)
+                            @if(count($catalogs)==0 && Entrust::hasRole('admin'))
                             <a class="btn btn-default" href="{{route('admin.catalogs.create')}}" role="button">
                                 Crear Catálogo
                             </a>

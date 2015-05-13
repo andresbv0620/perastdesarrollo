@@ -155,6 +155,8 @@ class SistemasController extends Controller {
                 {
                     $table->increments('id');
                     $table->timestamps();
+                    $table->string('_token');
+
                 });
 
             }

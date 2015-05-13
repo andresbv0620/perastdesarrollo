@@ -18,4 +18,6 @@ class Tablet extends Model {
         return $this->belongsToMany('App\Sistema');
     }
 
+
+
 }

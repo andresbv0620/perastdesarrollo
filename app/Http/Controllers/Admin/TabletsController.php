@@ -3,17 +3,21 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Input;
-use Illuminate\Database\Eloquent\Model;
+use App\Sistema;
+use App\Tablet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-class InputsController extends Controller {
+class TabletsController extends Controller {
 
     /**
      * @var Request
      */
-    protected $request;
+    private $request;
 
+    /**
+     * @param Request $request
+     */
     public function __construct(Request $request){
 
         $this->request = $request;
@@ -26,7 +30,11 @@ class InputsController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$sistema_id=Session::get('tenant_id');
+
+        $tablets=Sistema::findOrFail($sistema_id)->tablets()->paginate();
+        return view('admin.tablets.index', compact('tablets'));
+
 	}
 
 	/**
@@ -36,7 +44,7 @@ class InputsController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('admin.tablets.create');
 	}
 
 	/**
@@ -46,16 +54,17 @@ class InputsController extends Controller {
 	 */
 	public function store()
 	{
-        $newconnection= \Session::get('tenant_connection');
-        $otf = new OnTheFly(['database'=>$newconnection]);
+        $sistema_id=Session::get('tenant_id');
+        $sistema=Sistema::findOrFail($sistema_id);
 
-        $data=$this->request->all();
-        Model::unguard();
-        $input = new Input($data);
+		$data=$this->request->all();
+        $tablet=new Tablet($data);
+        $tablet->save();
+        $tablet_id=$tablet->id;
 
 
-        $input->setConnection($newconnection)->save();
-        return redirect()->back();
+        $sistema->tablets()->attach($tablet_id);
+        return \Redirect::route('admin.tablets.index');
 	}
 
 	/**
@@ -66,7 +75,7 @@ class InputsController extends Controller {
 	 */
 	public function show($id)
 	{
-
+		//
 	}
 
 	/**

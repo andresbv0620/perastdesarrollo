@@ -54,6 +54,7 @@
 <div class="collapse" id="sistema{{$sistema->id}}">
     <div class="well">
 
+
         <table class="table table-striped">
             <tr>
                 <th>#</th>
@@ -76,6 +77,7 @@
                 </tr>
             @endforeach
             <h2>Crear nueva tablet</h2>
+            /////colocar un include de admin.tablets.partials.fields////////
             <div class="form-group" >
                 {!!Form::label('idUnicoTablet', 'Id Unico de Tablet')!!}
                 {!!Form::text('idUnicoTablet',null,['class'=>'form-control','placeholder'=>'Id Unico de Tablet'])!!}
