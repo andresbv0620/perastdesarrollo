@@ -202,10 +202,7 @@ class SistemasController extends Controller {
         $sistema=Sistema::findOrFail($id);
         $tablets=$sistema->tablets;
         $users=User::all();
-
         $usercheckeds = $sistema->users()->lists('user_id');
-
-
         return view('admin.sistemas.edit',compact('sistema','tablets','users','usercheckeds'));
 	}
 
@@ -223,15 +220,16 @@ class SistemasController extends Controller {
         $sistema->fill($data);
         $sistema->save();
 
-        $tablet = new Tablet($data);
+        /*$tablet = new Tablet($data);
         $tablet->save ();
-        $tablet->sistemas()->attach($sistema);
+        $tablet->sistemas()->attach($sistema);*/
 
         $sistema->users()->sync(Input::get('user_id'));
 
 
         $sistemas=Sistema::paginate();
-        return view('admin.sistemas.index', compact('sistemas'));
+        $user=Auth::user()->id;
+        return view('admin.sistemas.index', compact('sistemas','user'));
 
 
     }

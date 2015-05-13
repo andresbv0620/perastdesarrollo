@@ -47,46 +47,4 @@
 
 </table>
 
-@if(isset($sistema))
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sistema{{$sistema->id}}" aria-expanded="false" aria-controls="collapseExample">
-    Ver Tablets
-</button>
-<div class="collapse" id="sistema{{$sistema->id}}">
-    <div class="well">
 
-
-        <table class="table table-striped">
-            <tr>
-                <th>#</th>
-                <th>Id Unico de Tablet</th>
-                <th>Descripción</th>
-            </tr>
-            @foreach($sistema->tablets  as $tablet)
-
-                <tr>
-                    <td>{{$tablet->id}}</td>
-                    <td>{{$tablet->idUnicoTablet}}</td>
-                    <td>{{$tablet->description}}</td>
-                    <td>
-                        <a href="{{ route('admin.entradas.edit', $tablet) }}">Editar</a>
-                        <a href="{{ route('admin.entradas.destroy', $tablet) }}">Eliminar</a>
-                    </td>
-                </tr>
-                <tr>
-
-                </tr>
-            @endforeach
-            <h2>Crear nueva tablet</h2>
-            /////colocar un include de admin.tablets.partials.fields////////
-            <div class="form-group" >
-                {!!Form::label('idUnicoTablet', 'Id Unico de Tablet')!!}
-                {!!Form::text('idUnicoTablet',null,['class'=>'form-control','placeholder'=>'Id Unico de Tablet'])!!}
-            </div>
-            <div class= "form-group" >
-                {!!Form::label('description', 'Descripción')!!}
-                {!!Form::text('description',null,['class'=>'form-control','placeholder'=>'Descripcion'])!!}
-            </div>
-        </table>
-    </div>
-</div>
-@endif
