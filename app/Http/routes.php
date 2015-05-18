@@ -18,6 +18,95 @@ use Zizaco\Entrust\EntrustFacade;
 
 Route::get('test', function(){
 
+    $webhookContent = "";
+    $webhookContent='[{"$distinct_id": "14d49cb3ef663b-0e022d162f75e88-4b594236-100200-14d49cb3ef769c", "$properties": {"$initial_referring_domain": "$direct", "$created": "2015-05-12T15:22:57", "$last_seen": "2015-05-12T15:23:14", "First Login Date": "2015-05-12T15:22:47", "$timezone": "America/Bogota", "$city": "Santiago De Cali", "$country_code": "CO", "Last_Redirected_Product": "Bolso Jorah", "productosRedirigidos": ["Bolso Jorah"], "$campaigns": [544735, 550211, 550221], "$os": "Windows", "Lifetime Revenue": 63960, "$deliveries": [671969241, 671973371, 671990973], "$email": "323@test.co", "$initial_referrer": "$direct", "Place": "Footer", "Redirected": 1, "$transactions": [{"$time": "2015-05-12T15:23:14", "$amount": 63960}], "Last_Redirected_Product_imgUrl": "http://www.santorini.com.co/eShop/ProductImages/7015478_2.jpg", "Last_Redirected_Product_Tienda": "www.santorini.com.co", "$region": "Valle del Cauca", "$browser_version": 38, "redirect_url": ["http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478"], "$browser": "Firefox", "Last Redirected": "2015-05-12T15:23:10", "Last_Redirected_Product_url": "http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478", "Last_Redirected_Product_Precio": "63960"}}, {"$distinct_id": "14d49ca52d83c2-00608f6e1f6cde8-4b594236-100200-14d49ca52d96bc", "$properties": {"$initial_referring_domain": "$direct", "$created": "2015-05-12T15:21:55", "$last_seen": "2015-05-12T15:22:12", "First Login Date": "2015-05-12T15:21:46", "$timezone": "America/Bogota", "$city": "Santiago De Cali", "$country_code": "CO", "Last_Redirected_Product": "Bolso Jorah", "productosRedirigidos": ["Bolso Jorah"], "$campaigns": [544735, 550211, 550221], "$os": "Windows", "Lifetime Revenue": 63960, "$deliveries": [671969241, 671973371, 671990973], "$email": "321@test.co", "$initial_referrer": "$direct", "Place": "Footer", "Redirected": 1, "$transactions": [{"$time": "2015-05-12T15:22:12", "$amount": 63960}], "Last_Redirected_Product_imgUrl": "http://www.santorini.com.co/eShop/ProductImages/7015478_2.jpg", "Last_Redirected_Product_Tienda": "www.santorini.com.co", "$region": "Valle del Cauca", "$browser_version": 38, "redirect_url": ["http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478"], "$browser": "Firefox", "Last Redirected": "2015-05-12T15:22:08", "Last_Redirected_Product_url": "http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478", "Last_Redirected_Product_Precio": "63960"}}, {"$distinct_id": "14d49c49baea-0c3c5aa10e132c8-4b594236-100200-14d49c49baf64b", "$properties": {"$initial_referring_domain": "$direct", "$created": "2015-05-12T15:17:08", "$last_seen": "2015-05-12T15:21:18", "First Login Date": "2015-05-12T15:15:32", "$timezone": "America/Bogota", "$city": "Santiago De Cali", "$country_code": "CO", "Last_Redirected_Product": "Bolso Jorah", "productosRedirigidos": ["Bolso Jorah", "Bolso Jorah"], "$campaigns": [544735, 550211, 550221], "$os": "Windows", "Lifetime Revenue": 127920, "$deliveries": [671969241, 671973371, 671990973], "$email": "316@test.co", "$initial_referrer": "$direct", "Place": "Footer", "Redirected": 2, "$transactions": [{"$time": "2015-05-12T15:20:16", "$amount": 63960}, {"$time": "2015-05-12T15:21:18", "$amount": 63960}], "Last_Redirected_Product_imgUrl": "http://www.santorini.com.co/eShop/ProductImages/7015478_2.jpg", "Last_Redirected_Product_Tienda": "www.santorini.com.co", "$region": "Valle del Cauca", "$browser_version": 38, "redirect_url": ["http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478", "http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478"], "$browser": "Firefox", "Last Redirected": "2015-05-12T15:21:14", "Last_Redirected_Product_url": "http://www.santorini.com.co/eShop/Product.aspx?ProductId=7015478", "Last_Redirected_Product_Precio": "63960"}}]';
+
+//if($_POST["users"]){
+//$decode=json_decode($webhookContent, true);
+//$useremail=$decode[0]['$properties']['$email'];
+//$useremail2=$decode[1]['$properties']['$email'];
+//////////////Test the webhook in a file//////////////////////
+    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/myText.txt","wb");
+    fwrite($fp,$webhookContent);
+    fclose($fp);
+
+//$self = $_SERVER['PHP_SELF']; //Obtenemos la página en la que nos encontramos
+//header("refresh:10; url=$self"); //Refrescamos cada 300 segundos
+
+
+    $obj2=json_decode($webhookContent, true);
+
+
+    $similarUrl='http://adiktivo.com/search_similar?search=&category=mujer';
+
+    foreach($obj2 AS $user) {
+
+        /////////Email del usuario///////////
+        $useremail=$user['$properties']['$email'];
+
+
+
+        /////////////Producto Redirigido/////////////////////
+        $rproducto=$user['$properties']['Last_Redirected_Product'];
+        $rprecio=$user['$properties']['Last_Redirected_Product_Precio'];
+        $rtienda=$user['$properties']['Last_Redirected_Product_Tienda'];
+        $rurl=$user['$properties']['Last_Redirected_Product_url'];
+        $rimg=$user['$properties']['Last_Redirected_Product_imgUrl'];
+
+        $producto=array(
+            'Producto'=>$rproducto,
+            'Precio'=>$rprecio,
+            'Tienda'=>$rtienda,
+            'url'=>$rurl,
+            'img_url'=>$rimg
+        );
+
+        $i=0;
+        $arrayProductos['producto'.$i]=$producto;
+        $i++;
+
+
+        ////////////////////Se hace la consulta al recurso de ADIKTIVO para traer relacionados//////////////////
+        $result = mb_substr($rproducto, 0, 6);
+        $newurl = substr_replace($similarUrl, $result, 42, 0);
+        $newurl = str_replace(' ', '', $newurl);
+
+        $similares = file_get_contents($newurl);
+        $jsonSimilares=json_decode($similares, true);
+
+
+
+        foreach($jsonSimilares AS $similar) {
+            echo "-";
+            $producto=array(
+                'Producto'=>$similar['description'],
+                'Precio'=>$similar['price'],
+                'Tienda'=>$similar['provider'],
+                'url'=> $similar['shopurl'],
+                'img_url'=>$similar['imageurl']
+            );
+            $arrayProductos['producto'.$i]=$producto;
+            $i++;
+            echo $i;
+        }
+        $arrayFinal[]=array('email'=>$useremail,'productos'=>$arrayProductos);
+    }
+
+
+
+    $json_encode = json_encode($arrayFinal, JSON_UNESCAPED_SLASHES);
+
+    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/productos.txt","wb");
+    fwrite($fp,$json_encode);
+    fclose($fp);
+
+
+    echo "<pre>";
+    echo var_export($json_encode);
+    echo "</pre>";
+
+    ///////////////////////////////////////////////////////////
+
     $file=$_SERVER['DOCUMENT_ROOT'] . "/productos.txt";
 
     if(file_exists($file)){
@@ -173,7 +262,7 @@ Route::controllers([
 
 
 Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
-    Route::resource('users','UsersController');
+    Route::resource('users', 'UsersController');
     Route::resource('planes','PlanesController');
     Route::resource('catalogs','CatalogsController');
     Route::resource('sistemas','SistemasController');

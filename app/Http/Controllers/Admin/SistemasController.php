@@ -2,6 +2,7 @@
 
 use App\Catalog;
 use App\Http\Requests;
+use App\Http\Requests\CreateSistemaRequest;
 use App\Http\Controllers\Controller;
 
 use App\Sistema;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Zizaco\Entrust\EntrustFacade;
 
 class SistemasController extends Controller {
@@ -37,15 +39,22 @@ class SistemasController extends Controller {
 	 */
 	public function index()
 	{
-        if(EntrustFacade::hasRole('superadmin')) {
-            $user = Auth::user()->id;
-            $sistemas = Sistema::paginate();
+        $isuser=User::all()->first();
+        if(!empty($isuser)) {
+            if (EntrustFacade::hasRole('superadmin')) {
+                $user = Auth::user()->id;
+                $sistemas = Sistema::paginate();
 
-        }elseif(EntrustFacade::hasRole('admin')){
-            $user=Auth::user()->id;
-            $sistemas=User::findOrFail($user)->sistemas()->paginate();
+            } elseif (EntrustFacade::hasRole('admin')) {
+                $user = Auth::user()->id;
+                $sistemas = User::findOrFail($user)->sistemas()->paginate();
+            }
+            return view('admin.sistemas.index', compact('sistemas', 'user'));
+        }else{
+            Session::flash('message','Antes de empezar debe Registrar un usuario');
+            return redirect()->route('admin.usuarios.index');
         }
-        return view('admin.sistemas.index', compact('sistemas', 'user'));
+
 	}
 
 	/**
@@ -55,18 +64,23 @@ class SistemasController extends Controller {
 	 */
 	public function create()
 	{
-        $users=User::all();
-
-        $usercheckeds = array();
-		return view('admin.sistemas.create',compact('users','usercheckeds'));
-	}
+        $isuser=User::all()->first();
+        if(!empty($isuser)) {
+            $users = User::all();
+            $usercheckeds = array();
+            return view('admin.sistemas.create', compact('users', 'usercheckeds'));
+        }else{
+            Session::flash('message','Antes de empezar debe Registrar un usuario');
+            return redirect()->route('admin.usuarios.index');
+        }
+    }
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(CreateSistemaRequest $request)
 	{
         $data=$this->request->all();
 		$sistema = new Sistema($data);
@@ -242,7 +256,28 @@ class SistemasController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
-	}
+        $sistema=Sistema::findOrFail($id);
+        $users_id = $sistema->users;
 
+        $sistema->delete();
+        //Sistema::destroy($id);//Opcion
+
+        foreach($users_id as $userid) {
+            $dbname = ($sistema->id). '_' .$userid->id;
+            $result = DB::statement(DB::raw('DROP DATABASE ' . $dbname));
+        }
+
+
+        $message='El sistema fue eliminado de nuestros registros';
+
+        if($this->request->ajax()){
+            return response()->json([
+                'id'=>$id,
+                'message'=>$message
+            ]);
+        }
+        Session::flash('message',$message);
+
+        return redirect()->route('admin.sistemas.index');
+	}
 }

@@ -24,7 +24,7 @@
             @endif
 
             <tr>
-                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox, disabled','id'=>$user->id])!!}</td>
+                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox','id'=>$user->id])!!}</td>
                 <td>{!!Form::label('Nombre',$user->name)!!}</td>
                 <td>{!!Form::label('Email',$user->email)!!}</td>
                 <td>{!!Form::label('Página',$user->pagina)!!}</td>
@@ -37,7 +37,7 @@
             @endif
 
             <tr>
-                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox, disabled','id'=>$user->id])!!}</td>
+                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox','id'=>$user->id])!!}</td>
                 <td>{!!Form::label('Nombre',$user->name)!!}</td>
                 <td>{!!Form::label('Email',$user->email)!!}</td>
                 <td>{!!Form::label('Página',$user->pagina)!!}</td>

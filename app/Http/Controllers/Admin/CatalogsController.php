@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CatalogsController extends Controller {
     /**
@@ -33,16 +34,15 @@ class CatalogsController extends Controller {
 	 */
 	public function index()
 	{
-
-
-        $newconnection= \Session::get('tenant_connection');
-        $otf = new OnTheFly(['database'=>$newconnection]);
-
-        $catalogs=Catalog::on($newconnection)->paginate();
-
-
-
-        return view('admin.catalogs.index', compact('catalogs'));
+        if(Session::has('tenant_id')) {
+           $newconnection = \Session::get('tenant_connection');
+            $otf = new OnTheFly(['database' => $newconnection]);
+            $catalogs = Catalog::on($newconnection)->paginate();
+            return view('admin.catalogs.index', compact('catalogs'));
+        }else{
+            Session::flash('message','Antes debe seleccionar un sistema');
+            return redirect()->route('admin.sistemas.index');
+        }
 	}
 
 	/**
@@ -66,35 +66,19 @@ class CatalogsController extends Controller {
 	 */
 	public function store()
 	{
-        /*$userid = Auth::user()->id;
-        $user=User::findOrFail($userid);
-        $sistemas=$user->sistemas;
-
-        foreach($sistemas as $sistema) {
-            $dbname = ($sistema->nombreDataBase) . '_' . $userid;
-            $otf = new OnTheFly(['database'=>$dbname]);
-            $otf2 = new Catalog(['database'=>$dbname]);
-        }
-
-		$data=$this->request->all();
-        $catalog = new Catalog($data);
-        $catalog->setConnection($dbname);
-        $catalog->save();
-
-        $tabs=$catalog->tabs;*/
+        $rules=array(
+            'name'=>'required',
+            'description'=>'required'
+        );
+        $this->validate($this->request,$rules);
 
         $newconnection= \Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
 
         $data=$this->request->all();
-
         $catalog=new Catalog($data);
-
         $catalog->setConnection($newconnection)->save();
-
-
         $tabs=$catalog->tabs;
-
         return view('admin.catalogs.edit',compact('catalog','tabs'));
 	}
 
@@ -158,7 +142,18 @@ class CatalogsController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        $rules=array(
+            'name'=>'required',
+            'description'=>'required'
+        );
+        $this->validate($this->request,$rules);
+        $data=$this->request->all();
+        $catalog=Catalog::on($newconnection)->findOrFail($id);
+        $catalog->fill($data);
+        $catalog->save();
+        return redirect()->back();
 	}
 
 	/**
@@ -169,6 +164,18 @@ class CatalogsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        Catalog::on($newconnection)->findOrFail($id)->delete();
+        $message='El catálogo fue eliminado de nuestros registros';
+
+        if($this->request->ajax()){
+            return response()->json([
+                'id'=>$id,
+                'message'=>$message
+            ]);
+        }
+        Session::flash('message',$message);
+        return redirect()->route('admin.catalogs.index');
 	}
 }

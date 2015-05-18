@@ -38,18 +38,37 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-        $user=Auth::user()->id;
+        $userid=Auth::user()->id;
         $username=Auth::user()->name;
 
-        $sistemas=User::findOrFail($user)->sistemas;
 
 
-        if(EntrustFacade::hasRole(['superadmin','admin','recolector','reportes'])){
-            return view('home', compact('sistemas','user'));
+        $isuser=User::all()->first();
+        if(!empty($isuser)) {
+            if (EntrustFacade::hasRole('superadmin')) {
+                $user = Auth::user()->id;
+                $sistemas = Sistema::paginate();
+
+            }elseif (EntrustFacade::hasRole('admin')) {
+                $user = Auth::user()->id;
+                $sistemas = User::findOrFail($user)->sistemas()->paginate();
+            }
+
+            if(EntrustFacade::hasRole(['superadmin','admin','recolector','reportes'])){
+                return view('home', compact('sistemas','userid'));
+
+            }else{
+                $user=Auth::user()->id;
+                return view('index.vars',compact('user','username'));
+            }
 
         }else{
-            return view('index.vars',compact('user','username'));
+            Session::flash('message','Antes de empezar debe Registrar un usuario');
+            return redirect()->route('admin.usuarios.index');
         }
+
+
+
         //
 	}
 

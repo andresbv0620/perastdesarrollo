@@ -7,8 +7,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Editar Sistema: {{$sistema->nombre}}</div>
 
+                    @include('admin.partials.messages')
+
                     <div class="panel-body">
-                        @include('admin.partials.messages')
+
                         {!! Form::model($sistema, array('route' => ['admin.sistemas.update',$sistema],'method'=>'PUT')) !!}
                         @include('admin.sistemas.partials.fields')
                         <button type="submit" class="btn btn-default">Actualizar Sistema</button>
@@ -16,6 +18,7 @@
                     </div>
                 </div>
             </div>
+            @include('admin.sistemas.partials.delete')
         </div>
     </div>
 @endsection

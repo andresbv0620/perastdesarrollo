@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 
 class EntradasController extends Controller {
 
@@ -67,10 +68,6 @@ class EntradasController extends Controller {
         $input_id=$entrada->id;
         $input=$tab->id.'_'.$input_id;
 
-
-
-
-
         Schema::connection($newconnection)->table('inputs', function($table) use ($input)
         {
             $table->string($input);
@@ -83,9 +80,7 @@ class EntradasController extends Controller {
         }else {
 
             foreach(Input::get('opcion_name') as $opcion) {
-
                 $opcion=new Opcione(['option_name'=>$opcion]);
-
                 $opcion->setConnection($newconnection);
                 $entrada->opciones()->save($opcion);
             }
@@ -136,7 +131,23 @@ class EntradasController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        $newconnection= Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        $entrada=Entrada::on($newconnection)->findOrFail($id);
+        $catalogid=$entrada->catalog_id;
+        $entrada->delete();
+
+        $message='La Entrada fue eliminada';
+
+        if($this->request->ajax()){
+            return response()->json([
+                'id'=>$id,
+                'message'=>$message
+            ]);
+        }
+        Session::flash('message',$message);
+
+        return redirect()->route('admin.catalogs.edit',compact('catalogid'));
 	}
 
 }

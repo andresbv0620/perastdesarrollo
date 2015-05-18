@@ -2,5 +2,4 @@
 
 <button type="submit" class="btn btn-danger">Eliminar Catálogo</button>
 
-
 {!! Form::close() !!}

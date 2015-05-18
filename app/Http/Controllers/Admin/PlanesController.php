@@ -7,6 +7,7 @@ use App\Http\Requests\CreatePlanRequest;
 use App\Http\Requests\EditPlanRequest;
 use App\Plan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PlanesController extends Controller {
 
@@ -95,7 +96,9 @@ class PlanesController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        Plan::destroy($id);
+        Session::flash('message','El registro fue eliminado');
+        return redirect()->route('admin.planes.index');
 	}
 
 }

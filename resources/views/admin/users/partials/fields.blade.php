@@ -15,6 +15,13 @@
                 @endif
                 <tr>
                     @if( (($role->name=="superadmin") xor ($role->name=="admin")) and (Entrust::hasRole(['admin'])) )
+                        @if(Entrust::hasRole(['superadmin']))
+                            <td>{!!Form::checkbox('role_id[]', $role->id, $rolechecked,['class'=>'checkbox','id'=>$role->name])!!}</td>
+                            <td>{!!Form::label('ID',$role->id)!!}</td>
+                            <td>{!!Form::label('Nombre',$role->display_name)!!}</td>
+                            <td>{!!Form::label('Descripcion',$role->description)!!}</td>
+                        @endif
+
                         @else
                             <td>{!!Form::checkbox('role_id[]', $role->id, $rolechecked,['class'=>'checkbox','id'=>$role->name])!!}</td>
                             <td>{!!Form::label('ID',$role->id)!!}</td>

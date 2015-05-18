@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         @include('admin.partials.messages')
 
-                        {!! Form::model($catalog,array('route' => ['admin.users.update',$catalog],'method'=>'PUT')) !!}
+                        {!! Form::model($catalog,array('route' => ['admin.catalogs.update',$catalog],'method'=>'PUT')) !!}
                         @include('admin.catalogs.partials.fields')
                         <button type="submit" class="btn btn-default">Actualizar Catálogo</button>
                         {!! Form::close() !!}
@@ -23,9 +23,10 @@
                         </button>
                         <div class="collapse" id="collapseExample">
                             <div class="well">
-                                {!! Form::open(array('route'=>['admin.tabs.tabcatalog',$catalog->id],'method'=>'GET')) !!}
+                                {!! Form::open(array('route'=>['admin.tabs.store'],'method'=>'POST')) !!}
                                 @include('admin.catalogs.tabs.partials.fields')
-                                <button type="submit" class="btn btn-default" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Crear Tab</button>
+                                {!!Form::hidden('catalog_id',$catalog->id)!!}
+                                <button type="submit" class="btn btn-default">Crear Tab</button>
                                 {!! Form::close() !!}
                             </div>
                         </div>
@@ -38,6 +39,12 @@
             </div>
         </div>
     </div>
+    {!! Form::open(['route'=>['admin.tabs.destroy',':OBJECT_ID'], 'method'=>'DELETE', 'id'=>'form-delete']) !!}
+
+    {!! Form::close() !!}
+    {!! Form::open(['route'=>['admin.entradas.destroy',':OBJECT_ID'], 'method'=>'DELETE', 'id'=>'form-delete-entrada']) !!}
+
+    {!! Form::close() !!}
 @endsection
 
 @section('scripts')
@@ -50,10 +57,17 @@
                 var divtab=$(this).parents('.collapse').attr('id');
 
                 if (target.value=='opcion_unica') {
-                    $('#opciones-'+divtab).show();
+                    $('#opcionesunic-'+divtab).show();
                 }else{
-                    $('#opciones-'+divtab).hide();
+                    $('#opcionesunic-'+divtab).hide();
                 }
+
+                if (target.value=='opcion_multiple') {
+                    $('#opcionesmulti-'+divtab).show();
+                }else{
+                    $('#opcionesmulti-'+divtab).hide();
+                }
+
             });
 
             $(document).on('click','.agregar',function(e){
@@ -63,6 +77,53 @@
                 var option='<input placeholder="Opción" name="opcion_name[]" type="text">';
                 row.prepend(preopcion+option+"<br><br>");
 
+            });
+
+            $(".btn-delete").click(function(e){
+
+                e.preventDefault();
+
+                var row=$(this).parents('tr');
+                var id=row.data('id');
+
+                var form=$('#form-delete');
+                var url=form.attr('action').replace(':OBJECT_ID', id);
+
+                var data=form.serialize();
+
+                row.fadeOut();
+                $("#tab"+id).fadeOut();
+
+                $.post(url, data, function (result) {
+                    alert(result.message);
+                }).fail(function (){
+                    alert("El registro no fue eliminado");
+                    row.show();
+                });
+            });
+
+            $(".btn-delete-entrada").click(function(e){
+
+                e.preventDefault();
+                var row=$(this).parents('tr');
+
+                var id=row.data('identrada');
+
+                var form=$('#form-delete-entrada');
+                var url=form.attr('action').replace(':OBJECT_ID', id);
+                alert(url);
+
+                var data=form.serialize();
+
+                row.fadeOut();
+                //$("#tab"+id).fadeOut();
+
+                $.post(url, data, function (result) {
+                    alert(result.message);
+                }).fail(function (){
+                    alert("El registro no fue eliminado");
+                    row.show();
+                });
             });
 
 

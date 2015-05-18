@@ -7,9 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Usuarios</div>
 
-                    @if(Session::has('message'))
-                        <p class="alert alert-success">{{ Session::get('message') }}</p>
-                        @endif
+                    @include('admin.partials.messages')
 
                     <div class="panel-body">
 

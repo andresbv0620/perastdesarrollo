@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Sistema;
 use App\Tablet;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Session;
 
 class TabletsController extends Controller {
@@ -54,6 +55,11 @@ class TabletsController extends Controller {
 	 */
 	public function store()
 	{
+        $rules=array(
+            'idUnicoTablet'=>'required|unique:tablets,idUnicoTablet',
+            'description'=>'required'
+        );
+        $this->validate($this->request,$rules);
         $sistema_id=Session::get('tenant_id');
         $sistema=Sistema::findOrFail($sistema_id);
 
@@ -86,7 +92,8 @@ class TabletsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+        $tablet=Tablet::findOrFail($id);
+        return view('admin.tablets.edit', compact('tablet'));
 	}
 
 	/**
@@ -95,9 +102,17 @@ class TabletsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Route $route)
 	{
-		//
+        $rules=array(
+            'idUnicoTablet'=>'required|unique:tablets,idUnicoTablet,'.$route->getParameter('tablets'),
+            'description'=>'required'
+        );
+        $this->validate($this->request,$rules);
+        $tablet=Tablet::findOrFail($id);
+        $tablet->fill($this->request->all());
+        $tablet->save();
+        return redirect()->back();
 	}
 
 	/**
@@ -108,7 +123,17 @@ class TabletsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        Tablet::destroy($id);
+        $message='El registro fue eliminado de nuestros registros';
+
+        if($this->request->ajax()){
+            return response()->json([
+                'id'=>$id,
+                'message'=>$message
+            ]);
+        }
+        Session::flash('message',$message);
+        return redirect()->route('admin.tablets.index');
 	}
 
 }

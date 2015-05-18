@@ -8,6 +8,8 @@ use App\Tab;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class TabsController extends Controller {
 
@@ -48,9 +50,32 @@ class TabsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store($id)
+	public function store()
 	{
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
 
+        $data=$this->request->all();
+        $catalogid=$data['catalog_id'];
+
+
+        $rules=array(
+            'name'=>'required',
+            'description'=>'required'
+        );
+        $v=Validator::make($data, $rules);
+        if($v->fails()){
+            return redirect()->route('admin.catalogs.edit',compact('catalogid'))
+                ->withErrors($v->errors())
+                ->withInput($data);
+        }
+
+        $tab= new Tab($data);
+        $tab->setConnection($newconnection);
+
+        $catalog=Catalog::on($newconnection)->findOrFail($catalogid);
+        $catalog->setConnection($newconnection)->tabs()->save($tab);
+        return redirect()->back();
 	}
 
 	/**
@@ -72,7 +97,11 @@ class TabsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        $tab=Tab::on($newconnection)->findOrFail($id);
+
+        return view('admin.catalogs.tabs.edit', compact('tab','catalog'));
 	}
 
 	/**
@@ -83,7 +112,29 @@ class TabsController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+        $newconnection= \Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+
+        $data=$this->request->all();
+
+        $rules=array(
+            'name'=>'required',
+            'description'=>'required'
+        );
+        $v=Validator::make($data, $rules);
+        if($v->fails()){
+            return redirect()->route('admin.catalogs.edit',compact('catalogid'))
+                ->withErrors($v->errors())
+                ->withInput($data);
+        }
+
+        $tab=Tab::on($newconnection)->findOrFail($id);
+        $tab->fill($data);
+        $tab->save();
+
+        $catalogid=$tab->catalog_id;
+
+        return redirect()->route('admin.catalogs.edit',compact('catalogid'));
 	}
 
 	/**
@@ -94,7 +145,26 @@ class TabsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        return $id;
+        $newconnection= Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$newconnection]);
+        $tab=Tab::on($newconnection)->findOrFail($id);
+        $catalogid=$tab->catalog_id;
+        $tab->delete();
+
+        $message='La Ficha fue eliminada';
+
+        if($this->request->ajax()){
+            return response()->json([
+                'id'=>$id,
+                'message'=>$message
+            ]);
+        }
+        Session::flash('message',$message);
+
+
+
+        return redirect()->route('admin.catalogs.edit',compact('catalogid'));
 	}
 
     public function tabcatalog($id)
@@ -118,22 +188,7 @@ class TabsController extends Controller {
 
         $tab=$catalog->tabs()->save($tab);*/
 
-        $newconnection= \Session::get('tenant_connection');
-        $otf = new OnTheFly(['database'=>$newconnection]);
 
-        $data=$this->request->all();
-
-        $tab= new Tab($data);
-        $tab->setConnection($newconnection);
-
-        $catalog=Catalog::on($newconnection)->findOrFail($id);
-        $catalog->setConnection($newconnection)->tabs()->save($tab);
-
-
-
-        //$tab->catalog_id=$id;
-        //$tab->save();
-        return redirect()->back();
     }
 
 }

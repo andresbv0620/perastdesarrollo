@@ -4,8 +4,7 @@
         <th>Base de datos sistema</th>
         <th>Descripción del sistema</th>
         <th>Seleccionar</th>
-        <th>Acciones</th>
-
+        <th></th>
     </tr>
 
 
@@ -15,13 +14,14 @@
             <td>{{$sistema->id}}</td>
             <td>{{$sistema->nombreDataBase}}</td>
             <td>{{$sistema->description}}</td>
-            <td>{!! Form::radio('tenant_connection', $sistema->id.'_'.$user ) !!}</td>
+            @if(Entrust::hasRole('superadmin'))
+                @else
+                <td>{!! Form::radio('tenant_connection', $sistema->id.'_'.$userid ) !!}</td>
+            @endif
             <td>
-                <a href="{{ route('admin.sistemas.edit',$sistema) }}">Editar</a>
-                <a href="#!" class="btn-delete">Eliminar</a>
                 @if(Entrust::hasRole('superadmin'))
                 <button class="btn" type="button" data-toggle="collapse" data-target="#sistema{{$sistema->id}}" aria-expanded="false" aria-controls="collapseExample">
-                    Ver Tablets
+                    Ver Usuarios
                 </button>
                 @endif
             </td>
@@ -34,16 +34,21 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Id Unico de Tablet</th>
-                                    <th>Descripcion</th>
-
+                                    <th>Email</th>
+                                    <th>Página</th>
+                                    <th>Seleccionar</th>
                                                                     </tr>
-                                @foreach($sistema->tablets  as $tablets)
+                                @foreach($sistema->users  as $user)
 
                                     <tr>
-                                        <td>{{$tablets->id}}</td>
-                                        <td>{{$tablets->idUnicoTablet}}</td>
-                                        <td>{{$tablets->description}}</td>
+                                        <td>{{$user->id}}</td>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->pagina}}</td>
+                                        <td>
+                                            {!! Form::radio('tenant_connection', $sistema->id.'_'.$user->id ) !!}
 
+                                        </td>
                                     </tr>
                                     <tr>
 

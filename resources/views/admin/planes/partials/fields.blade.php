@@ -18,7 +18,7 @@
 <div class="form-group">
     {!!Form::label('duracion', 'Vigente hasta')!!}
     <div class='input-group date' id='datetimepicker1'>
-        {!!Form::date('duracion',null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now()])!!}
+        {!!Form::text('duracion',null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now()])!!}
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -33,6 +33,7 @@
         {!! Form::text('precio',null,['class'=>'form-control','placeholder'=>'1.000.000']) !!}
     </div>
 </div>
+
 <div class="form-group">
     {!!Form::label('periodicidad', 'Periodicidad Cobro')!!}
     {!!Form::select('periodicidad',array('anual' => 'anual', 'mensual' => 'mensual'),['class'=>'form-control'])!!}
@@ -41,7 +42,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker1').datetimepicker({format: 'YYYY/MM/DD'});
         });
     </script>
 @endsection

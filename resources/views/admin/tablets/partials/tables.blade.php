@@ -7,13 +7,13 @@
     </tr>
     @foreach($tablets  as $tablet)
 
-        <tr>
+        <tr data-id="{{ $tablet->id }}">
             <td>{{$tablet->id}}</td>
             <td>{{$tablet->idUnicoTablet}}</td>
             <td>{{$tablet->description}}</td>
             <td>
-                <a href="{{ route('admin.entradas.edit', $tablet) }}">Editar</a>
-                <a href="{{ route('admin.entradas.destroy', $tablet) }}">Eliminar</a>
+                <a href="{{ route('admin.tablets.edit', $tablet) }}">Editar</a>
+                <a href="#!" class="btn-delete">Eliminar</a>
             </td>
         </tr>
         <tr>

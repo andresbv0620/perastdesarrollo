@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Editar Cliente: {{$user->name}}</div>
+                    <div class="panel-heading">Editar Usuario: {{$user->name}}</div>
 
                     <div class="panel-body">
                         @include('admin.partials.messages')
@@ -13,19 +13,13 @@
 
                         @include('admin.users.partials.fields')
 
-                        <button type="submit" class="btn btn-default">Actualizar Cliente</button>
+                        <button type="submit" class="btn btn-default">Actualizar Usuario</button>
 
                         {!! Form::close() !!}
                     </div>
-
-
-
-
-
-                    @include('admin.users.partials.delete')
-
                </div>
             </div>
+            @include('admin.users.partials.delete')
         </div>
     </div>
 @endsection

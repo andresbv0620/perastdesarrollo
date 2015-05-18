@@ -39,22 +39,26 @@ class UsersController extends Controller {
      */
     public function index()
 	{
-        $data=$this->request;
+        $isplan=Plan::all()->first();
+        if(!empty($isplan)) {
 
-
-
-        /** @var TYPE_NAME $users */
-        if(EntrustFacade::hasRole('superadmin')) {
-            $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
-        }else{
-            if(Session::get('tenant_id')) {
-                $sistema_id = Session::get('tenant_id');
-                $users = Sistema::find($sistema_id)->users()->name($data->get('name'))->orderBy('id', 'DESC')->paginate();
-            }else{
+            $data = $this->request;
+             /** @var TYPE_NAME $users */
+            if (EntrustFacade::hasRole('superadmin')) {
                 $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+            } else {
+                if (Session::get('tenant_id')) {
+                    $sistema_id = Session::get('tenant_id');
+                    $users = Sistema::find($sistema_id)->users()->name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+                } else {
+                    $users = User::name($data->get('name'))->orderBy('id', 'DESC')->paginate();
+                }
             }
+            return view('admin.users.index', compact('users'));
+        }else{
+            Session::flash('message','Antes de empezar debe Registrar un plan');
+            return redirect()->route('admin.planes.index');
         }
-        return view('admin.users.index', compact('users'));
 	}
 
 	/**
@@ -64,13 +68,19 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
-        $plans=Plan::all();
-        $users=User::all();
-        $systems=Sistema::all();
-        $roles=Role::all();
-        $rolescheckeds=array();
-        $sistemascheckeds=array();
-		return view('admin.users.create', compact('plans','users','systems','roles','rolescheckeds','sistemascheckeds'));
+        $isplan=Plan::all()->first();
+        if(!empty($isplan)) {
+            $plans = Plan::all();
+            $users = User::all();
+            $systems = Sistema::all();
+            $roles = Role::all();
+            $rolescheckeds = array();
+            $sistemascheckeds = array();
+            return view('admin.users.create', compact('plans', 'users', 'systems', 'roles', 'rolescheckeds', 'sistemascheckeds'));
+        }else{
+            Session::flash('message','Antes de empezar debe Registrar un plan');
+            return redirect()->route('admin.planes.index');
+        }
 	}
 
 	/**
@@ -102,8 +112,8 @@ class UsersController extends Controller {
         $user->roles()->sync(Input::get('role_id'));
 
         if($user->hasRole(['superadmin','admin'])) {
-            if(isset($plan_id)) {
-                $planid = $data['plan_id'];
+            $planid = $data['plan_id'];
+            if(!empty($planid)) {
                 $plan = Plan::findOrFail($planid);
                 $user->plans()->attach($plan);
             }
@@ -158,9 +168,6 @@ class UsersController extends Controller {
 	public function update(EditUserRequest $request,$id)
 	{
         $data=$this->request->all();
-
-
-
         $user=User::findOrFail($id);
         $user->fill($data);
         $user->save();
@@ -172,9 +179,6 @@ class UsersController extends Controller {
 
             $user->sistemas()->sync(Input::get('systems_id'));
         }
-
-
-
 
 
         $user->roles()->sync(Input::get('role_id'));
@@ -190,25 +194,21 @@ class UsersController extends Controller {
      *
      * @param  int $id
      * @param Request $request
-     * @return Response
+    * @return Response
      */
 	public function destroy($id)
 	{
         //$this->user->delete();
         User::destroy($id);//Opcion
+        $message='El usuario fue eliminado de nuestros registros';
 
-        $message='fue eliminado de nuestros registros';
-
-        if($request->ajax()){
+        if($this->request->ajax()){
             return response()->json([
                 'id'=>$id,
                 'message'=>$message
             ]);
         }
         Session::flash('message',$message);
-
         return redirect()->route('admin.users.index');
-
 	}
-
 }

@@ -10,7 +10,7 @@
                         @include('admin.partials.messages')
 
                         {{--{!! Form::model($catalog,array('route' => ['admin.users.update',$catalog],'method'=>'PUT')) !!}
-                        @include('admin.catalogs.partials.fields')
+                        @include('admin.catalogs.homepartials.fields')
                         <button type="submit" class="btn btn-default">Actualizar Catálogo</button>
                         {!! Form::close() !!}--}}
 
