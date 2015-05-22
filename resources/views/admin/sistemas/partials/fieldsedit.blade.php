@@ -19,7 +19,6 @@
 
     <p class="help-block">Suba un logo. Tamaño Maximo 4Mb</p>
 </div>
-
 <h2>Asignar sistema a usuario</h2>
 <table class="table table-striped">
     <tr>
@@ -35,7 +34,7 @@
             {!! $userchecked = in_array($user->id, $usercheckeds) ? true : false;!!}
             @endif
             <tr>
-                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox','id'=>$user->id])!!}</td>
+                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox, disabled','id'=>$user->id,'disabled'=>'true'])!!}</td>
                 <td>{!!Form::label('Nombre',$user->name)!!}</td>
                 <td>{!!Form::label('Email',$user->email)!!}</td>
                 <td>{!!Form::label('Página',$user->pagina)!!}</td>
@@ -47,7 +46,7 @@
                 {!! $userchecked = in_array($user->id, $usercheckeds) ? true : false;!!}
             @endif
             <tr>
-                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox','id'=>$user->id])!!}</td>
+                <td>{!!Form::checkbox('user_id[]', $user->id, $userchecked,['class'=>'checkbox, disabled','id'=>$user->id,'disabled'=>'true'])!!}</td>
                 <td>{!!Form::label('Nombre',$user->name)!!}</td>
                 <td>{!!Form::label('Email',$user->email)!!}</td>
                 <td>{!!Form::label('Página',$user->pagina)!!}</td>

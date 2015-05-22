@@ -18,9 +18,9 @@ class CreateSistemasTable extends Migration {
             $table->string('nombreDataBase');
             $table->string('description');
             $table->timestamps();
-
-
 		});
+        DB::statement("ALTER TABLE sistemas ADD logo_sistema LONGBLOB");
+        DB::statement("ALTER TABLE sistemas ADD imagen_fondo LONGBLOB");
 	}
 
 	/**

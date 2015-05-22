@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         @include('admin.partials.messages')
-                        {!! Form::open(array('route' => 'admin.sistemas.store','method'=>'POST')) !!}
+                        {!! Form::open(array('route' => 'admin.sistemas.store','method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
 
                         @include('admin.sistemas.partials.fields')
 

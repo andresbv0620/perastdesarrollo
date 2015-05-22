@@ -11,6 +11,7 @@ use App\Role;
 use App\Sistema;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -198,9 +199,13 @@ class UsersController extends Controller {
      */
 	public function destroy($id)
 	{
-        //$this->user->delete();
-        User::destroy($id);//Opcion
-        $message='El usuario fue eliminado de nuestros registros';
+        if(Auth::user()==User::findOrFail($id)) {
+            $message = 'No es posible eliminar este usuario';
+        }else{
+            //$this->user->delete();
+            User::destroy($id);//Opcion
+            $message = 'El usuario fue eliminado de nuestros registros';
+        }
 
         if($this->request->ajax()){
             return response()->json([

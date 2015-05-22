@@ -28,7 +28,7 @@ class SistemasController extends Controller {
 
     public function __construct(Request $request){
 
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->request = $request;
     }
 
@@ -52,7 +52,7 @@ class SistemasController extends Controller {
             return view('admin.sistemas.index', compact('sistemas', 'user'));
         }else{
             Session::flash('message','Antes de empezar debe Registrar un usuario');
-            return redirect()->route('admin.usuarios.index');
+            return redirect()->route('admin.users.index');
         }
 
 	}
@@ -71,7 +71,7 @@ class SistemasController extends Controller {
             return view('admin.sistemas.create', compact('users', 'usercheckeds'));
         }else{
             Session::flash('message','Antes de empezar debe Registrar un usuario');
-            return redirect()->route('admin.usuarios.index');
+            return redirect()->route('admin.users.index');
         }
     }
 
@@ -82,8 +82,89 @@ class SistemasController extends Controller {
 	 */
 	public function store(CreateSistemaRequest $request)
 	{
+        ////////////Capturar Imagen de Fondo////////////////////
+        $fondo_name= $_FILES["imagenFondo"]["name"];
+        $fondo_size= $_FILES["imagenFondo"]["size"];
+        $fondo_type= $_FILES["imagenFondo"]["type"];
+        $fondo_temporal= $_FILES["imagenFondo"]["tmp_name"];
+
+        if($fondo_size>8388608 ){
+            Session::flash('message','El tamaño de imagen máximo permitido para el fondo es 8 Mb');
+            return redirect()->back();
+        }
+
+        # Limitamos los formatos de imagen admitidos a: png, jpg y gif
+        if ($fondo_type=="image/x-png" OR $fondo_type=="image/png")
+        {
+            $extension="image/png";
+        }
+        if ($fondo_type=="image/pjpeg" OR $fondo_type=="image/jpeg")
+        {
+            $extension="image/jpeg";
+        }
+        if ($fondo_type=="image/gif" OR $fondo_type=="image/gif")
+        {
+            $extension="image/gif";
+        }
+
+        /*Reconversion de la imagen para meter en la tabla abrimos el fichero temporal en modo lectura "r" y binaria "b"*/
+        $f1= fopen($fondo_temporal,"rb");
+
+        # Leemos el fichero completo limitando la lectura al tamaño del fichero
+        $fondo_reconvertida = fread($f1, $fondo_size);
+
+        /* Anteponemos "\" a las comillas que pudiera contener el fichero para evitar que sean interpretadas como final de cadena.*/
+        $fondo_reconvertida = base64_encode($fondo_reconvertida);
+
+        //cerrar el fichero temporal
+        fclose($f1);
+        ////////////////////////////Fin imagen de fondo/////////////////////////
+
+        /////////////////////////Capturar Logo////////////////////////////////////
+
+        $logo_name= $_FILES["logo"]["name"];
+        $logo_size= $_FILES["logo"]["size"];
+        $logo_type= $_FILES["logo"]["type"];
+        $logo_temporal= $_FILES["logo"]["tmp_name"];
+
+        if($logo_size>8388608 ){
+            Session::flash('message','El tamaño de imagen de logo máximo permitido es 8 Mb');
+            return redirect()->back();
+        }
+
+        # Limitamos los formatos de imagen admitidos a: png, jpg y gif
+        if ($logo_type=="image/x-png" OR $logo_type=="image/png")
+        {
+            $extension="image/png";
+        }
+        if ($logo_type=="image/pjpeg" OR $logo_type=="image/jpeg")
+        {
+            $extension="image/jpeg";
+        }
+        if ($logo_type=="image/gif" OR $logo_type=="image/gif")
+        {
+            $extension="image/gif";
+        }
+
+        /*Reconversion de la imagen para meter en la tabla abrimos el fichero temporal en modo lectura "r" y binaria "b"*/
+        $f1= fopen($logo_temporal,"rb");
+
+        # Leemos el fichero completo limitando la lectura al tamaño del fichero
+        $logo_reconvertida = fread($f1, $logo_size);
+
+        /* Anteponemos "\" a las comillas que pudiera contener el fichero para evitar que sean interpretadas como final de cadena.*/
+        $logo_reconvertida = base64_encode($logo_reconvertida);
+
+        //cerrar el fichero temporal
+        fclose($f1);
+
+        //////////////////////////Fin Capturar Logo//////////////////////
+
         $data=$this->request->all();
 		$sistema = new Sistema($data);
+        $sistema->logo_sistema=$logo_reconvertida;
+        $sistema->imagen_fondo=$fondo_reconvertida;
+
         $sistema->save();
 
         if(Input::get('user_id')=="") {
@@ -214,6 +295,15 @@ class SistemasController extends Controller {
 	public function edit($id)
 	{
         $sistema=Sistema::findOrFail($id);
+        $logo=$sistema->logo_sistema;
+
+        //Decodificamos $Base64Img codificada en base64.
+        $Base64Img = base64_decode($logo);
+
+        //escribimos la información obtenida en un archivo llamado
+        //unodepiera.png para que se cree la imagen correctamente
+        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/img_sistemas/logo.png', $Base64Img);
+
         $tablets=$sistema->tablets;
         $users=User::all();
         $usercheckeds = $sistema->users()->lists('user_id');
@@ -228,17 +318,97 @@ class SistemasController extends Controller {
 	 */
 	public function update($id)
 	{
+        ////////////Capturar Imagen de Fondo////////////////////
+        $fondo_name= $_FILES["imagenFondo"]["name"];
+        $fondo_size= $_FILES["imagenFondo"]["size"];
+        $fondo_type= $_FILES["imagenFondo"]["type"];
+        $fondo_temporal= $_FILES["imagenFondo"]["tmp_name"];
+
+        if($fondo_size>4000000 ){
+            Session::flash('message','El tamaño de imagen máximo permitido para el fondo es 4 Mb');
+            return redirect()->back();
+        }
+
+        # Limitamos los formatos de imagen admitidos a: png, jpg y gif
+        if ($fondo_type=="image/x-png" OR $fondo_type=="image/png")
+        {
+            $extension="image/png";
+        }
+        if ($fondo_type=="image/pjpeg" OR $fondo_type=="image/jpeg")
+        {
+            $extension="image/jpeg";
+        }
+        if ($fondo_type=="image/gif" OR $fondo_type=="image/gif")
+        {
+            $extension="image/gif";
+        }
+
+        /*Reconversion de la imagen para meter en la tabla abrimos el fichero temporal en modo lectura "r" y binaria "b"*/
+        $f1= fopen($fondo_temporal,"rb");
+
+        # Leemos el fichero completo limitando la lectura al tamaño del fichero
+        $fondo_reconvertida = fread($f1, $fondo_size);
+
+        /* Anteponemos "\" a las comillas que pudiera contener el fichero para evitar que sean interpretadas como final de cadena.*/
+        $fondo_reconvertida = base64_encode($fondo_reconvertida);
+
+        //cerrar el fichero temporal
+        fclose($f1);
+        ////////////////////////////Fin imagen de fondo/////////////////////////
+
+        /////////////////////////Capturar Logo////////////////////////////////////
+
+        $logo_name= $_FILES["logo"]["name"];
+        $logo_size= $_FILES["logo"]["size"];
+        $logo_type= $_FILES["logo"]["type"];
+        $logo_temporal= $_FILES["logo"]["tmp_name"];
+
+        if($logo_size>4000000 ){
+            Session::flash('message','El tamaño de imagen de logo máximo permitido es 4 Mb');
+            return redirect()->back();
+        }
+
+        # Limitamos los formatos de imagen admitidos a: png, jpg y gif
+        if ($logo_type=="image/x-png" OR $logo_type=="image/png")
+        {
+            $extension="image/png";
+        }
+        if ($logo_type=="image/pjpeg" OR $logo_type=="image/jpeg")
+        {
+            $extension="image/jpeg";
+        }
+        if ($logo_type=="image/gif" OR $logo_type=="image/gif")
+        {
+            $extension="image/gif";
+        }
+
+        /*Reconversion de la imagen para meter en la tabla abrimos el fichero temporal en modo lectura "r" y binaria "b"*/
+        $f1= fopen($logo_temporal,"rb");
+
+        # Leemos el fichero completo limitando la lectura al tamaño del fichero
+        $logo_reconvertida = fread($f1, $logo_size);
+
+        /* Anteponemos "\" a las comillas que pudiera contener el fichero para evitar que sean interpretadas como final de cadena.*/
+        $logo_reconvertida = base64_encode($logo_reconvertida);
+
+        //cerrar el fichero temporal
+        fclose($f1);
+
+        //////////////////////////Fin Capturar Logo//////////////////////
+
 
         $data =$this-> request->all ();
         $sistema=Sistema::findOrFail($id);
         $sistema->fill($data);
+        $sistema->logo_sistema=$logo_reconvertida;
+        $sistema->imagen_fondo=$fondo_reconvertida;
         $sistema->save();
 
         /*$tablet = new Tablet($data);
         $tablet->save ();
         $tablet->sistemas()->attach($sistema);*/
-
-        $sistema->users()->sync(Input::get('user_id'));
+        //No es posible actualizar un usuario a un sistema despues de crearlo, se debe eliminar el sistema y crear uno nuevo asociandole los usuarios
+        //$sistema->users()->sync(Input::get('user_id'));
 
 
         $sistemas=Sistema::paginate();

@@ -4,7 +4,35 @@ use Faker\Factory as Faker;
 class UserTableSeeder extends Seeder{
 	public function run()
 	{
-     $faker = Faker::create();
+
+        \DB::table('plans')->insert(array(
+            'nombre' => 'PERAST',
+            'capacidad' => '0',
+            'cantidadTablets' => '0',
+            'sistemas' => '0',
+            'duracion' => '2016-06-06',
+            'precio' => '0',
+            'periodicidad' => 'anual'
+        ));
+        $id_user = \DB::table('users')->insertGetId(array(
+            'name' => 'Julian Castillo',
+            'email' => 'jcastillo@perast.cl',
+            'password' => \Hash::make('123456'),
+            'pagina' => 'perast.cl',
+            'imagenFondo' => '',
+            'logo' => ''
+        ));
+
+
+        \DB::table('plan_user')->insert(array(
+            'activo' => '1',
+            'user_id' => $id_user,
+            'plan_id' => '1',
+            'duracion' => '2016-06-06'
+        ));
+
+
+     /*$faker = Faker::create();
 
         for($i = 0; $i<3 ; $i++) {
 
@@ -38,7 +66,7 @@ class UserTableSeeder extends Seeder{
                     'duracion' => $faker->dateTimeBetween('now', '1 years')->format('Y-m-d')
                 ));
             }
-        }
+        }*/
 
 
 	}

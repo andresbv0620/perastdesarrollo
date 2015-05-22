@@ -24,7 +24,9 @@ class CreateSistemaRequest extends Request {
 		return [
             'nombreDataBase'=>'required',
             'description'=>'required',
-            'user_id'=>'required'
+            'user_id'=>'required',
+            //'logo_sistema'=>'required',
+            //'imagen_fondo'=>'required'
 		];
 	}
 
