@@ -52,7 +52,7 @@
                             </table>
                             {!! Form::open(array('route' => ['admin.entradas.store'],'method'=>'POST')) !!}
                             {!!Form::hidden('tab_id',$tab->id)!!}
-                            <div id="fields">
+                            <div class="fields">
                                 <div class="form-group">
                                     {!!Form::label('field_name', 'Nombre')!!}
                                     {!!Form::text('field_name',null,['class'=>'form-control','placeholder'=>'Nombre de la entrada'])!!}
