@@ -65,8 +65,7 @@ class EntradasController extends Controller {
 
         $entrada=$tab->entradas()->save($entrada);
 
-        $input_id=$entrada->id;
-        $input=$tab->id.'_'.$input_id;
+        $input=$tab->id.'_'.$entrada->id;
 
         Schema::connection($newconnection)->table('inputs', function($table) use ($input)
         {
@@ -134,10 +133,23 @@ class EntradasController extends Controller {
         $newconnection= Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
         $entrada=Entrada::on($newconnection)->findOrFail($id);
-        $catalogid=$entrada->catalog_id;
+        $entrada->setConnection($newconnection);
+        $tabid=$entrada->tab_id;
         $entrada->delete();
 
+
+        $tab=Tab::on($newconnection)->findOrFail($tabid);
+        $tab->setConnection($newconnection);
+        $catalogid=$tab->catalog_id;
+
+        $input=$tabid."_".$id;
+
+        Schema::on($newconnection)->table('inputs', function($table) use ($input)
+        {
+            $table->dropColumn($input);
+        });
         $message='La Entrada fue eliminada';
+
 
         if($this->request->ajax()){
             return response()->json([

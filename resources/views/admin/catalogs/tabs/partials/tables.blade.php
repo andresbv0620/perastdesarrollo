@@ -62,7 +62,7 @@
                             </div>
                             <div class="form-group">
                                 {!!Form::label('Tipo de Campo')!!}
-                                {!!Form::select('field_type', array('texto' => 'Texto', 'parrafo' => 'Parrafo', 'opcion_unica' => 'Opción Única', 'opcion_multiple' => 'Opción Multiple', 'foto' => 'Foto'), 'Texto', array('class' => 'tipo-entrada'))!!}
+                                {!!Form::select('field_type', array('texto' => 'Texto', 'parrafo' => 'Parrafo', 'opcion_unica' => 'Opción Única', 'opcion_multiple' => 'Opción Multiple', 'foto' => 'Foto', 'fecha' => 'Fecha', 'numero' => 'Numero', 'scan' => 'Scan'), 'Texto', array('class' => 'tipo-entrada'))!!}
                             </div>
 
 

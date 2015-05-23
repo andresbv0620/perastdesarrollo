@@ -51,19 +51,6 @@
     {!!Form::text('pagina',null,['class'=>'form-control','placeholder'=>'Introduzca su pagina'])!!}
 </div>
 
-<div class="form-group">
-    {!! Form::label('imagenFondo', 'Imagen de Fondo')!!}
-    {!! Form::file('imagenFondo')!!}
-
-    <p class="help-block">Suba una Imagen de Fondo</p>
-</div>
-<div class="form-group">
-    {!! Form::label('logo', 'Logo')!!}
-    {!! Form::file('logo')!!}
-
-    <p class="help-block">Suba un logo</p>
-</div>
-
 <!--Se cargan los planes solo para Super Admin y Admin-->
 <div class="form-group" id="plans-id">
     Planes
@@ -118,7 +105,7 @@
                     {!! $sistemaschecked = in_array($system->id, $sistemascheckeds) ? true : false; !!}
                 @endif
                 <tr>
-                    <td>{!!Form::checkbox('systems_id[]', $system->id, $sistemaschecked,['class'=>'checkbox, disabled','id'=>'sistema'.$system->id])!!}</td>
+                    <td>{!!Form::checkbox('systems_id[]', $system->id, $sistemaschecked,['class'=>'checkbox, disabled','id'=>'sistema'.$system->id,'disabled'=>'true'])!!}</td>
                     <td>{!!Form::label('Sistema Id',$system->id)!!}</td>
                     <td>{!!Form::label('nombreDataBase',$system->nombreDataBase)!!}</td>
                     <td>{!!Form::label('Descripción',$system->description)!!}</td>
