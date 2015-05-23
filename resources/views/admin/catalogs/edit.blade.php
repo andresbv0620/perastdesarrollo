@@ -111,12 +111,12 @@
 
                 var form=$('#form-delete-entrada');
                 var url=form.attr('action').replace(':OBJECT_ID', id);
-                alert(url);
+
 
                 var data=form.serialize();
 
-                row.fadeOut();
-                //$("#tab"+id).fadeOut();
+                $('#entrada'+id).fadeOut();
+
 
                 $.post(url, data, function (result) {
                     alert(result.message);

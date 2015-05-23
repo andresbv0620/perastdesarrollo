@@ -145,12 +145,13 @@ class TabsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-        return $id;
+
         $newconnection= Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
         $tab=Tab::on($newconnection)->findOrFail($id);
+        $tab->setConnection($newconnection);
         $catalogid=$tab->catalog_id;
-        $tab->delete();
+        $tab->setConnection($newconnection)->delete();
 
         $message='La Ficha fue eliminada';
 

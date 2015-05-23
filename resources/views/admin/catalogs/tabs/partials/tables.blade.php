@@ -33,7 +33,7 @@
                                     <th>Acciones</th>
                                 </tr>
                                 @foreach($entradas[$tab->id]  as $entrada)
-                                    <tr data-identrada="{{$entrada->id}}">
+                                    <tr data-identrada="{{$entrada->id}}" id="entrada{{$entrada->id}}">
                                         <td>{{$entrada->id}}</td>
                                         <td>{{$entrada->field_name}}</td>
                                         <td>{{$entrada->field_description}}</td>
@@ -41,7 +41,7 @@
                                         <td>{{$entrada->field_required}}</td>
 
                                         <td>
-                                            <a href="{{ route('admin.entradas.edit', $entrada) }}">Editar</a>
+                                            {{--<a href="{{ route('admin.entradas.edit', $entrada) }}">Editar</a>--}}
                                             <a href="#!" class="btn-delete-entrada">Eliminar</a>
                                         </td>
                                     </tr>

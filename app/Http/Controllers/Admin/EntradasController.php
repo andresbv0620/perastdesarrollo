@@ -130,12 +130,14 @@ class EntradasController extends Controller {
 	 */
 	public function destroy($id)
 	{
+
         $newconnection= Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
         $entrada=Entrada::on($newconnection)->findOrFail($id);
+
         $entrada->setConnection($newconnection);
         $tabid=$entrada->tab_id;
-        $entrada->delete();
+        $entrada->setConnection($newconnection)->delete();
 
 
         $tab=Tab::on($newconnection)->findOrFail($tabid);
@@ -144,7 +146,9 @@ class EntradasController extends Controller {
 
         $input=$tabid."_".$id;
 
-        Schema::on($newconnection)->table('inputs', function($table) use ($input)
+
+
+        Schema::connection($newconnection)->table('inputs', function($table) use ($input)
         {
             $table->dropColumn($input);
         });
