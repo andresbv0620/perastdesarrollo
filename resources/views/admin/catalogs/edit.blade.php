@@ -68,6 +68,12 @@
                     $('#opcionesmulti-'+divtab).hide();
                 }
 
+                if ((target.value=='boton_siguiente')||(target.value=='boton_limpiar')||(target.value=='boton_anterior')||(target.value=='boton_guardar')) {
+                    $('#fields').hide();
+                }else{
+                    $('#fields').show();
+                }
+
             });
 
             $(document).on('click','.agregar',function(e){

@@ -52,13 +52,15 @@
                             </table>
                             {!! Form::open(array('route' => ['admin.entradas.store'],'method'=>'POST')) !!}
                             {!!Form::hidden('tab_id',$tab->id)!!}
-                            <div class="form-group">
-                                {!!Form::label('field_name', 'Nombre')!!}
-                                {!!Form::text('field_name',null,['class'=>'form-control','placeholder'=>'Nombre de la entrada'])!!}
-                            </div>
-                            <div class="form-group">
-                                {!!Form::label('field_description', 'Descripción')!!}
-                                {!!Form::text('field_description',null,['class'=>'form-control','placeholder'=>'Descripcion de la entrada'])!!}
+                            <div id="fields">
+                                <div class="form-group">
+                                    {!!Form::label('field_name', 'Nombre')!!}
+                                    {!!Form::text('field_name',null,['class'=>'form-control','placeholder'=>'Nombre de la entrada'])!!}
+                                </div>
+                                <div class="form-group">
+                                    {!!Form::label('field_description', 'Descripción')!!}
+                                    {!!Form::text('field_description',null,['class'=>'form-control','placeholder'=>'Descripcion de la entrada'])!!}
+                                </div>
                             </div>
                             <div class="form-group">
                                 {!!Form::label('Tipo de Campo')!!}
