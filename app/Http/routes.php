@@ -11,9 +11,15 @@
 |
 */
 
+use App\Catalog;
 use App\Permission;
 use App\Role;
+use App\Sistema;
+use App\Tablet;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 use Zizaco\Entrust\EntrustFacade;
 
 Route::get('test', function(){
@@ -261,7 +267,7 @@ Route::controllers([
 
 
 
-Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
+Route::group(['prefix'=>'admin','namespace'=>'\Admin','middleware'=>'auth'], function(){
     Route::resource('users', 'UsersController');
     Route::resource('planes','PlanesController');
     Route::resource('catalogs','CatalogsController');
@@ -274,11 +280,33 @@ Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
     Route::resource('tablets','TabletsController');
 });
 
-Route::group(array('prefix' => 'api/v1','namespace'=>'\API'), function()
+Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'tabletauth'), function()
 {
     Route::resource('users','UsersController');
     Route::resource('catalogs','CatalogsController');
 
+    Route::post('apitest',function(Request $request){
+        //return "hola ".$request->input('tablet_id');
+        $users = User::all();
+        foreach($users as $user){
+            $sistemas=$user->sistemas;
+            $user=array(
+                'user'=>$users->toArray(),
+                'sistemas'=>$sistemas->toArray()
+            );
+        }
+
+
+        $tablets = Tablet::all();
+
+
+
+        $response = array(
+            'error' => 0,
+            'users' => $users
+        );
+        return Response::json($response);
+    });
 });
 
 Route::post('tenant', [

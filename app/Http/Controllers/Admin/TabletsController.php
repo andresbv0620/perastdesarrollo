@@ -22,6 +22,7 @@ class TabletsController extends Controller {
     public function __construct(Request $request){
 
         $this->request = $request;
+        $this->middleware('auth');
     }
 
 	/**
@@ -31,10 +32,15 @@ class TabletsController extends Controller {
 	 */
 	public function index()
 	{
-		$sistema_id=Session::get('tenant_id');
+        if(Session::has('tenant_id')) {
+            $sistema_id = Session::get('tenant_id');
 
-        $tablets=Sistema::findOrFail($sistema_id)->tablets()->paginate();
-        return view('admin.tablets.index', compact('tablets'));
+            $tablets = Sistema::findOrFail($sistema_id)->tablets()->paginate();
+            return view('admin.tablets.index', compact('tablets'));
+        }else{
+            Session::flash('message','Para registrar tablets antes debe seleccionar un sistema');
+            return redirect(url('/home'));
+        }
 
 	}
 
@@ -45,7 +51,12 @@ class TabletsController extends Controller {
 	 */
 	public function create()
 	{
-		return view('admin.tablets.create');
+        if(Session::has('tenant_id')) {
+		    return view('admin.tablets.create');
+        }else{
+            Session::flash('message','Para registrar tablets antes debe seleccionar un sistema');
+            return redirect(url('/home'));
+        }
 	}
 
 	/**

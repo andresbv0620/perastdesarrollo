@@ -7,6 +7,8 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Inicio</div>
 
+                @include('admin.partials.messages')
+
 				<div class="panel-body">
 
                     <div class="span3">

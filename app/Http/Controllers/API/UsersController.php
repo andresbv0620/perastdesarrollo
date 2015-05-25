@@ -42,7 +42,6 @@ class UsersController extends Controller {
             'users' => $users->toArray()
         ); // encapsulais en un array la respuesta
         return Response::json($response); // Response::json se encarga de formatear como JSON el array donde encapsulaste la respuesta.
-
 	}
 
 	/**
@@ -68,7 +67,6 @@ class UsersController extends Controller {
 	 */
 	public function store(CreateUserRequest $request)
 	{
-
         $data=$this->request->all();
         $user = new User($data);
         $user->save();
