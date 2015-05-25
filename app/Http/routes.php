@@ -303,7 +303,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
 
         $response = array(
             'error' => 0,
-            'users' => $users
+            'users' => $user
         );
         return Response::json($response);
     });
