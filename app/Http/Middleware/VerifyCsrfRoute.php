@@ -7,7 +7,9 @@ class VerifyCsrfRoute extends BaseVerifier {
 
     private $openRoutes =
         [
-            'api/v1/apitest'
+            'api/v1/apitest',
+            'api/v1/sistemas',
+            'api/v1/catalogos'
         ];
 
 	/**

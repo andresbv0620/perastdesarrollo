@@ -15,13 +15,11 @@ class TabletAuthMiddleware {
 	 */
 	public function handle($request, Closure $next)
 	{
-
         if( Tablet::findOrFail($request->input('tablet_id')) ){
             return $next($request);
         }else{
             return response('Unauthorized.', 401);
         }
-
 	}
 
 }

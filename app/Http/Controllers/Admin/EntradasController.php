@@ -79,9 +79,11 @@ class EntradasController extends Controller {
         }else {
 
             foreach(Input::get('opcion_name') as $opcion) {
-                $opcion=new Opcione(['option_name'=>$opcion]);
-                $opcion->setConnection($newconnection);
-                $entrada->opciones()->save($opcion);
+                if( ($opcion=='opcion_multiple') || ($opcion=='opcion_unica')) {
+                    $opcion = new Opcione(['option_name' => $opcion]);
+                    $opcion->setConnection($newconnection);
+                    $entrada->opciones()->save($opcion);
+                }
             }
         }
 

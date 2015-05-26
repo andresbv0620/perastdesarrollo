@@ -164,7 +164,13 @@ class SistemasController extends Controller {
 		$sistema = new Sistema($data);
         $sistema->logo_sistema=$logo_reconvertida;
         $sistema->imagen_fondo=$fondo_reconvertida;
+        $sistema->save();
 
+        $users_id = Input::get('user_id');
+        foreach($users_id as $userid) {
+            $dbname = ($sistema->id). '_' .$userid;
+            $sistema->nombre_db=$dbname;
+        }
         $sistema->save();
 
         if(Input::get('user_id')=="") {

@@ -12,9 +12,13 @@
 */
 
 use App\Catalog;
+use App\Entrada;
+use App\Http\Controllers\Admin\OnTheFly;
+use App\Opcione;
 use App\Permission;
 use App\Role;
 use App\Sistema;
+use App\Tab;
 use App\Tablet;
 use App\User;
 use Illuminate\Http\Request;
@@ -267,7 +271,7 @@ Route::controllers([
 
 
 
-Route::group(['prefix'=>'admin','namespace'=>'\Admin','middleware'=>'auth'], function(){
+Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
     Route::resource('users', 'UsersController');
     Route::resource('planes','PlanesController');
     Route::resource('catalogs','CatalogsController');
@@ -286,7 +290,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
     Route::resource('catalogs','CatalogsController');
 
     Route::post('apitest',function(Request $request){
-        //return "hola ".$request->input('tablet_id');
+        $tablet_id=$request->input('tablet_id');
         $users = User::all();
         foreach($users as $user){
             $sistemas=$user->sistemas;
@@ -296,14 +300,74 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             );
         }
 
-
-        $tablets = Tablet::all();
-
-
-
         $response = array(
             'error' => 0,
             'users' => $user
+        );
+        return Response::json($response);
+    });
+
+    Route::post('sistemas',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+        $sistemas = $tablet->sistemas;
+        foreach($sistemas as $sistema) {
+            $users = $sistema->users;
+        }
+        $response = array(
+            'error' => 0,
+            'sistemas' => $sistemas
+        );
+        return Response::json($response);
+    });
+
+    Route::post('catalogos',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+
+        $tablet=Tablet::findOrFail($tablet_id);
+        $sistemas = $tablet->sistemas;
+        $sistemas=$sistemas->toArray();
+
+        $sistemasArray=array();
+
+        foreach($sistemas as $sistema) {
+            $newconnection=$sistema['nombre_db'];
+
+
+            $otf = new OnTheFly(['database' => $newconnection]);
+            $catalogs = Catalog::on($newconnection)->get();//Retrieves an objet, it is needed to use toArray()
+            $catalogs = $catalogs->toArray();
+            //$catalogs = $otf->getTable('catalogs')->get();//Retrieves an array, there is no need to convert to array, just one line
+            $catalogosArray=array();
+            foreach($catalogs as $catalog){
+                $tabs=Tab::on($newconnection)->where('catalog_id','=',$catalog['id'])->get();
+                $tabs=$tabs->toArray();
+                $tabsArray=array();
+                foreach($tabs as $tab){
+                    $entradas=Entrada::on($newconnection)->where('tab_id','=',$tab['id'])->get();
+                    $entradas=$entradas->toArray();
+                    $entradasArray=array();
+                    foreach($entradas as $entrada){
+                        $opciones=Opcione::on($newconnection)->where('entrada_id','=',$entrada['id'])->get();
+                        $opciones=$opciones->toArray();
+
+                        $entrada['opciones']=$opciones;
+                        $entradasArray[]=$entrada;
+                    }
+                    $tab['entradas']=$entradasArray;
+                    $tabsArray[]=$tab;
+                }
+                $catalog['tabs']=$tabsArray;
+                $catalogosArray[]=$catalog;
+                //var_dump($tabsArray);
+            }
+
+            $sistema['catalogos']=$catalogosArray;
+            $sistemasArray[]=$sistema;
+            //var_dump($catalogosArray);
+        }
+        $response = array(
+            'sistemas' => $sistemasArray,
         );
         return Response::json($response);
     });
