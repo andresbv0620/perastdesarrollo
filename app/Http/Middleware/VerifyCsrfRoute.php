@@ -10,7 +10,7 @@ class VerifyCsrfRoute extends BaseVerifier {
             'api/v1/apitest',
             'api/v1/sistemas',
             'api/v1/catalogos',
-            'api/v1/sistema_logos'
+            'api/v1/logos'
         ];
 
 	/**

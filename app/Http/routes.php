@@ -308,26 +308,28 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         return Response::json($response);
     });
 
-    Route::post('sistema_logos',function(Request $request){
+    Route::post('logos',function(Request $request){
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
 
         $sistemas = $tablet->sistemas;
 
-        $sistemaArray=array();
+
         $sistemasArray=array();
 
         foreach($sistemas as $sistema) {
             $id=$sistema->id;
             $logo=$sistema->logo_sistema;
             $fondo=$sistema->imagen_fondo;
-            $sistemaArray['id']=$id;
-            $sistemaArray['logo']=$logo;
-            $sistemaArray['fondo']=$fondo;
-            $sistemasArray[]=$sistemaArray;
+
+            $sistemasArray[]=array(
+                'asistemaId'=>$id,
+                'blogo'=>$logo,
+                'cfondo'=>$fondo
+            );
         }
         $response = array(
-            'sistemas_logos' => $sistemasArray
+            'sistemas' => $sistemasArray
         );
         return Response::json($response);
     });
@@ -337,13 +339,21 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         $tablet=Tablet::findOrFail($tablet_id);
 
         $sistemas = $tablet->sistemas;
-
+        $sistemasArray=array();
         foreach($sistemas as $sistema) {
-            $users = $sistema->users;
-            var_dump($users);
+            $id=$sistema->id;
+            $nombre=$sistema->nombreDataBase;
+            $descripcion=$sistema->description;
+            $db=$sistema->nombre_db;
+            $sistemasArray[]=array(
+                'asistemaId'=>$id,
+                'bnombreSistema'=>$nombre,
+                'cdescripcionSistema'=>$descripcion,
+                'ddbSistema'=>$db
+            );
         }
         $response = array(
-            'sistemas' => $sistemas->toArray(),
+            'sistemas' => $sistemasArray,
         );
         return Response::json($response);
     });
