@@ -323,20 +323,23 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
 
     Route::post('catalogos',function(Request $request){
         $tablet_id=$request->input('tablet_id');
-
         $tablet=Tablet::findOrFail($tablet_id);
         $sistemas = $tablet->sistemas;
+
         $sistemas=$sistemas->toArray();
 
         $sistemasArray=array();
 
         foreach($sistemas as $sistema) {
+
             $newconnection=$sistema['nombre_db'];
 
 
             $otf = new OnTheFly(['database' => $newconnection]);
             $catalogs = Catalog::on($newconnection)->get();//Retrieves an objet, it is needed to use toArray()
+
             $catalogs = $catalogs->toArray();
+
             //$catalogs = $otf->getTable('catalogs')->get();//Retrieves an array, there is no need to convert to array, just one line
             $catalogosArray=array();
             foreach($catalogs as $catalog){
