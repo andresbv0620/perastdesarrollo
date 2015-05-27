@@ -22,6 +22,7 @@ use App\Tab;
 use App\Tablet;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Zizaco\Entrust\EntrustFacade;
@@ -310,12 +311,14 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
     Route::post('sistemas',function(Request $request){
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
+
         $sistemas = $tablet->sistemas;
+
         foreach($sistemas as $sistema) {
             $users = $sistema->users;
+            var_dump($users);
         }
         $response = array(
-            'error' => 0,
             'sistemas' => $sistemas
         );
         return Response::json($response);
