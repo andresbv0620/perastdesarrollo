@@ -308,6 +308,30 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         return Response::json($response);
     });
 
+    Route::post('sistema_logos',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+
+        $sistemas = $tablet->sistemas;
+
+        $sistemaArray=array();
+        $sistemasArray=array();
+
+        foreach($sistemas as $sistema) {
+            $id=$sistema->id;
+            $logo=$sistema->logo_sistema;
+            $fondo=$sistema->imagen_fondo;
+            $sistemaArray['id']=$id;
+            $sistemaArray['logo']=$logo;
+            $sistemaArray['fondo']=$fondo;
+            $sistemasArray[]=$sistemaArray;
+        }
+        $response = array(
+            'sistemas_logos' => $sistemasArray
+        );
+        return Response::json($response);
+    });
+
     Route::post('sistemas',function(Request $request){
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
@@ -319,7 +343,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             var_dump($users);
         }
         $response = array(
-            'sistemas' => $sistemas
+            'sistemas' => $sistemas->toArray(),
         );
         return Response::json($response);
     });
