@@ -22,8 +22,8 @@ use App\Tab;
 use App\Tablet;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Zizaco\Entrust\EntrustFacade;
 
