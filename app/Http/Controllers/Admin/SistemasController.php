@@ -265,7 +265,7 @@ class SistemasController extends Controller {
             $sistemas = Sistema::paginate();
         $user=Auth::user()->id;
 
-        return view('admin.sistemas.index', compact('sistemas','user'));
+        return view('home', compact('sistemas','user'));
 
 
 	}

@@ -7,6 +7,7 @@ use App\Sistema;
 use App\Tablet;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
 class TabletsController extends Controller {
@@ -52,7 +53,11 @@ class TabletsController extends Controller {
 	public function create()
 	{
         if(Session::has('tenant_id')) {
-		    return view('admin.tablets.create');
+            $tenant_id=Session::get('tenant_id');
+            $sistema=Sistema::findOrFail($tenant_id);
+            $tablets=Tablet::all();
+            $tabletscheckeds=$sistema->tablets()->lists('tablet_id');
+            return view('admin.tablets.create',compact('tabletscheckeds','tablets'));
         }else{
             Session::flash('message','Para registrar tablets antes debe seleccionar un sistema');
             return redirect(url('/home'));
@@ -66,21 +71,27 @@ class TabletsController extends Controller {
 	 */
 	public function store()
 	{
-        $rules=array(
-            'idUnicoTablet'=>'required|unique:tablets,idUnicoTablet',
-            'description'=>'required'
-        );
-        $this->validate($this->request,$rules);
         $sistema_id=Session::get('tenant_id');
         $sistema=Sistema::findOrFail($sistema_id);
+        $data=$this->request->all();
+        if(Input::get('tablet_id')=="") {
+            $rules = array(
+                'idUnicoTablet' => 'required|unique:tablets,idUnicoTablet',
+                'description' => 'required'
+            );
+            $this->validate($this->request, $rules);
+            $tablet=new Tablet($data);
+            $tablet->save();
+            $tablet_id=$tablet->id;
+            $sistema->tablets()->attach($tablet_id);
+        }else{
+            $sistema->tablets()->sync(Input::get('tablet_id'));
+        }
 
-		$data=$this->request->all();
-        $tablet=new Tablet($data);
-        $tablet->save();
-        $tablet_id=$tablet->id;
 
 
-        $sistema->tablets()->attach($tablet_id);
+
+
         return \Redirect::route('admin.tablets.index');
 	}
 
