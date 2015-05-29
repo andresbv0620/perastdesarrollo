@@ -323,9 +323,9 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             $fondo=$sistema->imagen_fondo;
 
             $sistemasArray[]=array(
-                'asistemaId'=>$id,
-                'blogo'=>$logo,
-                'cfondo'=>$fondo
+                'sistemaId'=>$id,
+                'logo'=>$logo,
+                'fondo'=>$fondo
             );
         }
         $response = array(
@@ -346,14 +346,30 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             $descripcion=$sistema->description;
             $db=$sistema->nombre_db;
             $sistemasArray[]=array(
-                'asistemaId'=>$id,
-                'bnombreSistema'=>$nombre,
-                'cdescripcionSistema'=>$descripcion,
-                'ddbSistema'=>$db
+                'sistemaId'=>$id,
+                'nombreSistema'=>$nombre,
+                'descripcionSistema'=>$descripcion,
+                'dbSistema'=>$db
             );
         }
         $response = array(
             'sistemas' => $sistemasArray,
+        );
+        return Response::json($response);
+    });
+
+    Route::post('usuarios',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+
+        $sistemas = $tablet->sistemas()->select('sistemas.id','nombreDataBase','description','nombre_db')
+            ->with('users')
+            ->get();
+
+        $sistemasArray=array();
+
+        $response = array(
+            'sistemas' => $sistemas,
         );
         return Response::json($response);
     });

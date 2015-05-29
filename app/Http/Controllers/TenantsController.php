@@ -3,13 +3,18 @@
 
 use App\Context\TenantContextSession;
 use App\Sistema;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 class TenantsController extends Controller {
 
 
-    public function store()
+    public function store(Request $request)
     {
+        $rules = array(
+            'tenant_connection' => 'required'
+        );
+        $this->validate($request, $rules);
         $context= new TenantContextSession();
         $context->setConnectionName(Input::get('tenant_connection'));
 

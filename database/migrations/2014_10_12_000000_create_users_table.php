@@ -20,10 +20,6 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->unique();
 			$table->string('password', 60);
 			$table->string('pagina');
-			$table->string('imagenFondo');
-
-			$table->longText('logo');
-
 			$table->rememberToken();
 			$table->timestamps();
 		});
