@@ -358,7 +358,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         return Response::json($response);
     });
 
-    Route::post('usuarios',function(Request $request){
+    Route::post('accesos',function(Request $request){
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
 
@@ -371,6 +371,40 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             foreach($users as $user){
                 $id=$user->id;
                 $usersArray[]=array('userId'=>$id);
+            }
+            $sistemasArray[]=array(
+                'sistemaId'=>$sistemaId,
+                'usuarios'=>$usersArray
+            );
+        }
+
+        $response = array(
+            'sistemas' => $sistemasArray
+        );
+        return Response::json($response);
+    });
+
+    Route::post('usuarios',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+
+        $sistemas = $tablet->sistemas;
+        $sistemasArray=array();
+        foreach($sistemas as $sistema){
+            $users=$sistema->users;
+            $sistemaId=$sistema->id;
+            $usersArray=array();
+            foreach($users as $user){
+                $id=$user->id;
+                $name=$user->name;
+                $email=$user->email;
+                $password=$user->password;
+                $usersArray[]=array(
+                    'userId'=>$id,
+                    'nombre'=>$name,
+                    'email'=>$email,
+                    'password'=>$password
+                );
             }
             $sistemasArray[]=array(
                 'sistemaId'=>$sistemaId,
