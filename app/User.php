@@ -34,6 +34,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
+    ///No se esconde el password para poder pasarlo al api
 	protected $hidden = ['remember_token','imagenFondo','logo'];
 
     public function sistemas(){

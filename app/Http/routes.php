@@ -362,14 +362,24 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
 
-        $sistemas = $tablet->sistemas()->select('sistemas.id','nombreDataBase','description','nombre_db')
-            ->with('users')
-            ->get();
-
+        $sistemas = $tablet->sistemas;
         $sistemasArray=array();
+        foreach($sistemas as $sistema){
+            $users=$sistema->users;
+            $sistemaId=$sistema->id;
+            $usersArray=array();
+            foreach($users as $user){
+                $id=$user->id;
+                $usersArray[]=array('userId'=>$id);
+            }
+            $sistemasArray[]=array(
+                'sistemaId'=>$sistemaId,
+                'usuarios'=>$usersArray
+            );
+        }
 
         $response = array(
-            'sistemas' => $sistemas,
+            'sistemas' => $sistemasArray
         );
         return Response::json($response);
     });
