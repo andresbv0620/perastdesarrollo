@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class AuthApiController extends Controller {
@@ -16,8 +17,9 @@ class AuthApiController extends Controller {
     public function __construct(Request $request){
 
         $this->request = $request;
-        $this->middleware('auth');
     }
+
+
 
 	/**
 	 * Display a listing of the resource.
@@ -26,10 +28,8 @@ class AuthApiController extends Controller {
 	 */
 	public function index()
 	{
-        $response = array(
-            'respuesta' => 'OK'
-        );
-        return Response::json($response);
+        //
+
 	}
 
 	/**
@@ -49,10 +49,15 @@ class AuthApiController extends Controller {
 	 */
 	public function store()
 	{
-        $response = array(
-            'respuesta' => 'OK'
-        );
-        return Response::json($response);
+        $email=$this->request->email;
+        $password=$this->request->password;
+
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $response = array(
+                'respuesta' => 'OK'
+            );
+            return Response::json($response);
+        }
 	}
 
 	/**
