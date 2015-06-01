@@ -289,6 +289,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
 {
     Route::resource('users','UsersController');
     Route::resource('catalogs','CatalogsController');
+    Route::resource('auth','AuthApiController');
 
     Route::post('apitest',function(Request $request){
         $tablet_id=$request->input('tablet_id');
