@@ -485,7 +485,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             );
         }
         $response = array(
-            'sistemas' => $sistemasArray,
+            'catalogos' => $sistemasArray,
         );
         return Response::json($response);
     });
