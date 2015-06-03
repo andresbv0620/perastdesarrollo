@@ -330,7 +330,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             );
         }
         $response = array(
-            'sistemas' => $sistemasArray
+            'logos' => $sistemasArray
         );
         return Response::json($response);
     });
@@ -380,7 +380,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         }
 
         $response = array(
-            'sistemas' => $sistemasArray
+            'accesos' => $sistemasArray
         );
         return Response::json($response);
     });
@@ -414,7 +414,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         }
 
         $response = array(
-            'sistemas' => $sistemasArray
+            'usuarios' => $sistemasArray
         );
         return Response::json($response);
     });
