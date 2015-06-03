@@ -423,49 +423,66 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
         $sistemas = $tablet->sistemas;
-
-        $sistemas=$sistemas->toArray();
-
         $sistemasArray=array();
-
         foreach($sistemas as $sistema) {
-
-            $newconnection=$sistema['nombre_db'];
-
-
+            $newconnection=$sistema->nombre_db;
             $otf = new OnTheFly(['database' => $newconnection]);
             $catalogs = Catalog::on($newconnection)->get();//Retrieves an objet, it is needed to use toArray()
-
-            $catalogs = $catalogs->toArray();
-
             //$catalogs = $otf->getTable('catalogs')->get();//Retrieves an array, there is no need to convert to array, just one line
             $catalogosArray=array();
             foreach($catalogs as $catalog){
-                $tabs=Tab::on($newconnection)->where('catalog_id','=',$catalog['id'])->get();
-                $tabs=$tabs->toArray();
+                $tabs=Tab::on($newconnection)->where('catalog_id','=',$catalog->id)->get();
+
                 $tabsArray=array();
                 foreach($tabs as $tab){
-                    $entradas=Entrada::on($newconnection)->where('tab_id','=',$tab['id'])->get();
-                    $entradas=$entradas->toArray();
+                    $entradas=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
                     $entradasArray=array();
                     foreach($entradas as $entrada){
-                        $opciones=Opcione::on($newconnection)->where('entrada_id','=',$entrada['id'])->get();
-                        $opciones=$opciones->toArray();
+                        $opciones=Opcione::on($newconnection)->where('entrada_id','=',$entrada->id)->get();
+                        $opcionesArray=array();
+                        foreach($opciones as $opcion){
+                            $opcionesArray[]=array(
+                                'opcionId'=>$opcion->id,
+                                'opcionNombre'=>$opcion->option_name,
+                            );
+                        }
 
-                        $entrada['opciones']=$opciones;
-                        $entradasArray[]=$entrada;
+                        $entradasArray[]=array(
+                            'entradaId'=>$entrada->id,
+                            'entradaNombre'=>$entrada->field_name,
+                            'entradaDescripcion'=>$entrada->field_description,
+                            'entradaTipo'=>$entrada->field_type,
+                            'entradaObligatorio'=>$entrada->field_required,
+                            'opciones'=>$opcionesArray
+                        );
                     }
-                    $tab['entradas']=$entradasArray;
-                    $tabsArray[]=$tab;
+
+                    $tab_id=$catalog->id;
+                    $tab_name=$catalog->name;
+                    $tab_description=$catalog->description;
+                    $tabsArray[]=array(
+                        'tabId'=>$tab_id,
+                        'tabNombre'=>$tab_name,
+                        'tabDescripcion'=>$tab_description,
+                        'entradas'=>$entradasArray
+                    );
                 }
-                $catalog['tabs']=$tabsArray;
-                $catalogosArray[]=$catalog;
-                //var_dump($tabsArray);
+                $catalog_id=$catalog->id;
+                $catalog_name=$catalog->name;
+                $catalog_description=$catalog->description;
+                $catalogosArray[]=array(
+                    'catalogoId'=>$catalog_id,
+                    'catalogoNombre'=>$catalog_name,
+                    'catalogoDescripcion'=>$catalog_description,
+                    'tabs'=>$tabsArray
+                );
             }
 
-            $sistema['catalogos']=$catalogosArray;
-            $sistemasArray[]=$sistema;
-            //var_dump($catalogosArray);
+            $id=$sistema->id;
+            $sistemasArray[]=array(
+                'sistemaId'=>$id,
+                'catalogos'=>$catalogosArray
+            );
         }
         $response = array(
             'sistemas' => $sistemasArray,
