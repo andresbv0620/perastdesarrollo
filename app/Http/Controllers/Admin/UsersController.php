@@ -124,7 +124,37 @@ class UsersController extends Controller {
         return \Redirect::route('admin.users.index');
 	}
 
-	/**
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(EditUserRequest $request,$id)
+    {
+        $data=$this->request->all();
+        $user=User::findOrFail($id);
+        $user->fill($data);
+        $user->save();
+
+        if(Input::get('systems_id')=="") {
+            $systems_id=array();
+            $user->sistemas()->sync($systems_id);
+        }else {
+
+            $user->sistemas()->sync(Input::get('systems_id'));
+        }
+
+
+        $user->roles()->sync(Input::get('role_id'));
+
+        if(isset($plan_id)) {
+            $user->plans()->sync(Input::get('plan_id'));
+        }
+        return redirect()->back();
+    }
+
+    /**
 	 * Display the specified resource.
 	 *
 	 * @param  int  $id
@@ -136,7 +166,7 @@ class UsersController extends Controller {
 
 	}
 
-	/**
+    /**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -158,36 +188,6 @@ class UsersController extends Controller {
 
 
         return view('admin.users.edit',compact('user','plans','systems','roles','users','rolescheckeds','sistemascheckeds','usercheckeds'));
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update(EditUserRequest $request,$id)
-	{
-        $data=$this->request->all();
-        $user=User::findOrFail($id);
-        $user->fill($data);
-        $user->save();
-
-        if(Input::get('systems_id')=="") {
-            $systems_id=array();
-            $user->sistemas()->sync($systems_id);
-        }else {
-
-            $user->sistemas()->sync(Input::get('systems_id'));
-        }
-
-
-        $user->roles()->sync(Input::get('role_id'));
-
-        if(isset($plan_id)) {
-            $user->plans()->sync(Input::get('plan_id'));
-        }
-        return redirect()->back();
 	}
 
     /**

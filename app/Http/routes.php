@@ -14,6 +14,7 @@
 use App\Catalog;
 use App\Entrada;
 use App\Http\Controllers\Admin\OnTheFly;
+use App\Input;
 use App\Opcione;
 use App\Permission;
 use App\Role;
@@ -290,6 +291,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
     Route::resource('users','UsersController');
     Route::resource('catalogs','CatalogsController');
     Route::resource('auth','AuthApiController');
+    Route::resource('inputs','InputsController');
 
     Route::post('apitest',function(Request $request){
         $tablet_id=$request->input('tablet_id');
@@ -355,6 +357,31 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         }
         $response = array(
             'sistemas' => $sistemasArray,
+        );
+        return Response::json($response);
+    });
+
+    Route::post('inputsjson',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+
+        $sistemas = $tablet->sistemas;
+        $sistemasArray=array();
+        foreach($sistemas as $sistema) {
+            $dbname=$sistema->nombre_db;
+            $otf = new OnTheFly(['database'=>$dbname]);
+            $inputs=Input::on($dbname)->get();
+            foreach($inputs as $input){
+
+            }
+
+            $sistemasArray[]=array(
+                'dbSistema'=>$dbname,
+                'inputs'=>$inputs
+            );
+        }
+        $response = array(
+            'inputs' => $sistemasArray,
         );
         return Response::json($response);
     });
@@ -433,8 +460,10 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             foreach($catalogs as $catalog){
                 $tabs=Tab::on($newconnection)->where('catalog_id','=',$catalog->id)->get();
 
+
                 $tabsArray=array();
                 foreach($tabs as $tab){
+
                     $entradas=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
                     $entradasArray=array();
                     foreach($entradas as $entrada){
@@ -457,9 +486,9 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                         );
                     }
 
-                    $tab_id=$catalog->id;
-                    $tab_name=$catalog->name;
-                    $tab_description=$catalog->description;
+                    $tab_id=$tab->id;
+                    $tab_name=$tab->name;
+                    $tab_description=$tab->description;
                     $tabsArray[]=array(
                         'tabId'=>$tab_id,
                         'tabNombre'=>$tab_name,
