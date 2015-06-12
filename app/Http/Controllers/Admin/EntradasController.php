@@ -74,12 +74,8 @@ class EntradasController extends Controller {
 
 
 
-        if(Input::get('opcion_name') == "") {
-            $opcion_name = array();
-            $entrada->opciones()->sync($opcion_name);
-
-        }else {
-
+        if(Input::get('opcion_name') != "") {
+            
             foreach(Input::get('opcion_name') as $opcion) {
                 if( ($data['field_type']=='opcion_multiple') || ($data['field_type']=='opcion_unica')) {
                     $opcion = new Opcione(['option_name' => $opcion]);
