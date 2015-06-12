@@ -5,10 +5,12 @@ use App\Entrada;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+
 use App\Opcione;
 use App\Sistema;
 use App\Tab;
 use App\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -106,7 +108,6 @@ class CatalogsController extends Controller {
         }
 
 
-
         return view('admin.catalogs.show',compact('catalog','tabs','entradas','opciones'));
 
 	}
@@ -119,19 +120,25 @@ class CatalogsController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $newconnection= \Session::get('tenant_connection');
-        $otf = new OnTheFly(['database'=>$newconnection]);
+        if(Session::has('tenant_connection')) {
+            $newconnection = \Session::get('tenant_connection');
+            $otf = new OnTheFly(['database' => $newconnection]);
 
-        $catalog=Catalog::on($newconnection)->findOrFail($id);
+            $catalog = Catalog::on($newconnection)->findOrFail($id);
 
-        $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
+            $tabs = Tab::on($newconnection)->where('catalog_id', '=', $id)->get();
 
 
-        foreach($tabs as $tab){
-            $entradas[$tab->id]=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
+            foreach ($tabs as $tab) {
+                $entradas[$tab->id] = Entrada::on($newconnection)->where('tab_id', '=', $tab->id)->get();
+            }
+
+
+            return view('admin.catalogs.edit', compact('catalog', 'tabs', 'entradas'));
+        }else{
+            Session::flash('message','Seleccine un sistema');
+            return new RedirectResponse(url('/home'));
         }
-
-		return view('admin.catalogs.edit', compact('catalog','tabs','entradas'));
 	}
 
 	/**

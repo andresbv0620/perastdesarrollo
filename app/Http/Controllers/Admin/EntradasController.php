@@ -56,7 +56,6 @@ class EntradasController extends Controller {
         $otf = new OnTheFly(['database'=>$newconnection]);
 
         $data=$this->request->all();
-        //dd($data);
         $entrada= new Entrada($data);
         $entrada->setConnection($newconnection);
 
@@ -65,12 +64,15 @@ class EntradasController extends Controller {
 
         $entrada=$tab->entradas()->save($entrada);
 
-        $input=$tab->id.'_'.$entrada->id;
 
+        //Se crean los campos para la tabla inputs que guardará las respuestas
+        $input=$tab->id.'_'.$entrada->id;
         Schema::connection($newconnection)->table('inputs', function($table) use ($input)
         {
             $table->string($input);
         });
+
+
 
         if(Input::get('opcion_name') == "") {
             $opcion_name = array();
@@ -79,7 +81,7 @@ class EntradasController extends Controller {
         }else {
 
             foreach(Input::get('opcion_name') as $opcion) {
-                if( ($opcion=='opcion_multiple') || ($opcion=='opcion_unica')) {
+                if( ($data['field_type']=='opcion_multiple') || ($data['field_type']=='opcion_unica')) {
                     $opcion = new Opcione(['option_name' => $opcion]);
                     $opcion->setConnection($newconnection);
                     $entrada->opciones()->save($opcion);

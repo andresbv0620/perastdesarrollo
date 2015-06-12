@@ -16,25 +16,32 @@
 
                         <hr>
 
-                        <h2>Fichas Asociadas a este Catálogo</h2>
-
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                           + Agregar Ficha
-                        </button>
-                        <div class="collapse" id="collapseExample">
-                            <div class="well">
-                                {!! Form::open(array('route'=>['admin.tabs.store'],'method'=>'POST')) !!}
-                                @include('admin.catalogs.tabs.partials.fields')
-                                {!!Form::hidden('catalog_id',$catalog->id)!!}
-                                <button type="submit" class="btn btn-default">Crear Tab</button>
-                                {!! Form::close() !!}
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading"><h3>Fichas Asociadas a este Catálogo</h3></div>
+                            <div class="panel-body">
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Agregar Ficha <span class="caret"></span>
+                                </button>
+                                <p><div class="collapse" id="collapseExample">
+                                    <div class="well">
+                                        {!! Form::open(array('route'=>['admin.tabs.store'],'method'=>'POST')) !!}
+                                        @include('admin.catalogs.tabs.partials.fields')
+                                        {!!Form::hidden('catalog_id',$catalog->id)!!}
+                                        <button type="submit" class="btn btn-default">Crear Ficha</button>
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div></p>
                             </div>
+
+
+                            @if(!empty($tabs[0]))
+                                @include('admin.catalogs.tabs.partials.tables')
+                            @endif
                         </div>
-
-
-                        @include('admin.catalogs.tabs.partials.tables')
+                        @include('admin.catalogs.partials.delete')
                     </div>
-                    @include('admin.catalogs.partials.delete')
+
                 </div>
             </div>
         </div>
@@ -55,15 +62,46 @@
                 e = e || event;
                 var target = e.target || e.srcElement;
                 var divtab=$(this).parents('.collapse').attr('id');
-
                 if (target.value=='opcion_unica') {
+
                     $('#opcionesunic-'+divtab).show();
+                    $('#opcionesmulti-'+divtab).empty();
+                    $('#opcionesunic-'+divtab).empty().append("<div class='form-group'>" +
+                    "<input type='radio' class='disabled'>" +
+                    "<input type='text' value='Opción 1' class='' placeholder='Opción 1' name='opcion_name[]'>" +
+                    "</div>" +
+                    "<div class='append-class'>" +
+                    "</div>" +
+                    "<fieldset disabled class='fieldset-disabled'>" +
+                    "<div class='form-group'>" +
+                    "<input type='radio' class='disabled'>" +
+                    "<a class='agregar'>" +
+                    "<input type='text' placeholder='Agregar Opción'>" +
+                    "</a>" +
+                    "</div>" +
+                    "</fieldset>");
+
                 }else{
                     $('#opcionesunic-'+divtab).hide();
                 }
 
                 if (target.value=='opcion_multiple') {
                     $('#opcionesmulti-'+divtab).show();
+                    $('#opcionesunic-'+divtab).empty();
+                    $('#opcionesmulti-'+divtab).empty().append("<div class='form-group'>" +
+                    "<input type='checkbox' class='disabled'>" +
+                    "<input type='text' value='Opción 1' class='' placeholder='Opción 1' name='opcion_name[]'>" +
+                    "</div>" +
+                    "<div class='append-class'>" +
+                    "</div>" +
+                    "<fieldset disabled class='fieldset-disabled'>" +
+                    "<div class='form-group'>" +
+                    "<input type='checkbox' class='disabled'>" +
+                    "<a class='agregar'>" +
+                    "<input type='text' placeholder='Agregar Opción'>" +
+                    "</a>" +
+                    "</div>" +
+                    "</fieldset>");
                 }else{
                     $('#opcionesmulti-'+divtab).hide();
                 }
@@ -77,11 +115,21 @@
             });
 
             $(document).on('click','.agregar',function(e){
+                $(this).parents('.fieldset-disabled').removeAttr('disabled');
+                $(this).removeClass();
+                $(this).children().attr('name', 'opcion_name[]');
+                $(this).children().attr('placeholder', 'Opción');
+                $(this).children().focus();
 
-                var row=$(this).parents('.opciones-group');
-                var preopcion='<input class="disabled" name="" type="radio" value="">';
-                var option='<input placeholder="Opción" name="opcion_name[]" type="text">';
-                row.prepend(preopcion+option+"<br><br>");
+                var row=$(this).parents('.fieldset-disabled').parent();
+                row.append("<fieldset disabled class='fieldset-disabled'>" +
+                "<div class='form-group'>" +
+                "<input type='radio' class='disabled'>" +
+                "<a class='agregar'>" +
+                "<input type='text' placeholder='Agregar Opción'>" +
+                "</a>" +
+                "</div>" +
+                "</fieldset>");
 
             });
 

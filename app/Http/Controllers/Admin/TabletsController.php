@@ -74,7 +74,7 @@ class TabletsController extends Controller {
         $sistema_id=Session::get('tenant_id');
         $sistema=Sistema::findOrFail($sistema_id);
         $data=$this->request->all();
-        if(Input::get('tablet_id')=="") {
+        if((Input::get('tablet_id')=="")||($data['idUnicoTablet']!="")) {
             $rules = array(
                 'idUnicoTablet' => 'required|unique:tablets,idUnicoTablet',
                 'description' => 'required'
