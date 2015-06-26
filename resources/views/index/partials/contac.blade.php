@@ -30,7 +30,7 @@
             </div>
             <div class= "mc-field-group" >
                 <label for="mce-MMERGE3" >Mensaje </label>
-                <textarea type="textarea" rows="4" cols="56" value= "" name="MMERGE3" class="" id="mce-MMERGE3"> Por favor especifique el plan en el cual esta interesado</textarea>
+                <textarea type="textarea" rows="4" cols="56" value= "" name="MMERGE3" class="" id="mce-MMERGE3" placeholder="Por favor especifique el plan en el cual esta interesado"> </textarea>
             </div>
             <div id= "mce-responses" class="clear">
                 <div class="response" id="mce-error-response" style=" display:none" ></div>

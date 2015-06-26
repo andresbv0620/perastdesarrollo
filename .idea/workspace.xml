@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b12ec490-19c9-4850-b395-b2531e349052" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/index/partials/contac.blade.php" afterPath="$PROJECT_DIR$/resources/views/index/partials/contac.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/inputs/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/inputs/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/catalogs/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/catalogs/show.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/catalogs/tabs/partials/tables.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/catalogs/tabs/partials/tables.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="perast.iws" />
     <ignored path=".idea/workspace.xml" />
