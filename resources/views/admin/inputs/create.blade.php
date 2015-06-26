@@ -9,7 +9,7 @@
                     @include('admin.partials.messages')
                         {!! Form::open(array('route' => 'admin.users.store','method'=>'POST')) !!}
                         @include('admin.users.partials.fields')
-                        <button type="submit" class="btn btn-default">Crear Usuario</button>
+                        <button type="submit" class="btn btn-default">Crear Entrada</button>
                         {!! Form::close() !!}
                     </div>
                 </div>

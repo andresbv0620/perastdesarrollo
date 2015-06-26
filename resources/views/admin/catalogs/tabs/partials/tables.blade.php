@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table">
     <tr>
         <th>Id</th>
         <th>Nombre</th>
@@ -55,7 +55,7 @@
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Nueva Pregunta o entrada</h3>
+                                    <h3 class="panel-title">Nueva pregunta o entrada</h3>
                                 </div>
                                 <div class="panel-body">
                                     {!! Form::open(array('route' => ['admin.entradas.store'],'method'=>'POST')) !!}

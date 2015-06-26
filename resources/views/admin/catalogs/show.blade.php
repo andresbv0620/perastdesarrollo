@@ -69,7 +69,7 @@
                                         @if($i==0)
                                             <a href="#tab-{{$tab->id}}" type="button" class="btn btn-primary btn-circle">{{$i=$i+1}}</a>
                                         @else
-                                            <a href="#tab-{{$tab->id}}" type="button" class="btn btn-primary btn-circle" disabled="disabled">{{$i=$i+1}}</a>
+                                            <a href="#tab-{{$tab->id}}" type="button" class="btn btn-default btn-circle" disabled="disabled">{{$i=$i+1}}</a>
                                         @endif
 
                                         <p>Paso {{$i}}</p>
