@@ -224,6 +224,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     });
 
+    $(document).ready(function() {
+
+        $('#select-precio').change(function(){
+            var moneda=$(this).val();
+
+            if(moneda=="usd"){
+                $('#precio-basico').empty();
+                $('#precio-basico').html('$300 USD/mes');
+
+                $('#precio-profesional').empty();
+                $('#precio-profesional').html('$1400 USD/mes');
+
+            }
+            if(moneda=="clp"){
+                $('#precio-basico').empty();
+                $('#precio-basico').html('$200.000 CLP/mes');
+
+                $('#precio-profesional').empty();
+                $('#precio-profesional').html('$900.000 CLP/mes');
+
+            }
+
+            if(moneda=="cop"){
+                $('#precio-basico').empty();
+                $('#precio-basico').html('$600.000 COP/mes');
+
+                $('#precio-profesional').empty();
+                $('#precio-profesional').html('$3.000.000 COP/mes');
+
+            }
+
+
+        });
+
+    });
+
 </script>
 <!----start-pricingplans---->
 <div  class="blog" id="blog">
@@ -231,14 +267,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="pricing-plans">
             <h5>Planes Flexibles que se ajustan a sus necesidades</h5>
             <p>Seleccione su plan y empiece a recolectar datos inmediatamente.</p>
+            <P><LAVEL>MONEDA:</LAVEL> <select id="select-precio">
+                <option value="clp">CLP</option>
+                <option value="cop">COP</option>
+                <option value="usd">USD</option>
+            </select></P>
             <div class="pricing-grids">
                 <div class="pricing-grid black">
                     <h3><a href="#">Básico</a></h3>
                     <div class="price-value">
-                        <a href="#">$300 usd/mes</a>
+                        <a href="#" id="precio-basico">$200.000 CLP/mes</a>
                     </div>
                     <ul>
-                        <li><a href="#">1 Administrador</a></li>
+                        <li><a href="#">1GB/mes</a></li>
                         <li><a href="#">2 Usuarios</a></li>
                         <li><a href="#">Registros limitados</a></li>
                     </ul>
@@ -250,10 +291,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <h3><a href="#">Profesional<h4>Más Popular </h4></a></h3>
 
                     <div class="price-value">
-                        <a href="#">$1400 usd/mes</a>
+                        <a href="#" id="precio-profesional">$900.000 CLP/mes</a>
                     </div>
                     <ul>
-                        <li><a href="#">Hasta 3 administradores</a></li>
+                        <li><a href="#">5GB/mes</a></li>
                         <li><a href="#">10 Usuarios</a></li>
                         <li><a href="#">Registros ilimitados</a></li>
                     </ul>
@@ -264,12 +305,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="pricing-grid blue">
                     <h3><a href="#">Empresarial</a></h3>
                     <div class="price-value">
-                        <a href="#">$2600 usd/mes</a>
+                        <a href="#contact">Solicitar Cotización</a>
                     </div>
                     <ul>
-                        <li><a href="#">Hasta 6 Administradores</a></li>
-                        <li><a href="#">50 Usuarios </a></li>
-                        <li><a href="#">Registros ilimitados</a></li>
+                        <li><a href="#">Más de 5GB/mes</a></li>
+                        <li><a href="#">Más de 10 Usuarios </a></li>
+                        <li><a href="#">Necesidades especiales adicionales</a></li>
                     </ul>
                     <div class="cart">
                         <a class="popup-with-zoom-anim" href="#contact">Solicitar Ahora</a>

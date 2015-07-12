@@ -97,7 +97,16 @@
                                                 @if($entrada->field_type=='texto')
                                                     {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
                                                 @elseif($entrada->field_type=='parrafo')
-                                                    {!!Form::textarea($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
+                                                    {!!Form::textarea($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'500'])!!}
+                                                @elseif($entrada->field_type=='numero')
+                                                    {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
+                                                @elseif($entrada->field_type=='foto')
+                                                    <input id="input-24" type="hidden" value="imagen">
+                                                    <div class="alert alert-info" role="alert">Entrada no disponible en la versión web, solo disponible en el App movil</div>
+                                                @elseif($entrada->field_type=='scan')
+                                                    <input id="input-24" type="hidden" value="imagen">
+                                                    <div class="alert alert-info" role="alert">Entrada no disponible en la versión web, solo disponible en el App movil</div>
+
                                                 @elseif($entrada->field_type=='opcion_unica')
                                                     <div class="radio">
                                                         @foreach($opciones[$entrada->id] as $opcion)
@@ -122,7 +131,7 @@
                                                     <div class="form-group">
                                                         {!!Form::label('duracion', 'Vigente hasta')!!}
                                                         <div class='input-group date' id='datetimepicker1'>
-                                                            {!!Form::text('duracion',null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now()])!!}
+                                                            {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now(),'required'=>$required])!!}
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>

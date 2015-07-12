@@ -8,6 +8,7 @@
 
     {!! Html::Style('/css/app.css') !!}
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+
     <script src="{{ url('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}"></script>
     <!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -47,16 +48,24 @@
                     <ul class="nav navbar-nav">
 
                         <li><a href="{{ url('/') }}">Inicio</a></li>
+                        @if (Entrust::hasRole('superadmin'))
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Planes<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/admin/planes') }}">Ver Planes</a></li>
+                                    <li><a href="{{ url('/admin/planes/create') }}">Crear Planes</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sistemas<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/admin/sistemas') }}">Ver Sistemas</a></li>
+                                    <li><a href="{{ url('/admin/sistemas/create') }}">Crear Sistemas</a></li>
+                                </ul>
+                            </li>
+                        @endif
                         @if(Entrust::hasRole('superadmin')||Entrust::hasRole('admin'))
-                            @if (Entrust::hasRole('superadmin'))
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Planes<span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{ url('/admin/planes') }}">Ver Planes</a></li>
-                                        <li><a href="{{ url('/admin/planes/create') }}">Crear Planes</a></li>
-                                    </ul>
-                                </li>
-                            @endif
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Usuarios<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
@@ -65,28 +74,17 @@
                                 </ul>
                             </li>
 
-                            @if (Entrust::hasRole('superadmin'))
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sistemas<span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/admin/sistemas') }}">Ver Sistemas</a></li>
-                                    <li><a href="{{ url('/admin/sistemas/create') }}">Crear Sistemas</a></li>
-                                </ul>
-                            </li>
-                            @endif
-                                @if(Entrust::hasRole('admin'))
+                            @if(Entrust::hasRole('admin'))
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catalogos<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ url('/admin/catalogs') }}">Ver Catálogos</a></li>
 
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catalogos<span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/admin/catalogs') }}">Ver Catálogos</a></li>
+                                        <li><a href="{{ url('/admin/catalogs/create') }}">Crear Catálogo</a></li>
 
-                                    <li><a href="{{ url('/admin/catalogs/create') }}">Crear Catálogo</a></li>
+                                    </ul>
+                                </li>
 
-                                </ul>
-                            </li>
-                                @endif
-                                @if(Entrust::hasRole('admin'))
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tablets<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
@@ -94,7 +92,14 @@
                                         <li><a href="{{ url('/admin/tablets/create') }}">Crear Tablets</a></li>
                                     </ul>
                                 </li>
-                                @endif
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ url('/admin/inputs') }}">Ver Reportes</a></li>
+
+                                    </ul>
+                                </li>
+                            @endif
                         @endif
                     </ul>
 
@@ -102,7 +107,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::guest())
                             <li><a href="{{ url('/auth/login') }}">Ingreso</a></li>
-                            <li><a href="{{ url('/auth/register') }}">Registro</a></li>
+                            {{--<li><a href="{{ url('/auth/register') }}">Registro</a></li>--}}
                         @else
                             <li class="dropdown">
 
