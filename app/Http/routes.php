@@ -260,16 +260,11 @@ Route::get('roles', function(){
 
 });
 
-
-
-
 Route::controllers([
 	'users'=>'UsersController',
     'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
-
-
 
 Route::group(['prefix'=>'admin','namespace'=>'\Admin'], function(){
     Route::resource('users', 'UsersController');

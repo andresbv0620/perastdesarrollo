@@ -176,8 +176,7 @@ class SistemasController extends Controller {
         if(Input::get('user_id')=="") {
             $user_id = array();
             $sistema->users()->sync($user_id);
-
-        }else{
+       }else{
             $sistema->users()->sync(Input::get('user_id'));
             $users_id = Input::get('user_id');
             foreach($users_id as $userid) {
@@ -252,6 +251,27 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
+                Schema::connection($dbname)->create('tablets', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('idUnicoTablet')->unique();
+                    $table->string('description');
+                    $table->timestamps();
+                });
+
+                Schema::connection($dbname)->create('users', function(Blueprint $table)
+                {
+                    $table->increments('id');
+
+                    $table->string('name');
+                    $table->string('email')->unique();
+                    $table->string('password', 60);
+                    $table->string('pagina');
+                    $table->rememberToken();
+                    $table->timestamps();
+                });
+
+                /////Tabla por defecto para sistemas simples//////////
                 Schema::connection($dbname)->create('inputs', function(Blueprint $table)
                 {
                     $table->increments('id');

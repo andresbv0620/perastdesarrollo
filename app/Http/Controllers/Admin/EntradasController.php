@@ -56,6 +56,7 @@ class EntradasController extends Controller {
         $otf = new OnTheFly(['database'=>$newconnection]);
 
         $data=$this->request->all();
+
         $entrada= new Entrada($data);
         $entrada->setConnection($newconnection);
 
@@ -64,10 +65,14 @@ class EntradasController extends Controller {
 
         $entrada=$tab->entradas()->save($entrada);
 
+        ///Consulto el id del catalogo al que pertenece esta entrada, para generar el nombre de la tabla donde se guardaran las respuestas//
+        $catalog_id=$tab->setConnection($newconnection)->catalog_id;
+        $catalogtablename= $catalog_id."_".$newconnection;
+
 
         //Se crean los campos para la tabla inputs que guardará las respuestas
         $input=$tab->id.'_'.$entrada->id;
-        Schema::connection($newconnection)->table('inputs', function($table) use ($input)
+        Schema::connection($newconnection)->table($catalogtablename, function($table) use ($input)
         {
             $table->string($input);
         });

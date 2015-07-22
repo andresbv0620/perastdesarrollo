@@ -10,11 +10,13 @@ use App\Opcione;
 use App\Sistema;
 use App\Tab;
 use App\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 
 class CatalogsController extends Controller {
@@ -80,7 +82,34 @@ class CatalogsController extends Controller {
         $data=$this->request->all();
         $catalog=new Catalog($data);
         $catalog->setConnection($newconnection)->save();
+        $catalogtablename= $catalog->id."_".$newconnection;
+
         $tabs=$catalog->tabs;
+
+        Schema::connection($newconnection)->create($catalogtablename, function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('respuesta');
+            $table->timestamps();
+            $table->string('_token');
+            $table->integer('entrada_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('tablet_id')->unsigned();
+
+            $table->foreign('entrada_id')
+                ->references('id')
+                ->on('entradas')
+                ->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('tablet_id')
+                ->references('id')
+                ->on('tablets')
+                ->onDelete('cascade');
+        });
+
         return view('admin.catalogs.edit',compact('catalog','tabs'));
 	}
 
