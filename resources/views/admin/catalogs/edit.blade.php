@@ -46,11 +46,15 @@
             </div>
         </div>
     </div>
+
+    {{--Forms para llamados ajax a traves de $.post--}}
     {!! Form::open(['route'=>['admin.tabs.destroy',':OBJECT_ID'], 'method'=>'DELETE', 'id'=>'form-delete']) !!}
-
     {!! Form::close() !!}
-    {!! Form::open(['route'=>['admin.entradas.destroy',':OBJECT_ID'], 'method'=>'DELETE', 'id'=>'form-delete-entrada']) !!}
 
+    {!! Form::open(['route'=>['admin.entradas.destroy',':OBJECT_ID'], 'method'=>'DELETE', 'id'=>'form-delete-entrada']) !!}
+    {!! Form::close() !!}
+
+    {!! Form::open(['route'=>['admin.catalogs.show',':OBJECT_ID'], 'method'=>'GET', 'id'=>'form-get-entradas']) !!}
     {!! Form::close() !!}
 @endsection
 
@@ -62,49 +66,114 @@
                 e = e || event;
                 var target = e.target || e.srcElement;
                 var divtab=$(this).parents('.collapse').attr('id');
-                if (target.value=='opcion_unica') {
+                $('.opciones-group').hide();
+                if (target.value==3) {
 
-                    $('#opcionesunic-'+divtab).show();
-                    $('#opcionesmulti-'+divtab).empty();
-                    $('#opcionesunic-'+divtab).empty().append("<div class='form-group'>" +
-                    "<input type='radio' class='disabled'>" +
-                    "<input type='text' value='Opción 1' class='' placeholder='Opción 1' name='opcion_name[]'>" +
-                    "</div>" +
-                    "<div class='append-class'>" +
-                    "</div>" +
-                    "<fieldset disabled class='fieldset-disabled'>" +
-                    "<div class='form-group'>" +
-                    "<input type='radio' class='disabled'>" +
-                    "<a class='agregar'>" +
-                    "<input type='text' placeholder='Agregar Opción'>" +
-                    "</a>" +
-                    "</div>" +
-                    "</fieldset>");
+                    $('.opciones-'+divtab).show().empty().append(
+                            "<div class='form-group'>" +
+                            "<label class='radio-inline'>" +
+                            "<input type='radio' class='disabled'>" +
+                            "<input type='text' value='Opción 1' class='form-control' placeholder='Opción 1' name='opcion_name[]'>" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class='append-class'>" +
+                            "</div>" +
+                            "<fieldset disabled class='fieldset-disabled'>" +
+                            "<div class='form-group'>" +
+                            "<label class='radio-inline'>" +
+                            "<input type='radio' class='disabled'>" +
+                            "<a class='agregar'>" +
+                            "<input type='text' class='form-control' placeholder='Agregar Opción'>" +
+                            "</a>" +
+                            "</label>" +
+                            "</div>" +
 
-                }else{
-                    $('#opcionesunic-'+divtab).hide();
+                            "</fieldset>"
+                    );
+
                 }
 
-                if (target.value=='opcion_multiple') {
-                    $('#opcionesmulti-'+divtab).show();
-                    $('#opcionesunic-'+divtab).empty();
-                    $('#opcionesmulti-'+divtab).empty().append("<div class='form-group'>" +
-                    "<input type='checkbox' class='disabled'>" +
-                    "<input type='text' value='Opción 1' class='' placeholder='Opción 1' name='opcion_name[]'>" +
-                    "</div>" +
-                    "<div class='append-class'>" +
-                    "</div>" +
-                    "<fieldset disabled class='fieldset-disabled'>" +
-                    "<div class='form-group'>" +
-                    "<input type='checkbox' class='disabled'>" +
-                    "<a class='agregar'>" +
-                    "<input type='text' placeholder='Agregar Opción'>" +
-                    "</a>" +
-                    "</div>" +
-                    "</fieldset>");
-                }else{
-                    $('#opcionesmulti-'+divtab).hide();
+                if (target.value==4) {
+                    $('.opciones-'+divtab).show().empty().append(
+                            "<div class='form-group'>" +
+                            "<label class='checkbox-inline'>" +
+                            "<input type='checkbox' class='disabled'>" +
+                            "<input type='text' value='Opción 1' class='form-control' placeholder='Opción 1' name='opcion_name[]'>" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class='append-class'>" +
+                            "</div>" +
+                            "<fieldset disabled class='fieldset-disabled'>" +
+                            "<div class='form-group'>" +
+                            "<label class='checkbox-inline'>" +
+                            "<input type='checkbox' class='disabled'>" +
+                            "<a class='agregar'>" +
+                            "<input type='text' class='form-control' placeholder='Agregar Opción'>" +
+                            "</a>" +
+                            "</label>" +
+                            "</div>" +
+                            "</fieldset>"
+                    );
                 }
+
+                //Se cargan los catalogos de los cuales tomar las opciones para la entrada
+
+                if (target.value==9) {
+                    var table=<?php echo json_encode($tablaopciones, JSON_PRETTY_PRINT); ?>;
+                    var options="<option></option>";
+                    for (k in table) {
+                        options=options+"<option value='"+k+"'>"+table[k]+"</option>"
+                    }
+                    var selectstr="<select id='tabla-catalogo' class='form-control' name='opdinamica_id'>"+options+"</select>";
+
+                    $('.opciones-'+divtab).show().empty().append(
+                            "<div class='form-group'>"
+                            +"<label for='tabla-catalogo'>Catalogo: </label>"
+                            +selectstr+
+                            "</div>" +
+                            "<div class='tablacatalogo-append-"+divtab +"'>" +
+                            "</div>"
+                    );
+                }
+
+                //Se cargan los campos del catalogo seleccionado para tomar las opciones para la entrada
+                $(document).on("change","#tabla-catalogo",function(e){
+                    e.preventDefault();
+                    var row=$(this).parents('tr');
+                    var id=$(this).val();
+
+                    var form=$('#form-get-entradas');
+                    var url=form.attr('action').replace(':OBJECT_ID', id);
+
+                    if(id!="") {
+                        $.get(url, function (result) {
+                            //var options="<option></option>";
+                            var options="";
+                            for (k in result) {
+                                for(j in result[k]) {
+                                    console.log(result[k][j]['field_name']);
+                                    //options=options+"<option value='"+result[k][j]['id']+"'>"+result[k][j]['field_name']+"</option>"
+                                    options=options+"<label class='checkbox-inline'>"+"<input type='checkbox' name='campo_opcion[]' value='"+result[k][j]['id']+"'>"+result[k][j]['field_name']+"</label>"
+                                }
+                            }
+                            //var selectstr="<select id='catalogo-entradas' class='form-control' name='campo_opcion'>"+options+"</select>";
+                            var selectstr="<div class='form-group'>"+options+"</div>";
+
+                            $('.tablacatalogo-append-'+divtab).empty().show().append(
+                                    "<div class='form-group'>"
+                                    +"<label for='tabla-catalogo'>Campos: </label>"
+                                    +selectstr+
+                                    "<textarea name='consulta' id='consulta' class='form-control' placeholder='Consulta SQL'>" +
+                                    "</textarea>" +
+                                    "</div>"
+                            );
+
+                        }).fail(function () {
+                            alert("El registro no fue encontrado");
+                            row.show();
+                        });
+                    }
+                });
 
                 if ((target.value=='boton_siguiente')||(target.value=='boton_limpiar')||(target.value=='boton_anterior')||(target.value=='boton_guardar')) {
                     $('.fields').hide();
@@ -122,16 +191,21 @@
                 $(this).children().focus();
 
                 var row=$(this).parents('.fieldset-disabled').parent();
-                row.append("<fieldset disabled class='fieldset-disabled'>" +
-                "<div class='form-group'>" +
-                "<input type='radio' class='disabled'>" +
-                "<a class='agregar'>" +
-                "<input type='text' placeholder='Agregar Opción'>" +
-                "</a>" +
-                "</div>" +
-                "</fieldset>");
-
+                row.append(
+                        "<fieldset disabled class='fieldset-disabled'>" +
+                        "<div class='form-group'>" +
+                        "<label class='radio-inline'>" +
+                        "<input type='radio' class='disabled'>" +
+                        "<a class='agregar'>" +
+                        "<input type='text' class='form-control' placeholder='Agregar Opción'>" +
+                        "</a>" +
+                        "</label>" +
+                        "</div>" +
+                        "</fieldset>");
             });
+
+
+
 
             $(".btn-delete").click(function(e){
 

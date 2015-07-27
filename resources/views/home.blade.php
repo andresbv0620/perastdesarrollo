@@ -12,14 +12,14 @@
 				<div class="panel-body">
 
                     <div class="span3">
-                        <h2>Seleccione un plan para empezar</h2>
+                        <h2>Seleccione un sistema para empezar</h2>
 
                         {!! Form::open(['route' => 'tenants_path','method'=>'POST']) !!}
 
                         @include('homepartials.tables')
 
-                        <button class="btn btn-primary" type="submit">
-                            Seleccionar Contexto
+                        <button class="btn btn-primary pull-right" type="submit">
+                            INICIAR
                         </button>
 
                         {!! Form::close() !!}

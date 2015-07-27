@@ -2,6 +2,7 @@
 
 use App\Catalog;
 use App\Entrada;
+use App\Entradatipo;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -10,6 +11,7 @@ use App\Opcione;
 use App\Sistema;
 use App\Tab;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,8 +65,8 @@ class CatalogsController extends Controller {
         return view('admin.catalogs.create',compact('tabs','catalogs'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
+        /**
+         * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
@@ -72,7 +74,8 @@ class CatalogsController extends Controller {
 	{
         $rules=array(
             'name'=>'required',
-            'description'=>'required'
+            'description'=>'required',
+            'tipo'=>'required'
         );
         $this->validate($this->request,$rules);
 
@@ -82,10 +85,18 @@ class CatalogsController extends Controller {
         $data=$this->request->all();
         $catalog=new Catalog($data);
         $catalog->setConnection($newconnection)->save();
-        $catalogtablename= $catalog->id."_".$newconnection;
+        $catalogtablename= $catalog->id;
 
         $tabs=$catalog->tabs;
 
+        ///paso las opciones de entrada, el id no se pasa porque las validaciones se hicieron con tipo_entrada
+        $entradatipos = Entradatipo::on($newconnection)->lists('display_tipo_entrada','tipo_entrada');
+
+        //Esta variable contiene los catalogos disponibles para que el usuario escoga de donde
+        //cargar las opciones dinamicas (respuestas de catalogos).
+        $tablaopciones = Catalog::on($newconnection)->lists('name','id');
+
+        ///Cada catalogo tiene una tabla de respuestas cuyo nombre es el id del catalogo
         Schema::connection($newconnection)->create($catalogtablename, function(Blueprint $table)
         {
             $table->increments('id');
@@ -95,6 +106,7 @@ class CatalogsController extends Controller {
             $table->integer('entrada_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('tablet_id')->unsigned();
+            $table->integer('catalog_id')->unsigned();
 
             $table->foreign('entrada_id')
                 ->references('id')
@@ -102,15 +114,19 @@ class CatalogsController extends Controller {
                 ->onDelete('cascade');
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
+                ->on('perast_cliente.users')
                 ->onDelete('cascade');
             $table->foreign('tablet_id')
                 ->references('id')
-                ->on('tablets')
+                ->on('perast_cliente.tablets')
+                ->onDelete('cascade');
+            $table->foreign('catalog_id')
+                ->references('id')
+                ->on('catalogs')
                 ->onDelete('cascade');
         });
 
-        return view('admin.catalogs.edit',compact('catalog','tabs'));
+        return view('admin.catalogs.edit',compact('catalog','tabs','entradatipos','tablaopciones'));
 	}
 
 	/**
@@ -127,18 +143,20 @@ class CatalogsController extends Controller {
         $catalog=Catalog::on($newconnection)->findOrFail($id);
 
         $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
-
+        $entradas=array();
+        $opciones=array();
         foreach($tabs as $tab){
             $entradas[$tab->id]=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
             foreach($entradas[$tab->id] as $entrada){
                 $opciones[$entrada->id]=Opcione::on($newconnection)->where('entrada_id','=',$entrada->id)->get();
-
             }
         }
 
+        if($this->request->ajax()){
+            return response()->json($entradas);
+        }
 
         return view('admin.catalogs.show',compact('catalog','tabs','entradas','opciones'));
-
 	}
 
 	/**
@@ -157,13 +175,18 @@ class CatalogsController extends Controller {
 
             $tabs = Tab::on($newconnection)->where('catalog_id', '=', $id)->get();
 
-
             foreach ($tabs as $tab) {
                 $entradas[$tab->id] = Entrada::on($newconnection)->where('tab_id', '=', $tab->id)->get();
             }
+            ///paso las opciones de entrada, el id no se pasa porque las validaciones se hicieron con tipo_entrada
+            $entradatipos = Entradatipo::on($newconnection)->lists('display_tipo_entrada','id');
 
+            //Esta variable contiene los catalogos disponibles para que el usuario escoga de donde
+            //cargar las opciones dinamicas (respuestas de catalogos).
+            $tablaopciones = Catalog::on($newconnection)->lists('name','id');
 
-            return view('admin.catalogs.edit', compact('catalog', 'tabs', 'entradas'));
+            return view('admin.catalogs.edit', compact('catalog', 'tabs', 'entradas', 'entradatipos', 'tablaopciones'));
+
         }else{
             Session::flash('message','Seleccine un sistema');
             return new RedirectResponse(url('/home'));

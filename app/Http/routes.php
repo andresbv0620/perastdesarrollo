@@ -473,8 +473,12 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                             'entradaId'=>$entrada->id,
                             'entradaNombre'=>$entrada->field_name,
                             'entradaDescripcion'=>$entrada->field_description,
-                            'entradaTipo'=>$entrada->field_type,
+                            'entradaTipo'=>$entrada->entradatipo_id,
                             'entradaObligatorio'=>$entrada->field_required,
+                            'tablaOpciones'=>$entrada->opdinamica_id,
+                            'campoOpciones'=>$entrada->campo_opcion,
+                            'entradaPrincipal'=>$entrada->entradaprincipal_id,
+                            'consultaOpciones'=>$entrada->consulta,
                             'opciones'=>$opcionesArray
                         );
                     }
@@ -492,10 +496,12 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                 $catalog_id=$catalog->id;
                 $catalog_name=$catalog->name;
                 $catalog_description=$catalog->description;
+                $catalog_type=$catalog->tipo;
                 $catalogosArray[]=array(
                     'catalogoId'=>$catalog_id,
                     'catalogoNombre'=>$catalog_name,
                     'catalogoDescripcion'=>$catalog_description,
+                    'catalogoTipo'=>$catalog_type,
                     'tabs'=>$tabsArray
                 );
             }
@@ -508,6 +514,58 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         }
         $response = array(
             'catalogos' => $sistemasArray,
+        );
+        return Response::json($response);
+    });
+
+    Route::post('opcionesdinamicas',function(Request $request){
+        $tablet_id=$request->input('tablet_id');
+        $tablet=Tablet::findOrFail($tablet_id);
+        $sistemas = $tablet->sistemas;
+        $sistemasArray=array();
+        foreach($sistemas as $sistema) {
+            $newconnection=$sistema->nombre_db;
+            $otf = new OnTheFly(['database' => $newconnection]);
+            $catalogs = Catalog::on($newconnection)->where('tipo','ordenVenta')->get();//Retrieves an objet, it is needed to use toArray()
+            //$catalogs = $otf->getTable('catalogs')->get();//Retrieves an array, there is no need to convert to array, just one line
+            $catalogosArray=array();
+
+            foreach($catalogs as $catalog){
+                $entradasdinamicas=Entrada::on($newconnection)->where('opdinamica_id','=',$catalog->id)->get();
+
+                $entradasdinamicasArray=array();
+                foreach($entradasdinamicas as $entradadinamica){
+                    //Se hace la conexion a la tabla de respuestas puede ser con $entradadinamica->opdinamica_id o con
+                    // $catalog->id (por el foreach)
+                    $opcionesdinamicas=\DB::on($newconnection)->table($entradadinamica->opdinamica_id)->where('entrada_id','=',$entradadinamica->campo_opcion)->get();
+                    $opcionesdinamicasarray=array();
+                    foreach($opcionesdinamicas as $opciondinamica){
+                        $opcionesdinamicasarray[]=array(
+                            'campoOpcion'=>$entradadinamica->campo_opcion,
+                            'opcionId'=>$opciondinamica->id,
+                            'opcionNombre'=>$opciondinamica->respuesta,
+                        );
+
+                        $entradasdinamicasArray[]=array(
+                            'nombreTabla'=>$entradadinamica->opdinamica_id,
+                            'opciones'=>$opcionesArray
+                        );
+                    }
+                    $tabsArray[]=array(
+                        'tablasOpciones'=>$entradasdinamicasArray
+                    );
+                }
+
+            }
+
+            $id=$sistema->id;
+            $sistemasArray[]=array(
+                'sistemaId'=>$id,
+                'tablasOpciones'=>$entradasdinamicasArray
+            );
+        }
+        $response = array(
+            'opcionesDinamicas' => $sistemasArray,
         );
         return Response::json($response);
     });

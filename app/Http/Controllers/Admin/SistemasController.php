@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Sistema;
 use App\Tablet;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -203,6 +204,7 @@ class SistemasController extends Controller {
                     $table->increments('id');
                     $table->string('name');
                     $table->string('description');
+                    $table->string('tipo');
                     $table->timestamps();
                 });
 
@@ -220,20 +222,54 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
+                Schema::connection($dbname)->create('entradatipos', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->string('tipo_entrada');
+                    $table->string('display_tipo_entrada');
+                    $table->timestamps();
+                });
+
+                \DB::connection($dbname)->table('entradatipos')->insert([
+                    ['tipo_entrada' => 'texto','display_tipo_entrada' => 'Texto'],
+                    ['tipo_entrada' => 'parrafo','display_tipo_entrada' => 'Parrafo'],
+                    ['tipo_entrada' => 'opcion_unica','display_tipo_entrada' => 'Opción Única'],
+                    ['tipo_entrada' => 'opcion_multiple','display_tipo_entrada' => 'Opción Multiple'],
+                    ['tipo_entrada' => 'foto','display_tipo_entrada' => 'Foto'],
+                    ['tipo_entrada' => 'fecha','display_tipo_entrada' => 'Fecha'],
+                    ['tipo_entrada' => 'numero','display_tipo_entrada' => 'Numero'],
+                    ['tipo_entrada' => 'scan','display_tipo_entrada' => 'Scan'],
+                    ['tipo_entrada' => 'opcion_dinamica','display_tipo_entrada' => 'Opción Dinamica']
+                ]);
+
                 Schema::connection($dbname)->create('entradas', function(Blueprint $table)
                 {
                     $table->increments('id');
                     $table->string('field_name');
                     $table->string('field_description');
-                    $table->string('field_type');
                     $table->boolean('field_required')->default(true);
                     $table->integer('tab_id')->unsigned();
+                    $table->integer('entradatipo_id')->unsigned();
                     $table->timestamps();
+
+                    //Estos son los campos de la tabla pivot entre las opciones dinamicas y las entradas, la cual podria
+                    // no ser necesaria.
+                    $table->integer('opdinamica_id')->unsigned();
+                    $table->integer('campo_opcion')->unsigned();
+                    $table->integer('entradaprincipal_id')->unsigned();
+                    $table->string('consulta');
+
 
                     $table->foreign('tab_id')
                         ->references('id')
                         ->on('tabs')
                         ->onDelete('cascade');
+
+                    $table->foreign('entradatipo_id')
+                        ->references('id')
+                        ->on('entradatipos')
+                        ->onDelete('cascade');
+
                 });
 
                 Schema::connection($dbname)->create('opciones', function(Blueprint $table)
@@ -241,7 +277,6 @@ class SistemasController extends Controller {
                     $table->increments('id');
                     $table->string('option_name');
                     $table->integer('option_order');
-                    $table->string('field_type');
                     $table->integer('entrada_id')->unsigned();
                     $table->timestamps();
 
@@ -251,6 +286,39 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
+
+                /////Tabla por defecto para respuestas de sistemas con opciones simples//////////
+                Schema::connection($dbname)->create('inputs', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->timestamps();
+                    $table->string('_token');
+
+                });
+
+                //Tabla pivot entre las opciones dinamicas (tabla respuesta catalogos) y la entrada
+                //NOTA: No se puede pre-asociar una FK a la tabla opciones dinamicas porque esta se crea
+                //on the fly, cada vez que un catalogo nuevo es creado. Tampoco se puede usar la convencion de nombres
+                // de laravel porque no sabemos cual será el nombre de las multiples tablas de respuestas.
+                //OTRA PROPUESTA: CREAR ESTA TABLA EN EL MOMENTO QUE SE CREA EL CATALOGO (O LA ENTRADA), GENERARIA UNA
+                // TABLA DE ESTAS POR CADA TABLA DE RESPUESTAS.
+                Schema::connection($dbname)->create('entrada_opdinamicas', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->integer('entrada_id')->unsigned();
+                    $table->integer('opdinamica_id')->unsigned();
+                    $table->integer('campo_opcion')->unsigned();
+                    $table->integer('entradaprincipal_id')->unsigned();
+                    $table->string('consulta');
+                    $table->timestamps();
+                    $table->foreign('entrada_id')
+                        ->references('id')
+                        ->on('entradas')
+                        ->onDelete('cascade');
+                });
+
+                /*
+                //Activar solo en caso de que se requiera crear estas tablas para cada sistema
                 Schema::connection($dbname)->create('tablets', function(Blueprint $table)
                 {
                     $table->increments('id');
@@ -271,14 +339,22 @@ class SistemasController extends Controller {
                     $table->timestamps();
                 });
 
-                /////Tabla por defecto para sistemas simples//////////
-                Schema::connection($dbname)->create('inputs', function(Blueprint $table)
-                {
-                    $table->increments('id');
-                    $table->timestamps();
-                    $table->string('_token');
 
-                });
+                //Este fragmento guarda el usuario al que se le esta creando el sistema en la tabla users del sistema
+                //sin embargo hay que tener cuidado porque debido al autoincrement no guarda el mismo id de la db maestra
+                $user=User::findOrFail($userid);
+                $user=$user->toArray();
+                $usersys= new User($user);
+                $usersys->setConnection($dbname);
+                $usersys->save();
+
+                */
+
+
+
+
+
+
 
             }
         }

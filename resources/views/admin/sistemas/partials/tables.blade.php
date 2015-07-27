@@ -3,7 +3,7 @@
         <th>#</th>
         <th>Base de datos sistema</th>
         <th>Descripción del sistema</th>
-        <th>Seleccionar</th>
+
         <th>Acciones</th>
 
     </tr>
@@ -15,7 +15,7 @@
             <td>{{$sistema->id}}</td>
             <td>{{$sistema->nombreDataBase}}</td>
             <td>{{$sistema->description}}</td>
-            <td>{!! Form::radio('tenant_connection', $sistema->id.'_'.$user ) !!}</td>
+
             <td>
                 <a href="{{ route('admin.sistemas.edit',$sistema) }}">Editar</a>
                 <a href="#!" class="btn-delete">Eliminar</a>

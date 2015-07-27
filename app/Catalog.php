@@ -21,10 +21,17 @@ class Catalog extends Model {
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'tipo'
     ];
 
     public function tabs(){
         return $this->hasMany('App\Tab');
     }
+
+    public function entradas()
+    {
+        return $this->hasManyThrough('App\Entrada', 'App\Tab');
+    }
+
 }

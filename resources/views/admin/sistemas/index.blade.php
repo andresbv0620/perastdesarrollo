@@ -17,9 +17,7 @@
                         </p><p>Hay {{$sistemas->total()}} Sistemas</p>
                         {!! Form::open(['route' => 'tenants_path','method'=>'POST']) !!}
                         @include('admin.sistemas.partials.tables')
-                        <button class="btn btn-primary" type="submit">
-                            Seleccionar Contexto
-                        </button>
+
                         {!! Form::close() !!}
                         {!!$sistemas->render()!!}
                     </div>

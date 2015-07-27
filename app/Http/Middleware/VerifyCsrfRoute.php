@@ -17,7 +17,8 @@ class VerifyCsrfRoute extends BaseVerifier {
             'api/v1/accesos',
             'api/v1/logos',
             'api/v1/inputs',
-            'api/v1/inputsjson'
+            'api/v1/inputsjson',
+            'api/v1/opcionesdinamicas'
         ];
 
 	/**

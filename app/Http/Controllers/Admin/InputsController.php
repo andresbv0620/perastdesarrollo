@@ -8,6 +8,8 @@ use App\Input;
 use App\Tab;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Zizaco\Entrust\EntrustFacade;
 
@@ -71,11 +73,26 @@ class InputsController extends Controller {
 	{
         $newconnection= \Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
+        $sistemadb=\Session::get('tenant_connection');
         $data=$this->request->all();
-        Model::unguard();
-        $input = new Input($data);
 
-        $input->setConnection($newconnection)->save();
+        $iduser=Auth::user()->id;
+        ////En web este valor es irrelevante, y por lo tanto se usa un tablet_id=1////
+        $idtablet=1;
+        $tablerespuestas=$data['idcatalogo'];
+
+        foreach($data['respuesta'] as $identrada => $respuesta){
+            DB::connection($newconnection)->table($tablerespuestas)->insert(
+                [
+                    '_token' => $data['_token'],
+                    'respuesta'=>$respuesta,
+                    'entrada_id'=>$identrada,
+                    'user_id'=>$iduser,
+                    'tablet_id'=>$idtablet,
+                    'catalog_id'=>$tablerespuestas
+                ]
+            );
+        }
         return redirect()->back();
 	}
 

@@ -20,8 +20,11 @@ class Entrada extends Model {
     protected $fillable = [
         'field_name',
         'field_description',
-        'field_type',
-        'field_required'
+        'field_required',
+        'opdinamica_id',
+        'campo_opcion',
+        'entradaprincipal_id',
+        'consulta'
     ];
 
     public function tab(){
@@ -32,4 +35,6 @@ class Entrada extends Model {
         return $this->hasMany('App\Opcione');
     }
 
-}
+    public function entradatipo(){
+        return $this->belongsTo('App\Entradatipo');
+    }}

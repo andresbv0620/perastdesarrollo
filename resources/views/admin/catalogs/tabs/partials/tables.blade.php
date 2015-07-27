@@ -11,20 +11,17 @@
             <td>{{$tab->id}}</td>
             <td>{{$tab->name}}</td>
             <td>{{$tab->description}}</td>
-
             <td>
                 <a href="{{ route('admin.tabs.edit', $tab) }}">Editar</a>
                 <a href="#" class="btn-delete">Eliminar</a>
                 <button class="btn btn-default pull-right" type="button" data-toggle="collapse" data-target="#tab{{$tab->id}}" aria-expanded="false" aria-controls="collapseExample">
                     Agregar Entradas <span class="caret"></span>
                 </button>
-
             </td>
             <tr>
                 <td colspan="4">
                     <div class="collapse" id="tab{{$tab->id}}">
                         <div class="well">
-
                             <table class="table table-hover table-condensed">
                                 <tr>
                                     <th>Id</th>
@@ -41,18 +38,13 @@
                                         <td>{{$entrada->field_description}}</td>
                                         <td>{{$entrada->field_type}}</td>
                                         <td>{{$entrada->field_required}}</td>
-
                                         <td>
                                             {{--<a href="{{ route('admin.entradas.edit', $entrada) }}">Editar</a>--}}
                                             <a href="#!" class="btn-delete-entrada">Eliminar</a>
                                         </td>
                                     </tr>
-                                    <tr>
-
-                                    </tr>
                                 @endforeach
                             </table>
-
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Nueva pregunta o entrada</h3>
@@ -72,32 +64,15 @@
                                     </div>
                                     <div class="form-group">
                                         {!!Form::label('Tipo de Campo')!!}
-                                        {!!Form::select('field_type', array(
-                                        'texto' => 'Texto',
-                                        'parrafo' => 'Parrafo',
-                                        'opcion_unica' => 'Opción Única',
-                                        'opcion_multiple' => 'Opción Multiple',
-                                        'foto' => 'Foto',
-                                        'fecha' => 'Fecha',
-                                        'numero' => 'Numero',
-                                        'scan' => 'Scan',
-                                        'boton_siguiente' => 'Siguiente',
-                                        'boton_limpiar' => 'Limpiar',
-                                        'boton_anterior' => 'Anterior',
-                                        'boton_guardar' => 'Guardar'), 'Texto', array('class' => 'tipo-entrada'))!!}
+                                        {!!Form::select('entradatipo_id', $entradatipos, 'Texto', array('class' => 'tipo-entrada form-control'))!!}
                                     </div>
 
 
 
-                                    <div class="form-group opciones-group" id="opcionesunic-tab{{$tab->id}}">
-                                            {{--Aqui van las opciones agregadas con append jquery--}}
+                                    <div class="col-lg-6 form-group opciones-group opciones-tab{{$tab->id}}">
+                                    {{--Aqui van las opciones agregadas con append jquery--}}
                                     </div>
 
-
-
-                                    <div class="form-group opciones-group" id="opcionesmulti-tab{{$tab->id}}">
-                                        {{--Aqui van las opciones agregadas con append jquery--}}
-                                    </div>
 
                                     <div class="form-group">
                                         {!!Form::label('field_required', 'Obligatorio')!!}:
@@ -116,9 +91,5 @@
                 </td>
             </tr>
         </tr>
-
-
-
-
     @endforeach
 </table>

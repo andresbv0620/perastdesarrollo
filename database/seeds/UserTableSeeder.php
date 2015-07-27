@@ -18,9 +18,7 @@ class UserTableSeeder extends Seeder{
             'name' => 'Julian Castillo',
             'email' => 'jcastillo@perast.cl',
             'password' => \Hash::make('123456'),
-            'pagina' => 'perast.cl',
-            'imagenFondo' => '',
-            'logo' => ''
+            'pagina' => 'perast.cl'
         ));
 
 

@@ -90,53 +90,55 @@
                                             @foreach($entradas[$tab->id]  as $entrada)
                                             <div class="form-group">
                                                 <label class="control-label">{{$entrada->field_name}}<br>{{$entrada->field_description}}</label>
+                                                {!!Form::hidden('idcatalogo',$catalog->id)!!}
 
                                                 @if($entrada->field_required==1)
                                                     <?php $required = 'required'?>
                                                 @endif
-                                                @if($entrada->field_type=='texto')
-                                                    {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
-                                                @elseif($entrada->field_type=='parrafo')
-                                                    {!!Form::textarea($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'500'])!!}
-                                                @elseif($entrada->field_type=='numero')
-                                                    {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
-                                                @elseif($entrada->field_type=='foto')
+                                                @if($entrada->entradatipo_id==1)
+                                                    {!!Form::text('respuesta['.$entrada->id.']',null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
+                                                @elseif($entrada->entradatipo_id==2)
+                                                    {!!Form::textarea('respuesta['.$entrada->id.']',null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'500'])!!}
+                                                @elseif($entrada->entradatipo_id==7)
+                                                    {!!Form::text('respuesta['.$entrada->id.']',null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
+                                                @elseif($entrada->entradatipo_id==5)
                                                     <input id="input-24" type="hidden" value="imagen">
                                                     <div class="alert alert-info" role="alert">Entrada no disponible en la versión web, solo disponible en el App movil</div>
-                                                @elseif($entrada->field_type=='scan')
+                                                @elseif($entrada->entradatipo_id==8)
                                                     <input id="input-24" type="hidden" value="imagen">
                                                     <div class="alert alert-info" role="alert">Entrada no disponible en la versión web, solo disponible en el App movil</div>
 
-                                                @elseif($entrada->field_type=='opcion_unica')
+                                                @elseif($entrada->entradatipo_id==3)
                                                     <div class="radio">
                                                         @foreach($opciones[$entrada->id] as $opcion)
                                                             <span> | </span>
                                                             <label>
-                                                                {!! Form::radio($tab->id.'_'.$entrada->id, $opcion->option_name,false) !!}
+                                                                {!! Form::radio('respuesta['.$entrada->id.']', $opcion->option_name,false) !!}
                                                                 {!!$opcion->option_name!!}
                                                             </label>
                                                         @endforeach
                                                     </div>
-                                                @elseif($entrada->field_type=='opcion_multiple')
+                                                @elseif($entrada->entradatipo_id==4)
                                                     <div class="checkbox">
                                                         @foreach($opciones[$entrada->id] as $opcion)
                                                             <span> | </span>
                                                             <label>
-                                                                {!! Form::checkbox($tab->id.'_'.$entrada->id, $opcion->option_name,false) !!}
+                                                                {!! Form::checkbox('respuesta['.$entrada->id.']', $opcion->option_name,false) !!}
                                                                 {!! $opcion->option_name!!}
                                                             </label>
                                                         @endforeach
                                                     </div>
-                                                @elseif($entrada->field_type=='fecha')
+                                                @elseif($entrada->entradatipo_id==6)
                                                     <div class="form-group">
                                                         {!!Form::label('duracion', 'Vigente hasta')!!}
                                                         <div class='input-group date' id='datetimepicker1'>
-                                                            {!!Form::text($tab->id.'_'.$entrada->id,null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now(),'required'=>$required])!!}
+                                                            {!!Form::text('respuesta['.$entrada->id.']',null,['class'=>'form-control','placeholder'=>\Carbon\Carbon::now(),'required'=>$required])!!}
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
                                                         </div>
                                                     </div>
+                                                @elseif($entrada->entradatipo_id==9)
                                                 @endif
                                             </div>
                                             @endforeach
