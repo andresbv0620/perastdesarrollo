@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Zizaco\Entrust\EntrustFacade;
+use Illuminate\Support\Facades\DB;
 
 Route::get('test', function(){
 
@@ -526,42 +527,37 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
         foreach($sistemas as $sistema) {
             $newconnection=$sistema->nombre_db;
             $otf = new OnTheFly(['database' => $newconnection]);
-            $catalogs = Catalog::on($newconnection)->where('tipo','ordenVenta')->get();//Retrieves an objet, it is needed to use toArray()
-            //$catalogs = $otf->getTable('catalogs')->get();//Retrieves an array, there is no need to convert to array, just one line
+            //Para no hacer una consulta de este tipo se requiere crear una tabla que tenga los nombres de las tablas
+            // que seran usadas como dinamicas
+            $catalogs = Catalog::on($newconnection)->where('tipo','entradaSimple')->get();
+
             $catalogosArray=array();
 
             foreach($catalogs as $catalog){
-                $entradasdinamicas=Entrada::on($newconnection)->where('opdinamica_id','=',$catalog->id)->get();
 
-                $entradasdinamicasArray=array();
-                foreach($entradasdinamicas as $entradadinamica){
-                    //Se hace la conexion a la tabla de respuestas puede ser con $entradadinamica->opdinamica_id o con
-                    // $catalog->id (por el foreach)
-                    $opcionesdinamicas=\DB::on($newconnection)->table($entradadinamica->opdinamica_id)->where('entrada_id','=',$entradadinamica->campo_opcion)->get();
-                    $opcionesdinamicasarray=array();
-                    foreach($opcionesdinamicas as $opciondinamica){
-                        $opcionesdinamicasarray[]=array(
-                            'campoOpcion'=>$entradadinamica->campo_opcion,
-                            'opcionId'=>$opciondinamica->id,
-                            'opcionNombre'=>$opciondinamica->respuesta,
-                        );
+                $opcionesdinamicas=DB::connection($newconnection)->table($catalog->id)->get();
 
-                        $entradasdinamicasArray[]=array(
-                            'nombreTabla'=>$entradadinamica->opdinamica_id,
-                            'opciones'=>$opcionesArray
-                        );
-                    }
-                    $tabsArray[]=array(
-                        'tablasOpciones'=>$entradasdinamicasArray
+                $opcionesdinamicasarray=array();
+                foreach($opcionesdinamicas as $opciondinamica){
+                    $entradaid=$opciondinamica->entrada_id;
+                    $entradaNombre=Entrada::on($newconnection)->findOrFail($entradaid)->field_name;
+                    $opcionesdinamicasarray[]=array(
+                        'nombreCampo'=>$entradaid,
+                        'campoOpcion'=>$entradaNombre,
+                        'opcionId'=>$opciondinamica->id,
+                        'opcionNombre'=>$opciondinamica->respuesta,
                     );
                 }
-
+                $opcionesTablaArray[]=array(
+                    'nombreTabla'=>$catalog->id,
+                    'opciones'=>$opcionesdinamicasarray
+                );
             }
 
             $id=$sistema->id;
             $sistemasArray[]=array(
                 'sistemaId'=>$id,
-                'tablasOpciones'=>$entradasdinamicasArray
+                'tablasOpciones'=>$opcionesTablaArray
             );
         }
         $response = array(
