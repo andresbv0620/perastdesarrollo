@@ -476,7 +476,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                             'entradaDescripcion'=>$entrada->field_description,
                             'entradaTipo'=>$entrada->entradatipo_id,
                             'entradaObligatorio'=>$entrada->field_required,
-                            'tablaOpciones'=>$entrada->opdinamica_id,
+                            'nombreTablaOpciones'=>$entrada->opdinamica_id,
                             'campoOpciones'=>$entrada->campo_opcion,
                             'entradaPrincipal'=>$entrada->entradaprincipal_id,
                             'consultaOpciones'=>$entrada->consulta,
@@ -549,7 +549,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                     );
                 }
                 $opcionesTablaArray[]=array(
-                    'nombreTabla'=>$catalog->id,
+                    'nombreTablaOpciones'=>$catalog->id,
                     'opciones'=>$opcionesdinamicasarray
                 );
             }
