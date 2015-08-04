@@ -10,6 +10,8 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
     <script src="{{ url('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}"></script>
+    <script src="{{ url('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js') }}"></script>
+
     <!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 
@@ -148,7 +150,10 @@
         <script src="{{ url('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js') }}"></script>
     <link href="{{ asset('/build/css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
     <script src="{{ asset('/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-
+    {{--typehead--}}
+    <script src="{{ asset('/bower_components/typeahead.js/dist/typeahead.jquery.js') }}"></script>
+    {{--custom--}}
+{{--<script src="{{ asset('/js/custom.js') }}"></script>--}}
 @yield('scripts')
 </body>
 </html>

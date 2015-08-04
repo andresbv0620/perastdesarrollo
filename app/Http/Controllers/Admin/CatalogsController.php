@@ -107,6 +107,7 @@ class CatalogsController extends Controller {
             $table->integer('user_id')->unsigned();
             $table->integer('tablet_id')->unsigned();
             $table->integer('catalog_id')->unsigned();
+            $table->integer('respuestasgrupo_id')->unsigned();
 
             $table->foreign('entrada_id')
                 ->references('id')
@@ -123,6 +124,10 @@ class CatalogsController extends Controller {
             $table->foreign('catalog_id')
                 ->references('id')
                 ->on('catalogs')
+                ->onDelete('cascade');
+            $table->foreign('respuestasgrupo_id')
+                ->references('id')
+                ->on('respuestasgrupos')
                 ->onDelete('cascade');
         });
 
@@ -142,21 +147,66 @@ class CatalogsController extends Controller {
 
         $catalog=Catalog::on($newconnection)->findOrFail($id);
 
+
         $tabs=Tab::on($newconnection)->where('catalog_id','=',$id)->get();
+
         $entradas=array();
         $opciones=array();
+
         foreach($tabs as $tab){
             $entradas[$tab->id]=Entrada::on($newconnection)->where('tab_id','=',$tab->id)->get();
+
+
             foreach($entradas[$tab->id] as $entrada){
-                $opciones[$entrada->id]=Opcione::on($newconnection)->where('entrada_id','=',$entrada->id)->get();
+
+                if($entrada->entradatipo_id==9){
+                    //Info para el autocompletar
+                    $opcionesdinamicas[$entrada->id]=DB::connection($newconnection)->table($entrada->opdinamica_id)->where('entrada_id','=',$entrada->campo_opcion)->lists('respuesta');
+                    $opcionesdinamicas[$entrada->id]=implode(",",$opcionesdinamicas[$entrada->id]);
+                    //Info para cargar en el select sin autocompletar
+                    $respuestasgrupo[$entrada->id]=DB::connection($newconnection)->table($entrada->opdinamica_id)->where('entrada_id','=',$entrada->campo_opcion)->lists('respuesta','respuestasgrupo_id');
+
+                    //Info con todos los datos de las opciones de una determinada entrada
+                    $opcionesinfo[$entrada->id]=DB::connection($newconnection)->table($entrada->opdinamica_id)->where('entrada_id','=',$entrada->campo_opcion)->get();
+
+                    foreach($opcionesinfo[$entrada->id] as $opcioninfo){
+                        $grupoopcion=$opcioninfo->respuestasgrupo_id;
+                        $grupo=DB::connection($newconnection)->table($entrada->opdinamica_id)->where('respuestasgrupo_id','=',$grupoopcion)->lists('respuesta','entrada_id');
+                        $nombrecampoArray=array();
+                        foreach($grupo as $opcionentradaid=>$respuestaopcion){
+                            $nombrecampoopcion=Entrada::on($newconnection)->findOrFail($opcionentradaid);
+                            $nombrecampoopcion=$nombrecampoopcion->field_name;
+                            $nombrecampoArray[]=$nombrecampoopcion;
+                        }
+
+                        $opcionesgrupo[$grupoopcion]=(object)$grupo;
+
+                        $entrada->nombrecampoopciones=$nombrecampoArray;
+
+
+                    }
+
+                    $entrada->opcionesgrupo=(object)$opcionesgrupo;
+
+
+                }
+
+                if(($entrada->entradatipo_id==3)||($entrada->entradatipo_id==4)){
+                    $opciones[$entrada->id] = Opcione::on($newconnection)->where('entrada_id', '=', $entrada->id)->get();
+                }
+
             }
         }
+
+
 
         if($this->request->ajax()){
             return response()->json($entradas);
         }
 
-        return view('admin.catalogs.show',compact('catalog','tabs','entradas','opciones'));
+
+
+        return view('admin.catalogs.show',compact('catalog','tabs','entradas','opciones','opcionesdinamicas','respuestasgrupo','opcionesinfo'));
 	}
 
 	/**

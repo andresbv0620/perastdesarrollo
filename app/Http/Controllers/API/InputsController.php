@@ -1,11 +1,15 @@
 <?php namespace App\Http\Controllers\API;
 
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Input;
+use App\Tablet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class InputsController extends Controller {
 
@@ -25,7 +29,47 @@ class InputsController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$tablet_id=$this->request->input('tablet_id');
+		$tablet=Tablet::findOrFail('001');
+		$sistemas = $tablet->sistemas;
+		$sistemasArray=array();
+		foreach($sistemas as $sistema) {
+			$newconnection=$sistema->nombre_db;
+			$otf = new OnTheFly(['database' => $newconnection]);
+			$catalogs = Catalog::on($newconnection)->get();
+			$catalogosArray=array();
+			foreach($catalogs as $catalog){
+				$respuestas=DB::connection($newconnection)->table($catalog->id)->get();
+				$respuestasArray=array();
+				foreach($respuestas as $respuesta){
+					$respuestasArray[]=array(
+						'id'=>$respuesta->id,
+						'respuesta'=>$respuesta->respuesta,
+						'entrada_id'=>$respuesta->entrada_id,
+						'respuestasgrupo_id'=>$respuesta->respuestasgrupo_id
+
+					);
+				}
+
+				$catalogosArray[]=array(
+					'catalogoId'=>$catalog->id,
+					'catalogoNombre'=>$catalog->name,
+					'catalogoDescripcion'=>$catalog->description,
+					'catalogoTipo'=>$catalog->tipo,
+					'respuestas'=>$respuestasArray
+				);
+			}
+
+			$id=$sistema->id;
+			$sistemasArray[]=array(
+				'sistemaId'=>$id,
+				'catalogos'=>$catalogosArray
+			);
+		}
+		$response = array(
+			'respuestas' => $sistemasArray,
+		);
+		return Response::json($response);
 	}
 
 	/**
@@ -48,9 +92,12 @@ class InputsController extends Controller {
         if($_POST["inputs"]) {
             //dd($this->request->all());
             $inputs=$_POST["inputs"];
-            //$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel, al igual que el nombre del modelo Input
+
+            //$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel,
+            // al igual que el nombre del modelo Input
             $decodedInput=json_decode($inputs, true);
-            $inputs=$decodedInput['inputs'];
+            $inputs=$decodedInput['respuestas'];
+			dd($inputs);
 
             foreach($inputs as $input) {
                 $dbSistema=$input['dbSistema'];

@@ -117,7 +117,6 @@
                 }
 
                 //Se cargan los catalogos de los cuales tomar las opciones para la entrada
-
                 if (target.value==9) {
                     var table=<?php echo json_encode($tablaopciones, JSON_PRETTY_PRINT); ?>;
                     var options="<option></option>";

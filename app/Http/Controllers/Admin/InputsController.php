@@ -75,23 +75,42 @@ class InputsController extends Controller {
         $otf = new OnTheFly(['database'=>$newconnection]);
         $sistemadb=\Session::get('tenant_connection');
         $data=$this->request->all();
-
+        $grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
         $iduser=Auth::user()->id;
         ////En web este valor es irrelevante, y por lo tanto se usa un tablet_id=1////
         $idtablet=1;
         $tablerespuestas=$data['idcatalogo'];
-
         foreach($data['respuesta'] as $identrada => $respuesta){
-            DB::connection($newconnection)->table($tablerespuestas)->insert(
-                [
-                    '_token' => $data['_token'],
-                    'respuesta'=>$respuesta,
-                    'entrada_id'=>$identrada,
-                    'user_id'=>$iduser,
-                    'tablet_id'=>$idtablet,
-                    'catalog_id'=>$tablerespuestas
-                ]
-            );
+
+            if(is_array($respuesta)) {
+
+                foreach ($respuesta as $opcionrespuesta) {
+
+                    DB::connection($newconnection)->table($tablerespuestas)->insert(
+                        [
+                            '_token' => $data['_token'],
+                            'respuesta' => $opcionrespuesta,
+                            'entrada_id' => $identrada,
+                            'user_id' => $iduser,
+                            'tablet_id' => $idtablet,
+                            'catalog_id' => $tablerespuestas,
+                            'respuestasgrupo_id' => $grupoid
+                        ]
+                    );
+                }
+            }else{
+                DB::connection($newconnection)->table($tablerespuestas)->insert(
+                    [
+                        '_token' => $data['_token'],
+                        'respuesta' => $respuesta,
+                        'entrada_id' => $identrada,
+                        'user_id' => $iduser,
+                        'tablet_id' => $idtablet,
+                        'catalog_id' => $tablerespuestas,
+                        'respuestasgrupo_id' => $grupoid
+                    ]
+                );
+            }
         }
         return redirect()->back();
 	}

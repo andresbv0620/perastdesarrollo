@@ -317,6 +317,14 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
+                ///La tabla que se crea a continuación relaciona los grupos a los que pertenece una entrada, por ejemplo, si se
+                // registra nombre y apellido como dos entradas diferentes, Andres Buitrago pertenecerá a un mismo grupo.
+                Schema::connection($dbname)->create('respuestasgrupos', function(Blueprint $table)
+                {
+                    $table->increments('id');
+                    $table->timestamps();
+                });
+
                 /*
                 //Activar solo en caso de que se requiera crear estas tablas para cada sistema
                 Schema::connection($dbname)->create('tablets', function(Blueprint $table)

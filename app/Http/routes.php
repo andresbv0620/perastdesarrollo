@@ -370,6 +370,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             }
 
             $sistemasArray[]=array(
+
                 'dbSistema'=>$dbname,
                 'inputs'=>$inputs
             );
@@ -453,8 +454,6 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             $catalogosArray=array();
             foreach($catalogs as $catalog){
                 $tabs=Tab::on($newconnection)->where('catalog_id','=',$catalog->id)->get();
-
-
                 $tabsArray=array();
                 foreach($tabs as $tab){
 

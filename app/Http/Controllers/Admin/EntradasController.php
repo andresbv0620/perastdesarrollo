@@ -57,9 +57,8 @@ class EntradasController extends Controller {
         $newconnection= \Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$newconnection]);
 
-        //Se instancia la nueva entrada
+
         $data=$this->request->all();
-        //dd($data);
 
         //Guardar entradas con opciones dinamicas
         if($data['entradatipo_id']==9){
@@ -143,19 +142,34 @@ class EntradasController extends Controller {
 
         //Guardar entradas con opciones simples
         if( ($data['entradatipo_id']==3) || ($data['entradatipo_id']==4)){
+            //Se instancia la nueva entrada
+            $entrada= new Entrada($data);
+            $entrada->setConnection($newconnection);
+
+            //Se instancia el objeto Entradatipo seleccionado, tipoentrada hasMany Entrada
+            $entradatipo=Entradatipo::on($newconnection)->findOrFail($data['entradatipo_id']);
+            $entradatipo->setConnection($newconnection);
+
+            //Se instancia el objeto Tab al que pertenece la entrada, Tab hasMany Entrada
+            $tab=Tab::on($newconnection)->findOrFail($data['tab_id']);
+            $tab->setConnection($newconnection);
+
+            //Se hacen las asociaciones
+            $entrada->entradatipo()->associate($entradatipo);
+            $entrada->tab()->associate($tab);
+
+            $entrada->save();
 
             foreach(Input::get('opcion_name') as $opcion) {
-
                 $opcion = new Opcione(['option_name' => $opcion]);
                 $opcion->setConnection($newconnection);
                 $entrada->opciones()->save($opcion);
-
             }
         }
 
         //Guardar entradas sin opciones
         if(($data['entradatipo_id']!=3) && ($data['entradatipo_id']!=4) && ($data['entradatipo_id']!=9)){
-
+            //Se instancia la nueva entrada
             $entrada= new Entrada($data);
             $entrada->setConnection($newconnection);
 
