@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b12ec490-19c9-4850-b395-b2531e349052" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Respuestagrupo.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/custom.js" />
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\fondo11_2.png" afterPath="" />
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\fondo1_2.png" afterPath="" />
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\fondo2_2.png" afterPath="" />
@@ -33,15 +31,8 @@
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\logo9_1.png" afterPath="" />
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\logo9_2.png" afterPath="" />
       <change type="DELETED" beforePath="D:\htdocs\perast\public\img_sistemas\logo9_7.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/CatalogsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/CatalogsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/API/InputsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/InputsController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/InputsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/InputsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SistemasController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SistemasController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/app.blade.php" afterPath="$PROJECT_DIR$/resources/views/app.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/catalogs/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/catalogs/edit.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/catalogs/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/catalogs/show.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="perast.iws" />
@@ -67,21 +58,20 @@
       <file leaf-file-name="CatalogsController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CatalogsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.807693">
-              <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+            <state vertical-scroll-proportion="-1.9615384">
+              <caret line="144" column="8" selection-start-line="144" selection-start-column="8" selection-end-line="146" selection-end-column="0" />
               <folding>
                 <element signature="e#45#61#0#PHP" expanded="true" />
-                <element signature="e#5013#6895#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputsController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InputsController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/InputsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6437177">
-              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state vertical-scroll-proportion="-0.65384614">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -124,21 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="custom.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/custom.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="routes.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="536" column="16" selection-start-line="536" selection-start-column="16" selection-end-line="536" selection-end-column="94" />
+            <state vertical-scroll-proportion="0.53184164">
+              <caret line="345" column="43" selection-start-line="345" selection-start-column="43" selection-end-line="345" selection-end-column="43" />
               <folding>
                 <element signature="e#833#10154#1#PHP" expanded="false" />
                 <element signature="e#10531#12655#1#PHP" expanded="false" />
@@ -146,11 +126,6 @@
                 <element signature="e#12849#13387#1#PHP" expanded="false" />
                 <element signature="e#13721#14184#1#PHP" expanded="false" />
                 <element signature="e#14212#14850#1#PHP" expanded="false" />
-                <element signature="e#14881#15629#1#PHP" expanded="false" />
-                <element signature="e#15662#16359#1#PHP" expanded="false" />
-                <element signature="e#16389#17135#1#PHP" expanded="false" />
-                <element signature="e#17166#18183#1#PHP" expanded="false" />
-                <element signature="e#18215#21731#1#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -242,7 +217,6 @@
         <option value="$PROJECT_DIR$/resources/views/admin/catalogs/partials/fields.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfRoute.php" />
         <option value="$PROJECT_DIR$/app/Entrada.php" />
-        <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/app/Respuestagrupo.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SistemasController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/InputsController.php" />
@@ -254,6 +228,7 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/CatalogsController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/InputsController.php" />
+        <option value="$PROJECT_DIR$/app/Http/routes.php" />
       </list>
     </option>
   </component>
@@ -1012,6 +987,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1188,38 +1164,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="536" column="16" selection-start-line="536" selection-start-column="16" selection-end-line="536" selection-end-column="94" />
-          <folding>
-            <element signature="e#833#10154#1#PHP" expanded="false" />
-            <element signature="e#10531#12655#1#PHP" expanded="false" />
-            <element signature="e#12678#12789#1#PHP" expanded="false" />
-            <element signature="e#12849#13387#1#PHP" expanded="false" />
-            <element signature="e#13721#14184#1#PHP" expanded="false" />
-            <element signature="e#14212#14850#1#PHP" expanded="false" />
-            <element signature="e#14881#15629#1#PHP" expanded="false" />
-            <element signature="e#15662#16359#1#PHP" expanded="false" />
-            <element signature="e#16389#17135#1#PHP" expanded="false" />
-            <element signature="e#17166#18183#1#PHP" expanded="false" />
-            <element signature="e#18215#21731#1#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/admin/catalogs/edit.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.3461537">
           <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="61" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/custom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1240,13 +1188,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php">
+    <entry file="file://$PROJECT_DIR$/public/js/custom.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding>
-            <element signature="e#1167#5329#0#PHP" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.14003295">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1265,20 +1211,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CatalogsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.807693">
-          <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+        <state vertical-scroll-proportion="-1.9615384">
+          <caret line="144" column="8" selection-start-line="144" selection-start-column="8" selection-end-line="146" selection-end-column="0" />
           <folding>
             <element signature="e#45#61#0#PHP" expanded="true" />
-            <element signature="e#5013#6895#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/InputsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6437177">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.65384614">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/EntradasController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.65384614">
+          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding>
+            <element signature="e#1167#5329#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53184164">
+          <caret line="345" column="43" selection-start-line="345" selection-start-column="43" selection-end-line="345" selection-end-column="43" />
+          <folding>
+            <element signature="e#833#10154#1#PHP" expanded="false" />
+            <element signature="e#10531#12655#1#PHP" expanded="false" />
+            <element signature="e#12678#12789#1#PHP" expanded="false" />
+            <element signature="e#12849#13387#1#PHP" expanded="false" />
+            <element signature="e#13721#14184#1#PHP" expanded="false" />
+            <element signature="e#14212#14850#1#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

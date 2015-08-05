@@ -36,7 +36,14 @@ class InputsController extends Controller {
         $sistema_db = Session::get('tenant_connection');
         $otf = new OnTheFly(['database'=>$sistema_db]);
 
-        $hayRespuestas=Input::on($sistema_db)->get()->first();
+        $entradarespuestas=DB::connection($sistema_db)->table('1')->get();
+
+        foreach($entradarespuestas as $entradarespuesta){
+            $respuestagrupo=$entradarespuesta->respuestasgrupo_id;
+            $registroreporte[$respuestagrupo]=DB::connection($sistema_db)->table('1')->where('respuestasgrupo_id',$respuestagrupo)->get();
+        }
+        dd($registroreporte);
+
         if(!empty($hayRespuestas)) {
 
             if (EntrustFacade::hasRole('admin')) {

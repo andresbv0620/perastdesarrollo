@@ -334,7 +334,6 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
     Route::post('sistemas',function(Request $request){
         $tablet_id=$request->input('tablet_id');
         $tablet=Tablet::findOrFail($tablet_id);
-
         $sistemas = $tablet->sistemas;
         $sistemasArray=array();
         foreach($sistemas as $sistema) {
@@ -342,11 +341,15 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             $nombre=$sistema->nombreDataBase;
             $descripcion=$sistema->description;
             $db=$sistema->nombre_db;
+            $otf = new OnTheFly(['database'=>$db]);
+            $lastgroup=DB::connection($db)->table('respuestasgrupos')->orderby('id','DESC')->take(1)->lists('id');
+            $lastgroup=(integer)$lastgroup;
             $sistemasArray[]=array(
                 'sistemaId'=>$id,
                 'nombreSistema'=>$nombre,
                 'descripcionSistema'=>$descripcion,
-                'dbSistema'=>$db
+                'dbSistema'=>$db,
+                'grupoEntrada'=>$lastgroup
             );
         }
         $response = array(
