@@ -89,8 +89,8 @@ class SistemasController extends Controller {
         $fondo_type= $_FILES["imagenFondo"]["type"];
         $fondo_temporal= $_FILES["imagenFondo"]["tmp_name"];
 
-        if($fondo_size>8388608 ){
-            Session::flash('message','El tamaño de imagen máximo permitido para el fondo es 8 Mb');
+        if($fondo_size>1000000 ){
+            Session::flash('message','El tamaño de imagen máximo permitido para el fondo es 2 Mb');
             return redirect()->back();
         }
 
@@ -128,8 +128,8 @@ class SistemasController extends Controller {
         $logo_type= $_FILES["logo"]["type"];
         $logo_temporal= $_FILES["logo"]["tmp_name"];
 
-        if($logo_size>8388608 ){
-            Session::flash('message','El tamaño de imagen de logo máximo permitido es 8 Mb');
+        if($logo_size>1000000 ){
+            Session::flash('message','El tamaño de imagen de logo máximo permitido es 2 Mb');
             return redirect()->back();
         }
 
@@ -160,6 +160,35 @@ class SistemasController extends Controller {
         fclose($f1);
 
         //////////////////////////Fin Capturar Logo//////////////////////
+        //$bytes=strlen ($fondo_reconvertida);
+        $dimensioneslogo=getimagesize($logo_temporal)[3];
+        $dimensioneslogo=explode(' ',$dimensioneslogo);
+
+        foreach($dimensioneslogo as $dimencionlogo){
+            $dimencionlogo=explode('=',$dimencionlogo)[1];
+            $dimencionlogo=(int)explode('"',$dimencionlogo)[1];
+
+
+            if($dimencionlogo>800){
+                Session::flash('message','Las dimensiones del logo no pueden ser superiores a 800px');
+                return redirect()->back();
+            }
+        }
+
+        $dimensionesfondo=getimagesize($fondo_temporal)[3];
+        $dimensionesfondo=explode(' ',$dimensionesfondo);
+
+        foreach($dimensionesfondo as $dimencionfondo){
+            $dimencionfondo=explode('=',$dimencionfondo)[1];
+            $dimencionfondo=(int)explode('"',$dimencionfondo)[1];
+
+
+
+            if($dimencionfondo>800){
+                Session::flash('message','Las dimensiones del fondo no pueden ser superiores a 800px');
+                return redirect()->back();
+            }
+        }
 
         $data=$this->request->all();
 		$sistema = new Sistema($data);

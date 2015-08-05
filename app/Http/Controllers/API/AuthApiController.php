@@ -52,10 +52,7 @@ class AuthApiController extends Controller {
 	{
         $email=$this->request->email;
         $password=$this->request->password;
-
 		$userid=User::where('email','=',$email)->firstOrFail()->id;
-
-
 
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {

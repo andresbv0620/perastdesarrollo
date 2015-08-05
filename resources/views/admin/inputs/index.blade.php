@@ -21,11 +21,11 @@
                             <a class="btn btn-default" href="{{route('admin.inputs.create')}}" role="button">
                                 Registrar Respuesta
                             </a>
-                        </p><p>Hay {{$inputs->total()}} Respuestas</p>
+                        </p><p>Hay  Respuestas</p>
 
                         @include('admin.inputs.partials.tables')
 
-                        {!!$inputs->render()!!}
+
                     </div>
                 </div>
             </div>

@@ -89,9 +89,9 @@ class InputsController extends Controller {
 	 */
 	public function store()
 	{
-        if($_POST["inputs"]) {
+        if($_POST["respuestas"]) {
             //dd($this->request->all());
-            $inputs=$_POST["inputs"];
+            $inputs=$_POST["respuestas"];
 
             //$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel,
             // al igual que el nombre del modelo Input

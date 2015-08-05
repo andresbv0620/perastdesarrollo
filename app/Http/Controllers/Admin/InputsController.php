@@ -37,22 +37,33 @@ class InputsController extends Controller {
         $otf = new OnTheFly(['database'=>$sistema_db]);
 
         $entradarespuestas=DB::connection($sistema_db)->table('1')->get();
+        $entradascampoid=$results = DB::connection($sistema_db)->select('SELECT distinct `entrada_id` FROM `1`');
+        foreach($entradascampoid as $entradacampoid){
+            $entrada=Entrada::on($sistema_db)->where('id','=',$entradacampoid->entrada_id)->first();
+            $entradacampoid->nombrecampo=$entrada->field_name;
+        }
+
+
+
+        $users = DB::table('users')->distinct()->get();
 
         foreach($entradarespuestas as $entradarespuesta){
-            $respuestagrupo=$entradarespuesta->respuestasgrupo_id;
-            $registroreporte[$respuestagrupo]=DB::connection($sistema_db)->table('1')->where('respuestasgrupo_id',$respuestagrupo)->get();
-        }
-        dd($registroreporte);
-
-        if(!empty($hayRespuestas)) {
-
-            if (EntrustFacade::hasRole('admin')) {
-                $inputs = Input::on($sistema_db)->orderBy('id', 'DESC')->paginate();
-
-                $entradas=Entrada::on($sistema_db)->get();
-                $tabs=Tab::on($sistema_db)->get();
+            $idgrupo=$entradarespuesta->respuestasgrupo_id;
+            $respuestasgrupo=DB::connection($sistema_db)->table('1')->where('respuestasgrupo_id',$idgrupo)->get();
+            foreach($respuestasgrupo as $respuestagrupo ){
+                $entradas=Entrada::on($sistema_db)->where('id','=',$respuestagrupo->entrada_id)->first();
+                $campo=$entradas->field_name;
+                $respuestagrupo->campo=$campo;
+                $campoarray[]=$campo;
             }
-            return view('admin.inputs.index', compact('inputs','entradas','tabs'));
+            $respuestasgrupoarray[$idgrupo]=$respuestasgrupo;
+        }
+
+
+
+        if(!empty($entradarespuestas)) {
+
+            return view('admin.inputs.index', compact('respuestasgrupoarray','entradascampoid'));
         }else{
             Session::flash('message','No hay respuestas para este sistema');
             return redirect()->route('admin.sistemas.index');
