@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -52,9 +53,14 @@ class AuthApiController extends Controller {
         $email=$this->request->email;
         $password=$this->request->password;
 
+		$userid=User::where('email','=',$email)->firstOrFail()->id;
+
+
+
+
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $response = array(
-                'respuesta' => 'OK'
+                'usuarioId' => $userid
             );
             return Response::json($response);
         }
