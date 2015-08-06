@@ -98,16 +98,14 @@ class InputsController extends Controller {
 			$respuesta=$obj->respuesta;
 			$iduser=$obj->usuarioId;
 			$identrada=$obj->entradaId;
-			$grupoid=$obj->grupoEntrada;
-
-			/*$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/respuestas.txt","wb");
-			fwrite($fp,$inputs);
-			fclose($fp);
-			dd($inputs);*/
+			$grupoentradaid=$obj->grupoEntrada;
 
 			//Se procesan las respuestas
-			//$otf = new OnTheFly(['database'=>$newconnection]);
-			//$grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
+			$otf = new OnTheFly(['database'=>$newconnection]);
+			$grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
+			DB::connection($newconnection)->table('respuestasgrupos')
+				->where('id', $grupoid)
+				->update(['id' => $grupoentradaid]);
 			$tablerespuestas=$obj->catalogoId;
 			if(is_array($respuesta)) {
 				foreach ($respuesta as $opcionrespuesta) {
@@ -119,7 +117,7 @@ class InputsController extends Controller {
 							'user_id' => $iduser,
 							'tablet_id' => $idtablet,
 							'catalog_id' => $tablerespuestas,
-							'respuestasgrupo_id' => $grupoid
+							'respuestasgrupo_id' => $grupoentradaid
 						]
 					);
 				}
@@ -132,10 +130,15 @@ class InputsController extends Controller {
 						'user_id' => $iduser,
 						'tablet_id' => $idtablet,
 						'catalog_id' => $tablerespuestas,
-						'respuestasgrupo_id' => $grupoid
+						'respuestasgrupo_id' => $grupoentradaid
 					]
 				);
 			}
+
+
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/ultima_respuesta.txt","wb");
+			fwrite($fp,$inputs);
+			fclose($fp);
 			return "registro exitoso";
         }
 	}
