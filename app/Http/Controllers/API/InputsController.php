@@ -92,46 +92,51 @@ class InputsController extends Controller {
 		$inputs = file_get_contents('php://input');
         if($inputs) {
 			$obj = json_decode(utf8_encode($inputs));
-			$tabletid=$obj->catalogoId;
+			$idtablet=$obj->tablet_id;
+			$newconnection=$obj->dbSistema;
+			$sistemaid=$obj->sistemaId;
+			$respuesta=$obj->respuesta;
+			$iduser=$obj->usuarioId;
+			$identrada=$obj->entradaId;
+			$grupoid=$obj->grupoEntrada;
 
-
-            //dd($this->request->all());
-            //$inputs=$_POST["respuestas"];
-
-			//if($_POST["users"]){
-			//$decode=json_decode($webhookContent, true);
-			//$useremail=$decode[0]['$properties']['$email'];
-			//$useremail2=$decode[1]['$properties']['$email'];
-			//////////////Test the webhook in a file//////////////////////
-
-			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/tablet_id.txt","wb");
-			fwrite($fp,$tabletid);
+			/*$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/respuestas.txt","wb");
+			fwrite($fp,$inputs);
 			fclose($fp);
+			dd($inputs);*/
 
-			dd($inputs);
-
-
-
-
-			//$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel,
-            // al igual que el nombre del modelo Input
-            $decodedInput=json_decode($inputs, true);
-            $inputs=$decodedInput['respuestas'];
-
-
-            foreach($inputs as $input) {
-                $dbSistema=$input['dbSistema'];
-                $otf = new OnTheFly(['database' => $dbSistema]);
-
-                $entradas=$input['inputs'];
-                foreach($entradas as $entrada) {
-                    $entrada = array_except($entrada, array('id'));
-                    Model::unguard();
-                    $inputObject = new Input($entrada);
-                    $inputObject->setConnection($dbSistema)->save();
-                }
-            }
-            return "Guardado";
+			//Se procesan las respuestas
+			//$otf = new OnTheFly(['database'=>$newconnection]);
+			//$grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
+			$tablerespuestas=$obj->catalogoId;
+			if(is_array($respuesta)) {
+				foreach ($respuesta as $opcionrespuesta) {
+					DB::connection($newconnection)->table($tablerespuestas)->insert(
+						[
+							'_token' => 'token',
+							'respuesta' => $opcionrespuesta,
+							'entrada_id' => $identrada,
+							'user_id' => $iduser,
+							'tablet_id' => $idtablet,
+							'catalog_id' => $tablerespuestas,
+							'respuestasgrupo_id' => $grupoid
+						]
+					);
+				}
+			}else{
+				DB::connection($newconnection)->table($tablerespuestas)->insert(
+					[
+						'_token' => 'token',
+						'respuesta' => $respuesta,
+						'entrada_id' => $identrada,
+						'user_id' => $iduser,
+						'tablet_id' => $idtablet,
+						'catalog_id' => $tablerespuestas,
+						'respuestasgrupo_id' => $grupoid
+					]
+				);
+			}
+			return "registro exitoso";
         }
 	}
 

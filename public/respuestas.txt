@@ -1,0 +1,1 @@
+{"catalogoId":1,"dbSistema":"dbSistema","sistemaId":20,"tablet_id":"001","tabId":2,"respuesta":"FUCK","usuarioId":2,"entradaId":9}
