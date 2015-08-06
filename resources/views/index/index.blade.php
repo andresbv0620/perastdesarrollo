@@ -123,7 +123,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <hr>
             <div class="panel-body text-center">
-                <a href="#blog" class="btn btn-warning btn-lg">DESCARGAR</a>
+                <a href="colector.apk" class="btn btn-warning btn-lg">DESCARGAR</a>
             </div>
             <hr>
             <div class="pen">

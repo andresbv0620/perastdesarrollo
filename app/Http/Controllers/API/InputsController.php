@@ -89,7 +89,6 @@ class InputsController extends Controller {
 	 */
 	public function store()
 	{
-		return "hola";
 		$inputs = file_get_contents('php://input');
         if($inputs) {
 			$obj = json_decode(utf8_encode($inputs));
