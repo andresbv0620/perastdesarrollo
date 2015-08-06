@@ -248,14 +248,6 @@ class EntradasController extends Controller {
         $tab->setConnection($newconnection);
         $catalogid=$tab->catalog_id;
 
-        $input=$tabid."_".$id;
-
-
-
-        Schema::connection($newconnection)->table('inputs', function($table) use ($input)
-        {
-            $table->dropColumn($input);
-        });
         $message='La Entrada fue eliminada';
 
 

@@ -89,15 +89,32 @@ class InputsController extends Controller {
 	 */
 	public function store()
 	{
-        if($_POST["respuestas"]) {
+		$inputs = file_get_contents('php://input');
+        if($inputs) {
             //dd($this->request->all());
-            $inputs=$_POST["respuestas"];
+            //$inputs=$_POST["respuestas"];
 
-            //$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel,
+			//if($_POST["users"]){
+			//$decode=json_decode($webhookContent, true);
+			//$useremail=$decode[0]['$properties']['$email'];
+			//$useremail2=$decode[1]['$properties']['$email'];
+			//////////////Test the webhook in a file//////////////////////
+
+
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/myText.txt","wb");
+			fwrite($fp,$inputs);
+			fclose($fp);
+
+			dd($inputs);
+
+
+
+
+			//$inputs=\Illuminate\Support\Facades\Input::get('inputs');//Input es una palabra reservada de laravel,
             // al igual que el nombre del modelo Input
             $decodedInput=json_decode($inputs, true);
             $inputs=$decodedInput['respuestas'];
-			dd($inputs);
+
 
             foreach($inputs as $input) {
                 $dbSistema=$input['dbSistema'];

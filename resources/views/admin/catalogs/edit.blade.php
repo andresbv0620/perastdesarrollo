@@ -9,16 +9,10 @@
                     <div class="panel-body">
                         @include('admin.partials.messages')
 
-                        {!! Form::model($catalog,array('route' => ['admin.catalogs.update',$catalog],'method'=>'PUT')) !!}
-                        @include('admin.catalogs.partials.fields')
-                        <button type="submit" class="btn btn-default">Actualizar Catálogo</button>
-                        {!! Form::close() !!}
-
-                        <hr>
 
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
-                            <div class="panel-heading"><h3>Fichas Asociadas a este Catálogo</h3></div>
+                            <div class="panel-heading"><h4>Fichas Asociadas a este Catálogo</h4></div>
                             <div class="panel-body">
                                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     Agregar Ficha <span class="caret"></span>
@@ -38,7 +32,19 @@
                             @if(!empty($tabs[0]))
                                 @include('admin.catalogs.tabs.partials.tables')
                             @endif
+
+
                         </div>
+                        <hr>
+                        <h3>Actualizar nombre del catálogo</h3>
+                        {!! Form::model($catalog,array('route' => ['admin.catalogs.update',$catalog],'method'=>'PUT')) !!}
+                        @include('admin.catalogs.partials.fields')
+                        <button type="submit" class="btn btn-default">Actualizar Catálogo</button>
+                        {!! Form::close() !!}
+                        <hr>
+
+
+
                         @include('admin.catalogs.partials.delete')
                     </div>
 
@@ -60,12 +66,15 @@
 
 @section('scripts')
     <script>
+
+
+        //Tipo entrada comportamiento
         $(document).ready(function(){
             $('.opciones-group').hide();
             $(document).on('change','.tipo-entrada',function(e){
                 e = e || event;
                 var target = e.target || e.srcElement;
-                var divtab=$(this).parents('.collapse').attr('id');
+                var divtab=$(this).parents('.tab-pane').attr('id');
                 $('.opciones-group').hide();
                 if (target.value==3) {
 
@@ -205,21 +214,23 @@
 
 
 
-
+            //Eliminar
             $(".btn-delete").click(function(e){
 
                 e.preventDefault();
 
-                var row=$(this).parents('tr');
+                var row=$(this).parents('.active');
                 var id=row.data('id');
 
                 var form=$('#form-delete');
                 var url=form.attr('action').replace(':OBJECT_ID', id);
 
                 var data=form.serialize();
+                alert(id);
 
                 row.fadeOut();
-                $("#tab"+id).fadeOut();
+                $(".active").fadeOut();
+
 
                 $.post(url, data, function (result) {
                     alert(result.message);
