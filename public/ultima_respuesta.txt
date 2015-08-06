@@ -1,1 +1,1 @@
-{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":17,"tabId":1,"respuesta":"['Multiple 1' ,'Multiple 3' ]","usuarioId":1,"entradaId":11}
+{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":30,"tabId":1,"respuesta":["quinto" ,"sexto" ],"usuarioId":1,"entradaId":11}
