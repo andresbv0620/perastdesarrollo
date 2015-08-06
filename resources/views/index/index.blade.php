@@ -121,9 +121,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <h3>Empiece a recolectar datos de forma eficiente y segura</h3>
                 <p>PERAST, es un Servicio de Software Movil para Recolección de Datos, que le permite capturar, editar y analizar informacion rapida y eficientemente. Ofrece un conjunto de herramientas estadísticas que facilitan el análisis de la información recolectada por las terminales móviles, así como la configuración de las diferentes variables del sistema de recolección según las necesidades de su empresa.</p>
             </div>
+            <hr>
+            <div class="panel-body text-center">
+                <a href="#blog" class="btn btn-warning btn-lg">DESCARGAR</a>
+            </div>
+            <hr>
             <div class="pen">
                 <img src="{{ asset('/index/images/perast.gif') }}" width="427" height="679"><img src="{{ asset('/index/images/pen.png') }}">
             </div>
+
         </div>
 
 

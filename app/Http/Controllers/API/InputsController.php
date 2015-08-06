@@ -89,8 +89,13 @@ class InputsController extends Controller {
 	 */
 	public function store()
 	{
+		return "hola";
 		$inputs = file_get_contents('php://input');
         if($inputs) {
+			$obj = json_decode(utf8_encode($inputs));
+			$tabletid=$obj->catalogoId;
+
+
             //dd($this->request->all());
             //$inputs=$_POST["respuestas"];
 
@@ -100,9 +105,8 @@ class InputsController extends Controller {
 			//$useremail2=$decode[1]['$properties']['$email'];
 			//////////////Test the webhook in a file//////////////////////
 
-
-			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/myText.txt","wb");
-			fwrite($fp,$inputs);
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/tablet_id.txt","wb");
+			fwrite($fp,$tabletid);
 			fclose($fp);
 
 			dd($inputs);
