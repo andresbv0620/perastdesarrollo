@@ -1,1 +1,5 @@
-{"catalogoId":1,"dbSistema":"dbSistema","sistemaId":20,"tablet_id":"001","tabId":2,"respuesta":"FUCK","usuarioId":2,"entradaId":9}
+{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":40,"tabId":1,"respuesta":"Entrada 1","usuarioId":1,"entradaId":5}{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":40,"tabId":1,"respuesta":"Entrada 2","usuarioId":1,"entradaId":11}
+
+{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":37,"tabId":1,"respuesta":"Entrada 2","usuarioId":1,"entradaId":11}
+
+{"catalogoId":1,"dbSistema":"67_2","sistemaId":67,"tablet_id":"001","grupoEntrada":38,"tabId":1,"respuesta":["op1","op2"],"usuarioId":1,"entradaId":12}

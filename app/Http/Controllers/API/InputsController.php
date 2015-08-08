@@ -90,6 +90,15 @@ class InputsController extends Controller {
 	public function store()
 	{
 		$inputs = file_get_contents('php://input');
+
+		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/respuestas.txt")){
+			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/respuestas.txt","wb");
+			fwrite($fp,$inputs);
+			fclose($fp);
+		}else{
+			$myfile = file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/respuestas.txt", $inputs.PHP_EOL , FILE_APPEND);
+		}
+
         if($inputs) {
 			$obj = json_decode(utf8_encode($inputs));
 			$idtablet=$obj->tablet_id;
@@ -136,9 +145,7 @@ class InputsController extends Controller {
 			}
 
 
-			$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/ultima_respuesta.txt","wb");
-			fwrite($fp,$inputs);
-			fclose($fp);
+
 			return "registro exitoso";
         }
 	}
