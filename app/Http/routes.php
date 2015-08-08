@@ -343,7 +343,8 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
             $db=$sistema->nombre_db;
             $otf = new OnTheFly(['database'=>$db]);
             $lastgroup=DB::connection($db)->table('respuestasgrupos')->orderby('id','DESC')->take(1)->lists('id');
-            $lastgroup=(int)$lastgroup;
+            $lastgroup=(int)$lastgroup[0];
+            dd($lastgroup);
             $sistemasArray[]=array(
                 'sistemaId'=>$id,
                 'nombreSistema'=>$nombre,
