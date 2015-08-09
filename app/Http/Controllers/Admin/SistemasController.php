@@ -316,14 +316,14 @@ class SistemasController extends Controller {
                 });
 
 
-                /////Tabla por defecto para respuestas de sistemas con opciones simples//////////
+                /*/////Tabla por defecto para respuestas de sistemas con opciones simples//////////
                 Schema::connection($dbname)->create('inputs', function(Blueprint $table)
                 {
                     $table->increments('id');
                     $table->timestamps();
                     $table->string('_token');
 
-                });
+                });*/
 
                 //Tabla pivot entre las opciones dinamicas (tabla respuesta catalogos) y la entrada
                 //NOTA: No se puede pre-asociar una FK a la tabla opciones dinamicas porque esta se crea
@@ -346,13 +346,7 @@ class SistemasController extends Controller {
                         ->onDelete('cascade');
                 });
 
-                ///La tabla que se crea a continuación relaciona los grupos a los que pertenece una entrada, por ejemplo, si se
-                // registra nombre y apellido como dos entradas diferentes, Andres Buitrago pertenecerá a un mismo grupo.
-                Schema::connection($dbname)->create('respuestasgrupos', function(Blueprint $table)
-                {
-                    $table->increments('id');
-                    $table->timestamps();
-                });
+
 
                 /*
                 //Activar solo en caso de que se requiera crear estas tablas para cada sistema

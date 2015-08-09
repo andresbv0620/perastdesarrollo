@@ -100,7 +100,7 @@ class CatalogsController extends Controller {
         Schema::connection($newconnection)->create($catalogtablename, function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('respuesta');
+            $table->longText('respuesta');
             $table->timestamps();
             $table->string('_token');
             $table->integer('entrada_id')->unsigned();
@@ -125,10 +125,7 @@ class CatalogsController extends Controller {
                 ->references('id')
                 ->on('catalogs')
                 ->onDelete('cascade');
-            $table->foreign('respuestasgrupo_id')
-                ->references('id')
-                ->on('respuestasgrupos')
-                ->onDelete('cascade');
+
         });
 
         return view('admin.catalogs.edit',compact('catalog','tabs','entradatipos','tablaopciones'));

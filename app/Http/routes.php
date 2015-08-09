@@ -498,6 +498,8 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                     );
                 }
                 $catalog_id=$catalog->id;
+                $lastgroup=DB::connection($newconnection)->table($catalog_id)->orderby('respuestasgrupo_id','DESC')->take(1)->lists('id');
+                $lastgroup=(int)$lastgroup[0];
                 $catalog_name=$catalog->name;
                 $catalog_description=$catalog->description;
                 $catalog_type=$catalog->tipo;
@@ -506,6 +508,7 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                     'catalogoNombre'=>$catalog_name,
                     'catalogoDescripcion'=>$catalog_description,
                     'catalogoTipo'=>$catalog_type,
+                    'grupoEntrada'=>$lastgroup,
                     'tabs'=>$tabsArray
                 );
             }

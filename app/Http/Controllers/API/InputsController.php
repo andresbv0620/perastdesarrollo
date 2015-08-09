@@ -108,14 +108,14 @@ class InputsController extends Controller {
 			$iduser=$obj->usuarioId;
 			$identrada=$obj->entradaId;
 			$grupoentradaid=$obj->grupoEntrada;
+			$tablerespuestas=$obj->catalogoId;
 
 			//Se procesan las respuestas
 			$otf = new OnTheFly(['database'=>$newconnection]);
-			$grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
-			DB::connection($newconnection)->table('respuestasgrupos')
-				->where('id', $grupoid)
-				->update(['id' => $grupoentradaid]);
-			$tablerespuestas=$obj->catalogoId;
+			//$lastgroup=DB::connection($newconnection)->table($tablerespuestas)->orderby('respuestasgrupo_id','DESC')->take(1)->lists('respuestasgrupo_id');
+			//$lastgroup=(int)$lastgroup[0];
+			//$grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
+
 			if(is_array($respuesta)) {
 				foreach ($respuesta as $opcionrespuesta) {
 					DB::connection($newconnection)->table($tablerespuestas)->insert(
