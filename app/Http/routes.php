@@ -495,7 +495,11 @@ Route::group(array('prefix' => 'api/v1','namespace'=>'\API','middleware'=>'table
                 }
                 $catalog_id=$catalog->id;
                 $lastgroup=DB::connection($newconnection)->table($catalog_id)->orderby('respuestasgrupo_id','DESC')->take(1)->lists('id');
-                $lastgroup=(int)$lastgroup[0];
+                if($lastgroup) {
+                    $lastgroup = (int)$lastgroup[0];
+                }else{
+                    $lastgroup=1;
+                }
                 $catalog_name=$catalog->name;
                 $catalog_description=$catalog->description;
                 $catalog_type=$catalog->tipo;
