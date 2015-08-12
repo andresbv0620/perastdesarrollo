@@ -268,7 +268,8 @@ class SistemasController extends Controller {
                     ['tipo_entrada' => 'fecha','display_tipo_entrada' => 'Fecha'],
                     ['tipo_entrada' => 'numero','display_tipo_entrada' => 'Numero'],
                     ['tipo_entrada' => 'scan','display_tipo_entrada' => 'Scan'],
-                    ['tipo_entrada' => 'opcion_dinamica','display_tipo_entrada' => 'Opción Dinamica']
+                    ['tipo_entrada' => 'opcion_dinamica','display_tipo_entrada' => 'Opción Dinamica'],
+                    ['tipo_entrada' => 'gps','display_tipo_entrada' => 'GPS']
                 ]);
 
                 Schema::connection($dbname)->create('entradas', function(Blueprint $table)
