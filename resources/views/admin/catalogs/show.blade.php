@@ -157,6 +157,8 @@
 
                                                     @if($entrada->field_required==1)
                                                         <?php $required = 'required'?>
+                                                    @else
+                                                        <?php $required = ''?>
                                                     @endif
                                                     @if($entrada->entradatipo_id==1)
                                                         {!!Form::text('respuesta['.$entrada->id.']',null,['class'=>'form-control','placeholder'=>$entrada->field_description,'required'=>$required, 'maxlength'=>'100'])!!}
