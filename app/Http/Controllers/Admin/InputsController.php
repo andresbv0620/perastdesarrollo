@@ -37,13 +37,14 @@ class InputsController extends Controller {
         $otf = new OnTheFly(['database'=>$sistema_db]);
 
         $entradarespuestas=DB::connection($sistema_db)->table('1')->get();
-        $entradascampoid=$results = DB::connection($sistema_db)->select('SELECT distinct `entrada_id` FROM `1`');
+        //$subtable= DB::connection($sistema_db)->select('SELECT distinct `respuestasgrupo_id` FROM `1`');
+
+        //Traigo los nombres de los campos
+        $entradascampoid= DB::connection($sistema_db)->select('SELECT distinct `entrada_id` FROM `1`');
         foreach($entradascampoid as $entradacampoid){
             $entrada=Entrada::on($sistema_db)->where('id','=',$entradacampoid->entrada_id)->first();
             $entradacampoid->nombrecampo=$entrada->field_name;
         }
-
-
 
         $users = DB::table('users')->distinct()->get();
 
@@ -53,11 +54,13 @@ class InputsController extends Controller {
             foreach($respuestasgrupo as $respuestagrupo ){
                 $entradas=Entrada::on($sistema_db)->where('id','=',$respuestagrupo->entrada_id)->first();
                 $campo=$entradas->field_name;
+                $tipo=$entradas->entradatipo_id;
                 $respuestagrupo->campo=$campo;
-                $campoarray[]=$campo;
+                $respuestagrupo->tipo=$tipo;
             }
             $respuestasgrupoarray[$idgrupo]=$respuestasgrupo;
         }
+
 
 
 
