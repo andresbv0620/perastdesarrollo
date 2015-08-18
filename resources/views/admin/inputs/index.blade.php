@@ -17,11 +17,7 @@
                             </div>
                             <button type="submit" class="btn btn-default">Buscar</button>
                         {!! Form::close() !!}
-                        <p>
-                            <a class="btn btn-default" href="{{route('admin.inputs.create')}}" role="button">
-                                Registrar Respuesta
-                            </a>
-                        </p><p>Hay  Respuestas</p>
+                        <p>Hay  Respuestas</p>
 
                         @include('admin.inputs.partials.tables')
 

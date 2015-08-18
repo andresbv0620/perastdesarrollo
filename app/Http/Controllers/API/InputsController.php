@@ -143,9 +143,6 @@ class InputsController extends Controller {
 					]
 				);
 			}
-
-
-
 			return "registro exitoso";
         }
 	}

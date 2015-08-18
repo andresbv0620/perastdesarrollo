@@ -32,46 +32,7 @@ class InputsController extends Controller {
 	 */
 	public function index()
 	{
-        $sistema_id = Session::get('tenant_id');
-        $sistema_db = Session::get('tenant_connection');
-        $otf = new OnTheFly(['database'=>$sistema_db]);
 
-        $entradarespuestas=DB::connection($sistema_db)->table('1')->get();
-        //$subtable= DB::connection($sistema_db)->select('SELECT distinct `respuestasgrupo_id` FROM `1`');
-
-        //Traigo los nombres de los campos
-        $entradascampoid= DB::connection($sistema_db)->select('SELECT distinct `entrada_id` FROM `1`');
-        foreach($entradascampoid as $entradacampoid){
-            $entrada=Entrada::on($sistema_db)->where('id','=',$entradacampoid->entrada_id)->first();
-            $entradacampoid->nombrecampo=$entrada->field_name;
-        }
-
-        $users = DB::table('users')->distinct()->get();
-
-        foreach($entradarespuestas as $entradarespuesta){
-            $idgrupo=$entradarespuesta->respuestasgrupo_id;
-            $respuestasgrupo=DB::connection($sistema_db)->table('1')->where('respuestasgrupo_id',$idgrupo)->get();
-            foreach($respuestasgrupo as $respuestagrupo ){
-                $entradas=Entrada::on($sistema_db)->where('id','=',$respuestagrupo->entrada_id)->first();
-                $campo=$entradas->field_name;
-                $tipo=$entradas->entradatipo_id;
-                $respuestagrupo->campo=$campo;
-                $respuestagrupo->tipo=$tipo;
-            }
-            $respuestasgrupoarray[$idgrupo]=$respuestasgrupo;
-        }
-
-
-
-
-        if(!empty($entradarespuestas)) {
-
-            return view('admin.inputs.index', compact('respuestasgrupoarray','entradascampoid'));
-        }else{
-            Session::flash('message','No hay respuestas para este sistema');
-            return redirect()->route('admin.sistemas.index');
-
-        }
 
 	}
 
@@ -96,7 +57,16 @@ class InputsController extends Controller {
         $otf = new OnTheFly(['database'=>$newconnection]);
         $sistemadb=\Session::get('tenant_connection');
         $data=$this->request->all();
-        $grupoid=DB::connection($newconnection)->table('respuestasgrupos')->insertGetId([]);
+
+        $tablerespuestas=$data['idcatalogo'];
+        $grupoid=DB::connection($newconnection)->table($tablerespuestas)->orderby('respuestasgrupo_id','DESC')->take(1)->lists('respuestasgrupo_id');
+
+        if(empty($grupoid)){
+            $grupoid=1;
+        }else{
+            $grupoid=$grupoid[0]+1;
+        }
+
         $iduser=Auth::user()->id;
         ////En web este valor es irrelevante, y por lo tanto se usa un tablet_id=1////
         $idtablet=1;
@@ -104,7 +74,6 @@ class InputsController extends Controller {
         foreach($data['respuesta'] as $identrada => $respuesta){
 
             if(is_array($respuesta)) {
-
                 foreach ($respuesta as $opcionrespuesta) {
 
                     DB::connection($newconnection)->table($tablerespuestas)->insert(
@@ -144,6 +113,49 @@ class InputsController extends Controller {
 	 */
 	public function show($id)
 	{
+        $tablarespuestas=$id;
+        $sistema_id = Session::get('tenant_id');
+        $sistema_db = Session::get('tenant_connection');
+        $otf = new OnTheFly(['database'=>$sistema_db]);
+
+
+        $entradarespuestas=DB::connection($sistema_db)->table($tablarespuestas)->get();
+        //$subtable= DB::connection($sistema_db)->select('SELECT distinct `respuestasgrupo_id` FROM `1`');
+
+        //Traigo los nombres de los campos
+        $entradascampoid= DB::connection($sistema_db)->select('SELECT distinct `entrada_id` FROM `'.$tablarespuestas.'`');
+        foreach($entradascampoid as $entradacampoid){
+            $entrada=Entrada::on($sistema_db)->where('id','=',$entradacampoid->entrada_id)->first();
+            $entradacampoid->nombrecampo=$entrada->field_name;
+        }
+
+
+        $users = DB::table('users')->distinct()->get();
+
+        foreach($entradarespuestas as $entradarespuesta){
+            $idgrupo=$entradarespuesta->respuestasgrupo_id;
+            $respuestasgrupo=DB::connection($sistema_db)->table($tablarespuestas)->where('respuestasgrupo_id',$idgrupo)->get();
+            foreach($respuestasgrupo as $respuestagrupo ){
+                $entradas=Entrada::on($sistema_db)->where('id','=',$respuestagrupo->entrada_id)->first();
+                $campo=$entradas->field_name;
+                $tipo=$entradas->entradatipo_id;
+                $respuestagrupo->campo=$campo;
+                $respuestagrupo->tipo=$tipo;
+            }
+            $respuestasgrupoarray[$idgrupo]=$respuestasgrupo;
+        }
+
+
+
+
+        if(!empty($entradarespuestas)) {
+
+            return view('admin.inputs.index', compact('respuestasgrupoarray','entradascampoid'));
+        }else{
+            Session::flash('message','No hay respuestas para este sistema');
+            return redirect()->route('admin.sistemas.index');
+
+        }
 
 	}
 

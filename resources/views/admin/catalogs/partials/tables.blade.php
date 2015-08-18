@@ -16,6 +16,7 @@
                 <a href="{{ route('admin.catalogs.edit', $catalog) }}">Editar</a>
                 <a href="#!">Eliminar</a>
                 <a href="{{ route('admin.catalogs.show', $catalog) }}">Ver</a>
+                <a href="{{ route('admin.inputs.show', $catalog) }}">Reporte</a>
             </td>
         </tr>
     @endforeach
