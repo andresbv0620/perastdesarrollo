@@ -41,7 +41,7 @@
                     @if(\Session::has('logo_path'))
                         <img class="img-upload" src="{{ asset(\Session::get('logo_path')) }}" style="height: 30px; margin: 10px">
                     @else
-                        <a class="navbar-brand" href="#">PERAST</a>
+                        <a class="navbar-brand" href="#">COLECTOR</a>
                     @endif
 
                 </div>

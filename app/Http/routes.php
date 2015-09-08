@@ -195,6 +195,10 @@ Route::get('test', function(){
 
 });
 
+Route::get('/', function(){
+    return redirect('/landing/landing-index.html');
+});
+
 Route::get('contact',
     ['as' => 'contact', 'uses' => 'WelcomeController@create']);
 Route::post('contact',
@@ -202,7 +206,7 @@ Route::post('contact',
 
 //EntrustFacade::routeNeedsRole('admin/planes*', 'superadmin', Redirect::to('/'));
 
-Route::get('/', 'WelcomeController@index');
+Route::get('version1', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
