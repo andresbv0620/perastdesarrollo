@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="description" content="Solicita 30 días grátis del servicio colector y empieza a recolectar datos inmediatamente.">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title> Colector|Solicita 30 dás grátis, precios y planes</title>
+    <title> Planes y precios | Colector, Solicita 30 dás grátis</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link href="//fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,900%7CGentium+Basic:400italic&amp;subset=latin,latin" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="assets/css/extras.min.css">
@@ -22,7 +22,9 @@
     <link rel="icon" type="image/png" href="assets/images/favicons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/images/favicons/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="assets/images/favicons/favicon-16x16.png" sizes="16x16">
-    <link rel="shortcut icon" href="assets/images/favicons/favicon.ico"> </head>
+    <link rel="shortcut icon" href="assets/images/favicons/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
 
 <body class="pace-on pace-counter">
     <div class="pace-overlay"></div>
@@ -121,6 +123,18 @@
                                 <div class="visible-lg element-height-60"></div>
                             </div>
                             <div class="row">
+                                <div class="col-md-2 col-md-offset-10">
+                                    <P><LAVEL>MONEDA:</LAVEL> <select id="select-precio">
+                                        <option value="usd">USD</option>
+                                        <option value="clp">CLP</option>
+                                        <option value="cop">COP</option>
+
+                                    </select></P>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
                                 <div class="col-md-3">
                                     <div class="element-top-20 element-bottom-20 pricing-col os-animation" data-os-animation="fadeIn" data-os-animation-delay="0s">
                                         <h2 class="pricing-head" style="background: #ffffff; color:#333333">Básico</h2>
@@ -128,8 +142,8 @@
                                             <div class="pricing-price">
                                                 <header style="background: #a8a8a8; color: #ffffff;">
                                                     <h2><small style=
-                                            "color: #ffffff;">$</small>
-                                            300.000</h2>
+                                            "color: #ffffff;" >$</small><span id="precio-basico">
+                                            100</span></h2><br>Mensual
                                                     <p style="color: #ffffff;"></p>
                                                 </header>
                                             </div>
@@ -150,7 +164,8 @@
                                                 <header style="background: #00c0e1; color: #ffffff;">
                                                     <h2><small style=
                                             "color: #ffffff;">$</small>
-                                            600.000</h2> </header>
+                                            <span id="precio-profesional">
+                                            200</span></h2><br>Mensual </header>
                                             </div>
                                             <ul class="pricing-list">
                                                 <li style="border-color: rgba(51,51,51,0.1)">20 usuarios</li>
@@ -169,7 +184,8 @@
                                                 <header style="background: #a8a8a8; color: #ffffff;">
                                                     <h2><small style=
                                             "color: #ffffff;">$</small>
-                                            900.000</h2>
+                                            <span id="precio-empresarial">
+                                            300</span></h2><br>Mensual
                                                     <p style="color: #ffffff;"></p>
                                                 </header>
                                             </div>
@@ -476,6 +492,53 @@
             },
             siteLoader: 'on'
         };
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#select-precio').change(function(){
+                var moneda=$(this).val();
+
+
+                if(moneda=="usd"){
+                    $('#precio-basico').empty();
+                    $('#precio-basico').html('100');
+
+                    $('#precio-profesional').empty();
+                    $('#precio-profesional').html('200');
+
+                    $('#precio-empresarial').empty();
+                    $('#precio-empresarial').html('300');
+
+                }
+                if(moneda=="clp"){
+                    $('#precio-basico').empty();
+                    $('#precio-basico').html('70.000');
+
+                    $('#precio-profesional').empty();
+                    $('#precio-profesional').html('140.000');
+
+                    $('#precio-empresarial').empty();
+                    $('#precio-empresarial').html('200.000');
+
+                }
+
+                if(moneda=="cop"){
+                    $('#precio-basico').empty();
+                    $('#precio-basico').html('300.000');
+
+                    $('#precio-profesional').empty();
+                    $('#precio-profesional').html('600.000');
+
+                    $('#precio-empresarial').empty();
+                    $('#precio-empresarial').html('900.000');
+
+                }
+
+
+            });
+
+        });
     </script>
     <script src="assets/js/theme.min.js"></script>
 </body>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title> Contact|Corporate</title>
+    <title> Contáctanos | Colector </title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link href="//fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,900%7CGentium+Basic:400italic&amp;subset=latin,latin" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="assets/css/extras.min.css">
@@ -118,7 +118,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center col-border-bottom">
                             <div class="row">
-                                <div class="col-md-6 text-left small-screen-center os-animation" data-os-animation="fadeInLeft" data-os-animation-delay="0.3s">
+                                <div class="col-md-12 text-left small-screen-center os-animation" data-os-animation="fadeInLeft" data-os-animation-delay="0.3s">
                                     <div class="divider-wrapper">
                                         <div class="visible-xs element-height-60"></div>
                                         <div class="visible-sm element-height-60"></div>
@@ -161,7 +161,26 @@
                                         <div class="visible-md element-height-60"></div>
                                         <div class="visible-lg element-height-60"></div>
                                     </div>
+                                    <p>Oficina Chile: Rengo 1071, Concepción.</p>
                                     <div class="google-map" data-os-animation="none" data-os-animation-delay="0s" id="map" style="height:355px"></div>
+
+                                    <div class="divider-wrapper">
+                                        <div class="visible-xs element-height-60"></div>
+                                        <div class="visible-sm element-height-60"></div>
+                                        <div class="visible-md element-height-60"></div>
+                                        <div class="visible-lg element-height-60"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-left small-screen-left os-animation" data-os-animation="fadeInRight" data-os-animation-delay="0.3s">
+                                    <div class="divider-wrapper">
+                                        <div class="visible-xs element-height-60"></div>
+                                        <div class="visible-sm element-height-60"></div>
+                                        <div class="visible-md element-height-60"></div>
+                                        <div class="visible-lg element-height-60"></div>
+                                    </div>
+                                    <p>Oficina Colombia: Ave 5C # 23d-65, Cali.</p>
+                                    <div class="google-map" data-os-animation="none" data-os-animation-delay="0s" id="mapcali" style="height:355px"></div>
+
                                     <div class="divider-wrapper">
                                         <div class="visible-xs element-height-60"></div>
                                         <div class="visible-sm element-height-60"></div>
@@ -188,7 +207,7 @@
                                 <div class="visible-lg element-height-40"></div>
                             </div> <i class="fa fa-home text-light" style="font-size:24px"></i>
                             <p class="lead text-center center text-light element-top-20 element-bottom-20 os-animation" data-os-animation="fadeIn" data-os-animation-delay="0.1s"> Colombia: (57) 317 656 4473
-                                <br> Chile: (56) 9 6277 8847 </p>
+                                <br> Chile: (56) 9 7517 9416 </p>
                             <div class="divider-wrapper">
                                 <div class="visible-xs element-height-30"></div>
                                 <div class="visible-sm element-height-30"></div>
@@ -203,8 +222,8 @@
                                 <div class="visible-md element-height-40"></div>
                                 <div class="visible-lg element-height-40"></div>
                             </div> <i class="fa fa-envelope text-light" style="font-size:24px"></i>
-                            <p class="lead text-center center text-light element-top-20 element-bottom-20 os-animation" data-os-animation="fadeIn" data-os-animation-delay="0.2s"> jorge@adiktivo.com
-                                <br> Escríbenos</p>
+                            <p class="lead text-center center text-light element-top-20 element-bottom-20 os-animation" data-os-animation="fadeIn" data-os-animation-delay="0.2s"> Colombia: info@colector.co
+                                <br> Chile: info@colector.cl</p>
                             <div class="divider-wrapper">
                                 <div class="visible-xs element-height-30"></div>
                                 <div class="visible-sm element-height-30"></div>
@@ -376,7 +395,20 @@
             map_style: 'blackwhite',
             map_scrollable: 'on',
             marker: 'show',
-            label: ['Oficina Cali', 'Athens Bistro'],
+            label: ['Oficina Cali', 'Oficina Concepción'],
+            address: '',
+            latlng: ['-36.821615, -73.056054', '-36.821615, -73.056054'],
+            center_latlng: '',
+            markerURL: 'assets/images/marker.png',
+            auto_center: true,
+        };
+        window.mapcali = {
+            map_type: 'ROADMAP',
+            map_zoom: 15,
+            map_style: 'blackwhite',
+            map_scrollable: 'on',
+            marker: 'show',
+            label: ['Oficina Cali', 'Oficina Concepción'],
             address: '',
             latlng: ['3.465199, -76.529288', '3.465199, -76.529288'],
             center_latlng: '',
@@ -384,6 +416,7 @@
             auto_center: true,
         };
     </script>
+
     <script src="assets/js/map.min.js"></script>
 </body>
 
