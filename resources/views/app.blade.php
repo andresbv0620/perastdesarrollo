@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>PERAST-Sistema de Recoleccion de Datos</title>
+	<title>Colector | Sistema de Recoleccion de Datos</title>
 
     {!! Html::Style('/css/app.css') !!}
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
@@ -41,7 +41,7 @@
                     @if(\Session::has('logo_path'))
                         <img class="img-upload" src="{{ asset(\Session::get('logo_path')) }}" style="height: 30px; margin: 10px">
                     @else
-                        <a class="navbar-brand" href="#">COLECTOR</a>
+                        <a class="navbar-brand" href="#">Colector</a>
                     @endif
 
                 </div>

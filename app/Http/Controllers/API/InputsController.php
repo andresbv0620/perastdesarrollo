@@ -110,6 +110,9 @@ class InputsController extends Controller {
 			$grupoentradaid=$obj->grupoEntrada;
 			$tablerespuestas=$obj->catalogoId;
 
+			/////este idgrupo es temporal y supone que un solo registro se hace en un minuto////
+			$grupoentradaid=date('Y').date('d').date('G').date('i');
+
 			//Se procesan las respuestas
 			$otf = new OnTheFly(['database'=>$newconnection]);
 			//$lastgroup=DB::connection($newconnection)->table($tablerespuestas)->orderby('respuestasgrupo_id','DESC')->take(1)->lists('respuestasgrupo_id');

@@ -199,6 +199,10 @@ Route::get('/', function(){
     return redirect('/landing/landing-index.html');
 });
 
+Route::get('time', function(){
+    return date('Y').date('d').date('G').date('i');
+});
+
 Route::get('contact',
     ['as' => 'contact', 'uses' => 'WelcomeController@create']);
 Route::post('contact',
