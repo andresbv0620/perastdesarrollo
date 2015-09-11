@@ -59,10 +59,10 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sistemas<span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Empresas<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/admin/sistemas') }}">Ver Sistemas</a></li>
-                                    <li><a href="{{ url('/admin/sistemas/create') }}">Crear Sistemas</a></li>
+                                    <li><a href="{{ url('/admin/sistemas') }}">Ver Empresas</a></li>
+                                    <li><a href="{{ url('/admin/sistemas/create') }}">Crear Empresas</a></li>
                                 </ul>
                             </li>
                         @endif

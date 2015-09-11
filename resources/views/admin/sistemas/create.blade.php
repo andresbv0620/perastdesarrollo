@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Sistemas</div>
+                    <div class="panel-heading">Empresas</div>
 
                     <div class="panel-body">
                         @include('admin.partials.messages')
@@ -13,7 +13,7 @@
 
                         @include('admin.sistemas.partials.fields')
 
-                        <button type="submit" class="btn btn-default">Crear Sistema</button>
+                        <button type="submit" class="btn btn-default">Crear Empresa</button>
 
                         {!! Form::close() !!}
                     </div>

@@ -1,11 +1,11 @@
 <div class="form-group">
-    {!!Form::label('nombreDataBase', 'Base de datos sistema')!!}
-    {!!Form::text('nombreDataBase',null,['class'=>'form-control','placeholder'=>'Base de datos sistema'])!!}
+    {!!Form::label('nombreDataBase', 'Nombre de la empresa')!!}
+    {!!Form::text('nombreDataBase',null,['class'=>'form-control','placeholder'=>'Nombre de la empresa'])!!}
 </div>
 
 <div class="form-group">
     {!!Form::label('description', 'Descripción')!!}
-    {!!Form::text('description',null,['class'=>'form-control','placeholder'=>'Descripción del sistema'])!!}
+    {!!Form::text('description',null,['class'=>'form-control','placeholder'=>'Descripción de la empresa'])!!}
 </div>
 <div class="form-group">
     {!! Form::label('imagenFondo', 'Imagen de Fondo')!!}
@@ -20,7 +20,7 @@
     <p class="help-block">Suba un logo. Tamaño Maximo 4Mb</p>
 </div>
 
-<h2>Asignar sistema a usuario</h2>
+<h2>Asignar administrador a la empresa</h2>
 <table class="table table-striped">
     <tr>
         <th>ID</th>

@@ -5,16 +5,16 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Sistemas</div>
+                    <div class="panel-heading">Empresas</div>
 
                     @include('admin.partials.messages')
 
                     <div class="panel-body">
                         <p>
                             <a class="btn btn-default" href="{{route('admin.sistemas.create')}}" role="button">
-                                Crear Sistema
+                                Crear Empresa
                             </a>
-                        </p><p>Hay {{$sistemas->total()}} Sistemas</p>
+                        </p><p>Hay {{$sistemas->total()}} Empresas</p>
                         {!! Form::open(['route' => 'tenants_path','method'=>'POST']) !!}
                         @include('admin.sistemas.partials.tables')
 
