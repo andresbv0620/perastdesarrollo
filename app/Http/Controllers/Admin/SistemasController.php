@@ -184,8 +184,8 @@ class SistemasController extends Controller {
 
 
 
-            if($dimencionfondo>800){
-                Session::flash('message','Las dimensiones del fondo no pueden ser superiores a 800px');
+            if($dimencionfondo>1000){
+                Session::flash('message','Las dimensiones del fondo no pueden ser superiores a 1000px');
                 return redirect()->back();
             }
         }
